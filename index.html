@@ -26,7 +26,7 @@
   --r:10px;--rl:16px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:clip}
 body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,170,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,170,0.025) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0}
 
 /* HEADER */
@@ -103,7 +103,8 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:15px;height:15px;b
 .stat-l{font-size:11px;color:var(--text3);margin-top:3px}
 
 /* TABS */
-.tab-bar{display:flex;border-bottom:1px solid var(--border);margin-bottom:1.25rem;overflow-x:auto}
+.tab-bar{display:flex;border-bottom:1px solid var(--border);margin-bottom:1.25rem;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;scroll-behavior:smooth}
+.tab-bar::-webkit-scrollbar{display:none}
 .tab-btn{font-size:12px;padding:9px 14px;cursor:pointer;border:none;background:transparent;color:var(--text3);border-bottom:2px solid transparent;margin-bottom:-1px;font-family:'Syne',sans-serif;font-weight:600;white-space:nowrap;transition:color .15s}
 .tab-btn:hover{color:var(--text2)}.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
 
@@ -238,7 +239,90 @@ footer span{color:var(--text2)}
 /* V2 BADGE */
 .v2-tag{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;background:rgba(0,153,255,.1);color:var(--blue);border:1px solid rgba(0,153,255,.2);border-radius:4px;padding:2px 6px;margin-left:6px;vertical-align:middle}
 
-/* ── RESPONSIVO MOBILE ── */
+/* ── MODAL BOAS-VINDAS ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:500;display:flex;align-items:center;justify-content:center;padding:1rem;animation:fadeIn .25s ease}
+.modal-box{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rl);padding:2rem 1.75rem;max-width:400px;width:100%;text-align:center}
+.modal-icon{font-size:40px;margin-bottom:1rem;display:block}
+.modal-box h2{font-size:20px;margin-bottom:.5rem}
+.modal-box p{font-size:13px;color:var(--text2);margin-bottom:1.5rem;line-height:1.6}
+.modal-input{width:100%;padding:12px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-size:16px;font-family:'Inter',sans-serif;outline:none;text-align:center;margin-bottom:1rem;transition:border-color .15s}
+.modal-input:focus{border-color:var(--accent)}
+.modal-input::placeholder{color:var(--text3)}
+.modal-skip{font-size:12px;color:var(--text3);cursor:pointer;margin-top:.75rem;display:block;transition:color .15s}
+.modal-skip:hover{color:var(--text2)}
+
+/* ── HEADER COM USUÁRIO ── */
+.header-user{display:flex;align-items:center;gap:8px;cursor:pointer}
+.user-avatar{width:30px;height:30px;border-radius:50%;background:rgba(0,212,170,0.15);border:1px solid rgba(0,212,170,0.3);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--accent);font-family:'Syne',sans-serif;flex-shrink:0}
+.user-name{font-size:12px;font-weight:500;color:var(--text2);font-family:'Syne',sans-serif}
+.hist-badge{background:rgba(0,153,255,0.12);color:var(--blue);border:1px solid rgba(0,153,255,0.2);border-radius:20px;font-size:10px;font-weight:700;padding:1px 6px;font-family:'Syne',sans-serif}
+
+/* ── TELA HISTÓRICO ── */
+.hist-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:1rem 1.2rem;margin-bottom:9px;cursor:pointer;transition:border-color .15s,background .15s;position:relative}
+.hist-card:hover{border-color:var(--accent);background:rgba(0,212,170,0.03)}
+.hist-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px}
+.hist-title{font-size:14px;font-weight:600;color:var(--text);font-family:'Syne',sans-serif}
+.hist-date{font-size:11px;color:var(--text3);white-space:nowrap}
+.hist-meta{font-size:12px;color:var(--text2);margin-bottom:7px}
+.hist-stats{display:flex;gap:10px;flex-wrap:wrap}
+.hist-stat{font-size:11px;color:var(--text3)}
+.hist-stat strong{color:var(--accent);font-family:'Syne',sans-serif}
+.hist-del{position:absolute;top:10px;right:10px;background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:14px;padding:4px;line-height:1;border-radius:4px;transition:color .15s}
+.hist-del:hover{color:var(--red)}
+.empty-hist{text-align:center;padding:3rem 1rem}
+.empty-hist .eicon{font-size:40px;margin-bottom:1rem;display:block;opacity:.4}
+.empty-hist p{font-size:13px;color:var(--text3)}
+
+/* ── SAUDAÇÃO NA HOME ── */
+.greeting-bar{background:rgba(0,212,170,0.06);border:1px solid rgba(0,212,170,0.15);border-radius:var(--r);padding:10px 14px;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.greeting-txt{font-size:13px;color:var(--text2)}
+.greeting-txt strong{color:var(--accent);font-family:'Syne',sans-serif}
+.greeting-hist-btn{font-size:11px;color:var(--blue);cursor:pointer;white-space:nowrap;font-weight:500;background:none;border:none;padding:0;font-family:'Syne',sans-serif}
+.greeting-hist-btn:hover{text-decoration:underline}
+.greeting-hist-btn:hover{text-decoration:underline}
+
+/* ── V3: TERRITORIAL ── */
+.modo-selector{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.25rem}
+.modo-btn{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px 12px;cursor:pointer;text-align:left;transition:border-color .15s,background .15s;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.modo-btn:hover{border-color:var(--border2)}
+.modo-btn.selected.local{border-color:var(--blue);background:rgba(0,153,255,.05)}
+.modo-btn.selected.digital{border-color:var(--purple);background:rgba(168,85,247,.05)}
+.modo-btn.selected.nacional{border-color:var(--amber);background:rgba(245,166,35,.05)}
+.modo-btn.selected.hibrido{border-color:var(--accent);background:rgba(0,212,170,.05)}
+.modo-icon{font-size:20px;display:block;margin-bottom:7px}
+.modo-label{font-size:13px;font-weight:500;color:var(--text);display:block;font-family:'Syne',sans-serif}
+.modo-desc{font-size:11px;color:var(--text3);display:block;margin-top:2px}
+.modo-pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;font-family:'Syne',sans-serif}
+.mp-local{background:rgba(0,153,255,.1);color:var(--blue)}
+.mp-digital{background:rgba(168,85,247,.1);color:var(--purple)}
+.mp-nacional{background:rgba(245,166,35,.1);color:var(--amber)}
+.mp-hibrido{background:rgba(0,212,170,.1);color:var(--accent)}
+.barreira-wrap{margin:8px 0 4px}
+.barreira-label{display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-bottom:3px}
+.barreira-bar{height:4px;border-radius:2px;background:var(--bg3);overflow:hidden}
+.barreira-fill{height:100%;border-radius:2px}
+.digital-notice{background:rgba(168,85,247,.06);border:1px solid rgba(168,85,247,.18);border-radius:var(--r);padding:10px 14px;margin-bottom:1rem;font-size:12px;color:var(--purple);line-height:1.55}
+.forn-digital-card{background:var(--bg2);border:1px solid rgba(168,85,247,.18);border-radius:var(--r);padding:12px 14px;margin-bottom:8px;transition:border-color .15s}
+.forn-digital-card:hover{border-color:rgba(168,85,247,.4)}
+.forn-digital-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:3px}
+.forn-digital-name{font-size:13px;font-weight:500;color:var(--text);font-family:'Syne',sans-serif;flex:1}
+.forn-digital-meta{font-size:11px;color:var(--text3);margin-bottom:6px}
+.forn-link-btn{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:5px 10px;background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.2);border-radius:6px;color:var(--purple);text-decoration:none;transition:background .15s}
+.forn-link-btn:hover{background:rgba(168,85,247,.22)}
+.polo-preview-card{background:rgba(245,166,35,.04);border:1px solid rgba(245,166,35,.18);border-radius:var(--rl);padding:1rem 1.2rem;margin-bottom:9px}
+.polo-header{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:5px}
+.polo-nome{font-size:14px;font-weight:600;color:var(--text);font-family:'Syne',sans-serif}
+.polo-loc{font-size:11px;color:var(--amber);margin-top:2px}
+.polo-desc{font-size:12px;color:var(--text2);margin-bottom:7px;line-height:1.5}
+.polo-stats{display:flex;gap:10px;flex-wrap:wrap}
+.polo-stat{font-size:11px;color:var(--text3)}
+.polo-stat strong{color:var(--amber);font-family:'Syne',sans-serif}
+.v4-tag{display:inline-flex;align-items:center;font-size:10px;font-weight:600;background:rgba(245,166,35,.1);color:var(--amber);border:1px solid rgba(245,166,35,.2);border-radius:4px;padding:2px 6px;margin-left:5px;vertical-align:middle}
+
+@media(max-width:480px){
+  .modo-selector{grid-template-columns:1fr}
+}
+
 @media(max-width:480px){
   /* Layout geral */
   main{padding:.9rem .85rem 3rem}
@@ -267,8 +351,6 @@ footer span{color:var(--text2)}
   .stat-box{padding:10px 6px}
 
   /* Tabs: scroll horizontal sem barra */
-  .tab-bar{-webkit-overflow-scrolling:touch;scrollbar-width:none}
-  .tab-bar::-webkit-scrollbar{display:none}
   .tab-btn{font-size:11px;padding:8px 11px}
 
   /* Intel gauges: 1 coluna */
@@ -329,14 +411,49 @@ footer span{color:var(--text2)}
 <body>
 
 <header>
-  <div class="logo">Fornecedor<span>BR</span><sup>v2</sup></div>
-  <div class="hbadge">Inteligência Comercial</div>
+  <div class="logo" onclick="go('s-home')" style="cursor:pointer">Fornecedor<span>BR</span><sup>v2</sup></div>
+  <div id="header-right">
+    <div class="hbadge" id="hbadge-default">Inteligência Comercial</div>
+    <div class="header-user" id="header-user" style="display:none" onclick="go('s-hist')">
+      <div class="user-avatar" id="user-avatar">?</div>
+      <div>
+        <div class="user-name" id="user-name-hdr"></div>
+        <span class="hist-badge" id="hist-count-badge">0 pesquisas</span>
+      </div>
+    </div>
+  </div>
 </header>
+
+<!-- MODAL BOAS-VINDAS -->
+<div id="modal-welcome" class="modal-overlay" style="display:none">
+  <div class="modal-box">
+    <span class="modal-icon">👋</span>
+    <h2>Bem-vindo ao FornecedorBR</h2>
+    <p>Digite seu nome para personalizar a experiência e salvar seu histórico de pesquisas automaticamente.</p>
+    <input type="text" class="modal-input" id="modal-name-input" placeholder="Seu nome" maxlength="40" onkeydown="if(event.key==='Enter')salvarNome()">
+    <button class="btn-p" onclick="salvarNome()">Entrar →</button>
+    <span class="modal-skip" onclick="pularCadastro()">Continuar sem salvar histórico</span>
+  </div>
+</div>
 
 <main>
 
+<!-- TELA HISTÓRICO -->
+<div id="s-hist" class="screen">
+  <span class="back-link" onclick="go('s-home')">← Voltar</span>
+  <h2>Minhas pesquisas</h2>
+  <p class="sub" id="hist-sub">Suas análises salvas. Clique em qualquer uma para recarregar.</p>
+  <div id="hist-list"></div>
+  <button class="btn-p" style="margin-top:.5rem" onclick="go('s0')">Nova pesquisa →</button>
+  <button class="btn-s" style="color:var(--red);border-color:rgba(255,71,87,.2)" onclick="limparHistorico()">Limpar histórico</button>
+</div>
+
 <!-- HOME -->
 <div id="s-home" class="screen active">
+  <div id="greeting-bar" class="greeting-bar" style="display:none">
+    <span class="greeting-txt">Olá, <strong id="greeting-name"></strong> 👋 Bem-vindo de volta!</span>
+    <button class="greeting-hist-btn" onclick="go('s-hist')">Ver histórico →</button>
+  </div>
   <div class="hero">
     <div class="hero-icon">🗺️</div>
     <h1>Mapeie nichos e <span class="hl">fornecedores reais</span></h1>
@@ -382,38 +499,67 @@ footer span{color:var(--text2)}
   <button class="btn-s" onclick="go('s0')">← Voltar</button>
 </div>
 
-<!-- S2 -->
+<!-- S2 — MODO DE ATUAÇÃO V3 -->
 <div id="s2" class="screen">
-  <div class="step-bar"><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot active"></div><div class="step-dot"></div><span class="step-label">3/4</span></div>
-  <h2>Área de interesse</h2><p class="sub">Cada área tem CNAEs específicos para busca na Receita Federal.</p>
-  <div class="opt-grid">
-    <button class="opt-btn" onclick="sel(this,'area','alimentacao')"><span class="opt-icon">🍽️</span><span class="opt-label">Alimentação</span><span class="opt-cnae">CNAE 4639-7 · 4634-6</span></button>
-    <button class="opt-btn" onclick="sel(this,'area','moda')"><span class="opt-icon">👗</span><span class="opt-label">Moda e vestuário</span><span class="opt-cnae">CNAE 4641-9 · 1411-8</span></button>
-    <button class="opt-btn" onclick="sel(this,'area','tecnologia')"><span class="opt-icon">💻</span><span class="opt-label">Tecnologia</span><span class="opt-cnae">CNAE 6201-5 · 4751-2</span></button>
-    <button class="opt-btn" onclick="sel(this,'area','beleza')"><span class="opt-icon">✨</span><span class="opt-label">Beleza e estética</span><span class="opt-cnae">CNAE 4772-5 · 9602-5</span></button>
-    <button class="opt-btn" onclick="sel(this,'area','construcao')"><span class="opt-icon">🏗️</span><span class="opt-label">Construção civil</span><span class="opt-cnae">CNAE 4744-0 · 4741-5</span></button>
-    <button class="opt-btn" onclick="sel(this,'area','saude')"><span class="opt-icon">🏥</span><span class="opt-label">Saúde e bem-estar</span><span class="opt-cnae">CNAE 4771-7 · 8650-0</span></button>
+  <div class="step-bar"><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot active"></div><div class="step-dot"></div><div class="step-dot"></div><span class="step-label">3/5</span></div>
+  <h2>Como você quer atuar?</h2>
+  <p class="sub">Define se buscamos fornecedores locais, nacionais ou digitais — cada modo gera uma análise diferente.</p>
+  <div class="modo-selector">
+    <button class="modo-btn local" onclick="selModo(this,'local')"><span class="modo-icon">📍</span><span class="modo-label">Local / presencial</span><span class="modo-desc">Loja física, serviço no bairro, atendimento presencial</span></button>
+    <button class="modo-btn digital" onclick="selModo(this,'digital')"><span class="modo-icon">🌐</span><span class="modo-label">100% digital</span><span class="modo-desc">E-commerce, infoproduto, SaaS, dropshipping, afiliados</span></button>
+    <button class="modo-btn nacional" onclick="selModo(this,'nacional')"><span class="modo-icon">🚚</span><span class="modo-label">Nacional com frete</span><span class="modo-desc">Compra em polo atacadista ou distribuidor com entrega</span></button>
+    <button class="modo-btn hibrido" onclick="selModo(this,'hibrido')"><span class="modo-icon">⚡</span><span class="modo-label">Híbrido</span><span class="modo-desc">Loja física + presença online e fornecedores remotos</span></button>
   </div>
   <button class="btn-p" onclick="go('s3')">Próximo →</button>
   <button class="btn-s" onclick="go('s1')">← Voltar</button>
 </div>
 
-<!-- S3 -->
+<!-- S3 — ÁREA DE INTERESSE -->
 <div id="s3" class="screen">
-  <div class="step-bar"><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot active"></div><span class="step-label">4/4</span></div>
-  <h2>Localização e raio</h2><p class="sub">Digite seu CEP — coordenadas reais via BrasilAPI para posicionar o mapa.</p>
-  <div class="inp-row">
-    <input type="text" id="cep-input" placeholder="00000-000" maxlength="9" oninput="fmtCep(this)" onkeydown="if(event.key==='Enter')buscarCep()">
-    <button class="btn-search" onclick="buscarCep()">Localizar</button>
+  <div class="step-bar"><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot active"></div><div class="step-dot"></div><span class="step-label">4/5</span></div>
+  <h2>Área de interesse</h2>
+  <p class="sub">Cada área tem CNAEs específicos e índice de barreira territorial próprio.</p>
+  <div class="opt-grid">
+    <button class="opt-btn" onclick="sel(this,'area','alimentacao')"><span class="opt-icon">🍽️</span><span class="opt-label">Alimentação</span><span class="opt-cnae">CNAE 4639-7 · Barreira: alta</span></button>
+    <button class="opt-btn" onclick="sel(this,'area','moda')"><span class="opt-icon">👗</span><span class="opt-label">Moda e vestuário</span><span class="opt-cnae">CNAE 4641-9 · Barreira: baixa</span></button>
+    <button class="opt-btn" onclick="sel(this,'area','tecnologia')"><span class="opt-icon">💻</span><span class="opt-label">Tecnologia</span><span class="opt-cnae">CNAE 6201-5 · Barreira: mínima</span></button>
+    <button class="opt-btn" onclick="sel(this,'area','beleza')"><span class="opt-icon">✨</span><span class="opt-label">Beleza e estética</span><span class="opt-cnae">CNAE 4772-5 · Barreira: média</span></button>
+    <button class="opt-btn" onclick="sel(this,'area','construcao')"><span class="opt-icon">🏗️</span><span class="opt-label">Construção civil</span><span class="opt-cnae">CNAE 4744-0 · Barreira: alta</span></button>
+    <button class="opt-btn" onclick="sel(this,'area','saude')"><span class="opt-icon">🏥</span><span class="opt-label">Saúde e bem-estar</span><span class="opt-cnae">CNAE 4771-7 · Barreira: média</span></button>
+    <button class="opt-btn" onclick="sel(this,'area','dropshipping')"><span class="opt-icon">📦</span><span class="opt-label">Dropshipping</span><span class="opt-cnae">CNAE 4789-0 · Barreira: zero</span></button>
+    <button class="opt-btn" onclick="sel(this,'area','infoproduto')"><span class="opt-icon">🎓</span><span class="opt-label">Infoprodutos / cursos</span><span class="opt-cnae">CNAE 8599-6 · Barreira: zero</span></button>
   </div>
-  <div id="cep-result" class="ibox" style="display:none"><span id="cep-icon">📍</span><span id="cep-txt"></span></div>
-  <div class="range-row">
-    <label>Raio de busca</label>
-    <input type="range" min="10" max="300" value="50" step="10" id="raio-in" oninput="document.getElementById('rv').textContent=this.value+'km'">
-    <span class="range-val" id="rv">50km</span>
+  <button class="btn-p" onclick="irParaLocalizacao()">Próximo →</button>
+  <button class="btn-s" onclick="go('s2')">← Voltar</button>
+</div>
+
+<!-- S4 — LOCALIZAÇÃO ADAPTATIVA -->
+<div id="s4" class="screen">
+  <div class="step-bar"><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot active"></div><span class="step-label">5/5</span></div>
+  <h2 id="s4-title">Localização e raio</h2>
+  <p class="sub" id="s4-sub">Digite seu CEP para posicionar o mapa e calcular o mercado local.</p>
+  <div id="s4-cep-block">
+    <div class="inp-row">
+      <input type="text" id="cep-input" placeholder="00000-000" maxlength="9" oninput="fmtCep(this)" onkeydown="if(event.key==='Enter')buscarCep()">
+      <button class="btn-search" onclick="buscarCep()">Localizar</button>
+    </div>
+    <div id="cep-result" class="ibox" style="display:none"><span id="cep-icon">📍</span><span id="cep-txt"></span></div>
+    <div class="range-row" id="raio-block">
+      <label>Raio de busca</label>
+      <input type="range" min="10" max="300" value="50" step="10" id="raio-in" oninput="document.getElementById('rv').textContent=this.value+'km'">
+      <span class="range-val" id="rv">50km</span>
+    </div>
+  </div>
+  <div id="s4-digital-block" style="display:none">
+    <div class="digital-notice">🌐 No modo digital o raio geográfico não limita seus fornecedores. Informe o CEP apenas para calcular o mercado endereçável da sua região.</div>
+    <div class="inp-row">
+      <input type="text" id="cep-input-dig" placeholder="00000-000" maxlength="9" oninput="fmtCepDig(this)" onkeydown="if(event.key==='Enter')buscarCepDig()">
+      <button class="btn-search" onclick="buscarCepDig()">Localizar</button>
+    </div>
+    <div id="cep-result-dig" class="ibox" style="display:none"><span id="cep-icon-dig">📍</span><span id="cep-txt-dig"></span></div>
   </div>
   <button class="btn-p" id="btn-buscar" onclick="iniciarBusca()" disabled>Analisar mercado →</button>
-  <button class="btn-s" onclick="go('s2')">← Voltar</button>
+  <button class="btn-s" onclick="go('s3')">← Voltar</button>
 </div>
 
 <!-- LOADING -->
@@ -432,7 +578,7 @@ footer span{color:var(--text2)}
 
 <!-- RESULTADO -->
 <div id="s-result" class="screen">
-  <span class="back-link" onclick="go('s0')">← Refazer análise</span>
+  <span class="back-link" onclick="go('s0')">← Nova análise</span>
   <h2 id="res-title">Análise de mercado</h2>
   <p class="sub" id="res-sub"></p>
 
@@ -446,6 +592,8 @@ footer span{color:var(--text2)}
     <button class="tab-btn active" onclick="setTab('nichos',this)">Nichos</button>
     <button class="tab-btn" onclick="setTab('inteligencia',this)">Inteligência ✦</button>
     <button class="tab-btn" onclick="setTab('fornecedores',this)">Fornecedores</button>
+    <button class="tab-btn" onclick="setTab('digital',this)">Digital 🌐</button>
+    <button class="tab-btn" onclick="setTab('polos',this)">Polos V4 ✦</button>
     <button class="tab-btn" onclick="setTab('cnpj',this)">Consulta CNPJ</button>
     <button class="tab-btn" onclick="setTab('mapa',this)">Mapa</button>
   </div>
@@ -478,6 +626,10 @@ footer span{color:var(--text2)}
   </div>
 
   <div id="tab-fornecedores" style="display:none"></div>
+
+  <div id="tab-digital" style="display:none"></div>
+
+  <div id="tab-polos" style="display:none"></div>
 
   <div id="tab-cnpj" style="display:none">
     <p class="sub" style="margin-bottom:1rem">Consulte qualquer CNPJ diretamente na Receita Federal via BrasilAPI.</p>
@@ -519,7 +671,8 @@ footer span{color:var(--text2)}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
 /* ══ STATE ══ */
-var S={perfil:'',capital:'',area:'alimentacao',cep:'',cidade:'',uf:'',lat:-15.78,lng:-47.93,raio:50,popEstimada:0};
+var S={perfil:'',capital:'',area:'alimentacao',modo:'local',cep:'',cidade:'',uf:'',lat:-15.78,lng:-47.93,raio:50,popEstimada:0};
+var S_MODO='local';
 var fornecedores=[];
 var mapObj=null,circleObj=null,pinLayer=null,heatLayer=null;
 var layerMode='pins';
@@ -637,7 +790,261 @@ var AREAS={
   }
 };
 
-var NOMES={
+/* ══ V3: DADOS TERRITORIAIS ══ */
+var BARREIRA={
+  alimentacao:{pct:92,label:'Hiperlocal',cor:'#ff4757',desc:'Perecíveis e logística fria exigem proximidade'},
+  moda:{pct:28,label:'Baixa',cor:'#2ed573',desc:'Atacado nacional via Brás, Bom Retiro e e-commerce'},
+  tecnologia:{pct:12,label:'Mínima',cor:'#2ed573',desc:'Fornecedores digitais e nacionais dominam'},
+  beleza:{pct:45,label:'Média',cor:'#f5a623',desc:'Mix de distribuidores locais e nacionais'},
+  construcao:{pct:78,label:'Alta',cor:'#ff4757',desc:'Peso e volume encarecem frete longo'},
+  saude:{pct:50,label:'Média',cor:'#f5a623',desc:'Regulação exige fornecedor habilitado'},
+  dropshipping:{pct:0,label:'Zero',cor:'#2ed573',desc:'100% sem barreira — fornecedor entrega direto'},
+  infoproduto:{pct:0,label:'Zero',cor:'#2ed573',desc:'Produto digital — sem logística física'}
+};
+
+var AREAS_EXTRA={
+  dropshipping:{label:'Dropshipping',emoji:'📦',
+    cnaes:['4789099'],ticketMedio:85,penetracao:0.14,concorrentes:420,
+    nichos:[
+      {nome:'Dropshipping de nicho',score:88,cnae:'4789-0',retorno:'2–4 meses',desc:'Sem estoque. Fornecedor nacional ou importado entrega direto. Alta escalabilidade.',tags:['Sem estoque','Escalável','Digital']},
+      {nome:'Print on demand',score:80,cnae:'4789-0',retorno:'3 meses',desc:'Camisetas, canecas e produtos personalizados sob demanda. Integração com Shopify.',tags:['POD','Criativo','0 estoque']},
+      {nome:'Importados via Alibaba',score:72,cnae:'4789-0',retorno:'4–6 meses',desc:'Produtos exclusivos do exterior com margem alta. Exige gestão de câmbio e importação.',tags:['Importado','Margem alta']}
+    ],
+    riscos:[
+      {icon:'🚚',nome:'Dependência do fornecedor',desc:'Prazo e qualidade fora do seu controle',nivel:'rl-high',label:'Alto'},
+      {icon:'💱',nome:'Variação cambial',desc:'Para produtos importados',nivel:'rl-med',label:'Médio'},
+      {icon:'📦',nome:'Gestão de devoluções',desc:'Política do Código do Consumidor',nivel:'rl-med',label:'Médio'},
+      {icon:'📋',nome:'CNPJ MEI/ME',desc:'Exigido para emitir nota fiscal',nivel:'rl-low',label:'Baixo'}
+    ]
+  },
+  infoproduto:{label:'Infoprodutos',emoji:'🎓',
+    cnaes:['8599699'],ticketMedio:320,penetracao:0.09,concorrentes:280,
+    nichos:[
+      {nome:'Curso online / EAD',score:91,cnae:'8599-6',retorno:'1–3 meses',desc:'Alta margem, sem estoque, distribuição digital. Plataformas como Hotmart e Eduzz.',tags:['Alta margem','Recorrente','Escala']},
+      {nome:'Mentoria e consultoria',score:85,cnae:'8599-6',retorno:'Imediato',desc:'Sem plataforma, sem estoque. Ticket alto e relacionamento direto com cliente.',tags:['Alto ticket','Sem infra']},
+      {nome:'Assinatura / membership',score:78,cnae:'8599-6',retorno:'Recorrente',desc:'MRR previsível. Comunidade ou conteúdo exclusivo por assinatura mensal.',tags:['MRR','Comunidade']}
+    ],
+    riscos:[
+      {icon:'©️',nome:'Propriedade intelectual',desc:'Plágio e proteção do conteúdo',nivel:'rl-med',label:'Médio'},
+      {icon:'🔒',nome:'LGPD',desc:'Dados dos alunos e leads',nivel:'rl-med',label:'Médio'},
+      {icon:'💳',nome:'Gateway de pagamento',desc:'Taxas e chargebacks',nivel:'rl-low',label:'Baixo'},
+      {icon:'📋',nome:'Declaração ao CARF',desc:'Receita de plataformas digitais',nivel:'rl-low',label:'Baixo'}
+    ]
+  }
+};
+
+var FORN_DIGITAIS={
+  moda:[
+    {nome:'Brás Online',desc:'Representantes do polo do Brás com venda online. Pedido mínimo a partir de R$ 300.',site:'https://brasonline.com.br',tags:['Atacado','MEI aceito','Frete nacional'],alcance:'nacional'},
+    {nome:'Moda Center Santa Cruz',desc:'Polo de Caruaru/PE com e-commerce. Forte em moda nordestina e fitness.',site:'https://modacenter.com.br',tags:['Nordeste','Atacado'],alcance:'nacional'},
+    {nome:'Ropas Atacado',desc:'Plataforma B2B de confecções com catálogo digital e entrega em todo Brasil.',site:'https://ropas.com.br',tags:['B2B','Digital','Variedade'],alcance:'nacional'},
+    {nome:'Alibaba Brasil',desc:'Importação direta de moda asiática. Pedido mínimo variável por fornecedor.',site:'https://alibaba.com',tags:['Importado','Alta margem'],alcance:'global'}
+  ],
+  tecnologia:[
+    {nome:'Mercado Livre / MLB',desc:'Revenda de eletrônicos usados e novos. MercadoEnvios integrado.',site:'https://mercadolivre.com.br',tags:['Marketplace','Nacional','MEI aceito'],alcance:'nacional'},
+    {nome:'Magalu Parceiros',desc:'Programa de revenda de produtos Magazine Luiza com dropshipping.',site:'https://parceiros.magazineluiza.com.br',tags:['Dropshipping','Confiável'],alcance:'nacional'},
+    {nome:'Santa Ifigênia Online',desc:'Representantes do polo eletrônico de SP com vendas nacionais.',site:'https://santaifigenia.com.br',tags:['Eletrônicos','Atacado'],alcance:'nacional'},
+    {nome:'Ali Express Brasil',desc:'Produtos eletrônicos importados com entrega direta ao cliente final.',site:'https://aliexpress.com',tags:['Importado','Dropshipping'],alcance:'global'}
+  ],
+  beleza:[
+    {nome:'Natura Distribuidores',desc:'Rede oficial de distribuidores Natura com pedido mínimo acessível.',site:'https://natura.com.br',tags:['Marca forte','MEI aceito','Nacional'],alcance:'nacional'},
+    {nome:'Beauty Buy',desc:'Atacado de cosméticos e produtos de beleza com entrega nacional.',site:'https://beautybuy.com.br',tags:['Atacado','Variedade'],alcance:'nacional'},
+    {nome:'TotalBeleza',desc:'Distribuidora nacional de insumos para estética e salões.',site:'https://totalbeleza.com.br',tags:['B2B','Profissional'],alcance:'nacional'},
+    {nome:'Shopee Brasil Fornecedores',desc:'Marketplace com fornecedores de cosméticos e produtos capilares.',site:'https://shopee.com.br',tags:['Marketplace','Competitivo'],alcance:'nacional'}
+  ],
+  dropshipping:[
+    {nome:'Dropi',desc:'Plataforma de dropshipping nacional com +10mil produtos e integração Shopify/WooCommerce.',site:'https://dropi.com.br',tags:['Nacional','API','Integração'],alcance:'nacional'},
+    {nome:'Importações Americanas',desc:'Dropshipping de importados com estoque no Brasil. Entrega em 3–7 dias.',site:'https://importacoesamericanas.com.br',tags:['Importado','Rápido'],alcance:'nacional'},
+    {nome:'Oberlo / DSers',desc:'Integração com Alibaba para dropshipping global. Requer loja Shopify.',site:'https://dsers.com',tags:['Global','Shopify'],alcance:'global'},
+    {nome:'Shein Parceiros',desc:'Programa de revenda Shein com produtos de moda a preço de atacado.',site:'https://shein.com.br',tags:['Moda','Alta margem'],alcance:'global'}
+  ],
+  infoproduto:[
+    {nome:'Hotmart',desc:'Principal plataforma de infoprodutos do Brasil. Coproduções e afiliados.',site:'https://hotmart.com',tags:['Lider','Afiliados','Grátis p/ começar'],alcance:'nacional'},
+    {nome:'Eduzz',desc:'Plataforma para cursos, e-books e mentorias com gateway integrado.',site:'https://eduzz.com',tags:['Completa','B2B disponível'],alcance:'nacional'},
+    {nome:'Monetizze',desc:'Especialista em assinaturas recorrentes e programas de membros.',site:'https://monetizze.com.br',tags:['Recorrência','MRR'],alcance:'nacional'},
+    {nome:'Teachable / Kajabi',desc:'Plataformas internacionais para cursos com domínio próprio e comunidade.',site:'https://teachable.com',tags:['Internacional','Premium'],alcance:'global'}
+  ],
+  alimentacao:[
+    {nome:'Frubana Brasil',desc:'Distribuidora digital de hortifruti e insumos para restaurantes. Entrega D+1.',site:'https://frubana.com',tags:['Perecíveis','D+1','App'],alcance:'regional'},
+    {nome:'Atacadão Online',desc:'Compras no atacado pelo app com retirada em loja ou entrega.',site:'https://atacadao.com.br',tags:['Atacado','App','Nacional'],alcance:'nacional'},
+    {nome:'iFood para Restaurantes',desc:'Insumos e embalagens via plataforma iFood para parceiros.',site:'https://restaurantes.ifood.com.br',tags:['Parceiro iFood','Insumos'],alcance:'nacional'}
+  ],
+  construcao:[
+    {nome:'Leroy Merlin Online',desc:'Materiais de construção e acabamento com entrega nacional.',site:'https://leroymerlin.com.br',tags:['Variedade','Nacional','B2C'],alcance:'nacional'},
+    {nome:'C&C Online',desc:'Atacado de materiais de construção com programa para revendedores.',site:'https://cc.com.br',tags:['Atacado','Revendedor'],alcance:'nacional'},
+    {nome:'MadeiraMadeira',desc:'Marketplace de acabamentos, pisos e revestimentos com entrega nacional.',site:'https://madeiramadeira.com.br',tags:['Acabamentos','Marketplace'],alcance:'nacional'}
+  ],
+  saude:[
+    {nome:'Vimer Distribuidora',desc:'Distribuidora de suplementos e produtos naturais com atacado nacional.',site:'https://vimer.com.br',tags:['Suplementos','Atacado'],alcance:'nacional'},
+    {nome:'Ultrafarma Atacado',desc:'Medicamentos e dermocosméticos com compra atacado para revendedores.',site:'https://ultrafarma.com.br',tags:['Dermocosméticos','Nacional'],alcance:'nacional'},
+    {nome:'Shopee Saúde',desc:'Equipamentos estéticos e produtos de bem-estar com fornecedores nacionais.',site:'https://shopee.com.br',tags:['Equipamentos','Variado'],alcance:'nacional'}
+  ]
+};
+
+/* ══ V4 PREVIEW: POLOS COMERCIAIS ══ */
+var POLOS=[
+  {nome:'Brás + Bom Retiro',cidade:'São Paulo – SP',emoji:'👗',especialidades:['Moda feminina','Moda masculina','Calçados','Acessórios'],ticketMin:'R$ 200',aceitaMei:true,online:true,areas:['moda','beleza','dropshipping'],desc:'Maior polo de moda do Brasil. +15 mil estabelecimentos em ~2km². Representantes vendem online com envio nacional.',dicas:'Visite na madrugada (4h–9h) para melhor atendimento. Terças e quintas têm maior variedade.'},
+  {nome:'25 de Março',cidade:'São Paulo – SP',emoji:'🛍️',especialidades:['Variedades','Importados','Embalagens','Brindes','Decoração'],ticketMin:'R$ 150',aceitaMei:true,online:true,areas:['moda','dropshipping','tecnologia','alimentacao','saude','beleza'],desc:'Polo de variedades e importados mais famoso do Brasil. Ideal para quem busca mix amplo com preço de atacado.',dicas:'Chegue cedo — movimento intenso após as 10h. Negocie à vista para descontos de 10–20%.'},
+  {nome:'Santa Ifigênia',cidade:'São Paulo – SP',emoji:'💻',especialidades:['Eletrônicos','Informática','Celulares','Componentes','Games'],ticketMin:'R$ 300',aceitaMei:true,online:true,areas:['tecnologia','dropshipping'],desc:'Centro eletrônico referência nacional. Distribuidores com preço abaixo do varejo e representantes para todo Brasil.',dicas:'Pesquise preços em pelo menos 3 lojas antes de fechar. Exija nota fiscal sempre.'},
+  {nome:'Polo de Caruaru',cidade:'Caruaru – PE',emoji:'👕',especialidades:['Confecções','Moda popular','Uniformes'],ticketMin:'R$ 100',aceitaMei:true,online:false,areas:['moda'],desc:'Maior polo de confecções do Nordeste. Preços muito competitivos e pedido mínimo acessível para MEI.',dicas:'Concentrado na Feira da Sulanca — sábados são o dia principal. Ótimo para iniciantes com pouco capital.'},
+  {nome:'Polo Joalheiro de Limeira',cidade:'Limeira – SP',emoji:'💍',especialidades:['Semijoias','Bijuterias','Folheados'],ticketMin:'R$ 250',aceitaMei:true,online:true,areas:['moda','beleza'],desc:'Capital nacional das semijoias. Mais de 400 fabricantes com venda direta e representantes online.',dicas:'Muitos fabricantes vendem pelo WhatsApp. Busque por "atacado semijoias Limeira" para fornecedores online.'},
+  {nome:'Polo Calçadista de Franca',cidade:'Franca – SP',emoji:'👟',especialidades:['Calçados masculinos','Couro','Acessórios'],ticketMin:'R$ 400',aceitaMei:false,online:true,areas:['moda'],desc:'Capital do calçado masculino brasileiro. Fábricas vendem direto com qualidade premium.',dicas:'Exige CNPJ ativo (não MEI) para a maioria dos fornecedores. Pedido mínimo mais elevado.'},
+  {nome:'Feira da Madrugada',cidade:'São Paulo – SP',emoji:'🌙',especialidades:['Mix geral','Importados','Roupas','Acessórios','Utilidades'],ticketMin:'R$ 100',aceitaMei:true,online:false,areas:['moda','dropshipping','alimentacao','beleza','construcao'],desc:'Maior feira atacadista noturna do Brasil. Funciona das 22h às 6h. Preços muito competitivos.',dicas:'Leve dinheiro e sacolas próprias. Melhor custo-benefício em mix variado para revendedores iniciantes.'},
+  {nome:'Polo de Novo Hamburgo',cidade:'Novo Hamburgo – RS',emoji:'👡',especialidades:['Calçados femininos','Moda gaúcha','Couro'],ticketMin:'R$ 350',aceitaMei:false,online:true,areas:['moda'],desc:'Referência em calçados femininos e couro. Parte dos fabricantes aceita pedidos online com frete nacional.',dicas:'Visite durante a Couromoda (janeiro) para os melhores preços e lançamentos da temporada.'},
+  {nome:'CEAGESP / Ceasa',cidade:'São Paulo – SP (e regionais)',emoji:'🥦',especialidades:['Hortifruti','Cereais','Laticínios','Peixes','Flores'],ticketMin:'R$ 150',aceitaMei:true,online:false,areas:['alimentacao'],desc:'Maior entreposto de abastecimento do Brasil. Funciona nas madrugadas — preços até 60% abaixo do varejo para insumos de restaurantes e marmitarias.',dicas:'Chegue entre 3h e 6h para melhor seleção. Leve caixa térmica para perecíveis. Aceita MEI com nota.'},
+  {nome:'Polo Atacadista de Duque de Caxias',cidade:'Duque de Caxias – RJ',emoji:'🏭',especialidades:['Químicos','Cosméticos','Higiene','Limpeza'],ticketMin:'R$ 300',aceitaMei:true,online:true,areas:['beleza','saude','alimentacao'],desc:'Polo industrial com distribuidoras de cosméticos, higiene e produtos de limpeza. Muitos fornecedores com venda online e representantes nacionais.',dicas:'Ótimo para quem busca cosméticos e insumos de beleza com preço de fábrica.'},
+  {nome:'Polo de Materiais de Construção — Região do ABC',cidade:'São Paulo – SP',emoji:'🧱',especialidades:['Cimento','Ferro','Tintas','Cerâmicas','Hidráulica'],ticketMin:'R$ 500',aceitaMei:false,online:true,areas:['construcao'],desc:'Concentração de distribuidoras e importadoras de materiais de construção no ABC Paulista. Representantes com cobertura nacional.',dicas:'Exige CNPJ ativo (ME ou acima). Negocie prazo de pagamento — 28/56 dias é padrão.'},
+  {nome:'Distrito das Farmácias — Rua Barão de Itapetininga',cidade:'São Paulo – SP',emoji:'💊',especialidades:['Medicamentos','Insumos farmacêuticos','Dermocosméticos','Equipamentos médicos'],ticketMin:'R$ 400',aceitaMei:false,online:true,areas:['saude'],desc:'Polo de distribuidoras de insumos farmacêuticos e produtos de saúde em SP. Exige CRF e CNPJ regularizado.',dicas:'Obrigatório ter responsável técnico (farmacêutico) para compra de insumos controlados.'}
+];
+
+var NOMES_EXTRA={
+  dropshipping:['Dropi Logística Ltda','Fulfillment Brasil ME','Estoque Digital Eireli','NovaDrop Distribuidora','DS Commerce Ltda','Envio Fácil ME'],
+  infoproduto:['EduTech Brasil Ltda','Conhecimento Digital ME','Plataforma Saber Eireli','InfoLearn Brasil','Digital Master ME','Conteúdo PRO Ltda']
+};
+
+/* ══ V3 STATE ══ */
+var S_MODO='local';
+
+function selModo(btn,modo){
+  document.querySelectorAll('.modo-btn').forEach(function(b){b.classList.remove('selected')});
+  btn.classList.add('selected');
+  S_MODO=modo;
+  S.modo=modo;
+}
+
+function irParaLocalizacao(){
+  var isDigital=(S_MODO==='digital'||S.area==='infoproduto'||S.area==='dropshipping');
+  var s4title=document.getElementById('s4-title');
+  var s4sub=document.getElementById('s4-sub');
+  var cepBlock=document.getElementById('s4-cep-block');
+  var digBlock=document.getElementById('s4-digital-block');
+  var btnBuscar=document.getElementById('btn-buscar');
+  if(isDigital){
+    s4title.textContent='Sua região de referência';
+    s4sub.textContent='No modo digital não há barreira territorial. O CEP serve apenas para calcular o mercado local.';
+    cepBlock.style.display='none';
+    digBlock.style.display='block';
+    btnBuscar.disabled=false;
+  } else {
+    s4title.textContent='Localização e raio';
+    s4sub.textContent='Digite seu CEP para posicionar o mapa e calcular o mercado na sua região.';
+    cepBlock.style.display='block';
+    digBlock.style.display='none';
+    btnBuscar.disabled=true;
+  }
+  go('s4');
+}
+
+function fmtCepDig(inp){
+  var v=inp.value.replace(/\D/g,'');
+  if(v.length>5) v=v.slice(0,5)+'-'+v.slice(5,8);
+  inp.value=v;
+  if(v.replace('-','').length===8) buscarCepDig();
+}
+
+async function buscarCepDig(){
+  var raw=document.getElementById('cep-input-dig').value.replace(/\D/g,'');
+  if(raw.length<8) return;
+  var el=document.getElementById('cep-result-dig');
+  var txt=document.getElementById('cep-txt-dig');
+  var icon=document.getElementById('cep-icon-dig');
+  el.style.display='flex'; el.className='ibox';
+  icon.textContent=''; txt.innerHTML='<span class="spin"></span>&nbsp;Buscando...';
+  try{
+    var r=await fetch('https://brasilapi.com.br/api/cep/v2/'+raw);
+    if(!r.ok) throw new Error('CEP não encontrado');
+    var d=await r.json();
+    S.cep=raw; S.cidade=d.city||''; S.uf=d.state||'';
+    if(d.location&&d.location.coordinates&&d.location.coordinates.latitude){
+      S.lat=parseFloat(d.location.coordinates.latitude);
+      S.lng=parseFloat(d.location.coordinates.longitude);
+    }
+    var cidLower=(S.cidade||'').toLowerCase();
+    S.popEstimada=IBGE_POP[cidLower]||estimarPop(S.cidade);
+    el.className='ibox ok'; icon.textContent='📍';
+    txt.textContent=(d.street?d.street+', ':'')+d.city+' – '+d.state;
+  } catch(e){
+    el.className='ibox err'; icon.textContent='⚠️';
+    txt.textContent='CEP não encontrado.';
+  }
+}
+
+/* ══ V3: RENDER DIGITAL ══ */
+function renderDigital(area){
+  var el=document.getElementById('tab-digital');
+  var fornDig=FORN_DIGITAIS[S.area]||[];
+  var barreira=BARREIRA[S.area]||{pct:50,label:'Média',cor:'#f5a623',desc:''};
+  var isDigital=(S_MODO==='digital'||S.area==='dropshipping'||S.area==='infoproduto');
+  var html='';
+  html+='<div class="v2-section-title">Índice de barreira territorial</div>';
+  html+='<div class="market-box" style="margin-bottom:1rem">';
+  html+='<div class="market-row"><span class="market-k">Barreira territorial</span><span class="market-v" style="color:'+barreira.cor+'">'+barreira.label+' ('+barreira.pct+'%)</span></div>';
+  html+='<div class="market-row"><span class="market-k" style="width:100%">'+barreira.desc+'</span></div>';
+  html+='<div class="barreira-wrap">';
+  html+='<div class="barreira-label"><span>Sem barreira</span><span>Hiperlocal</span></div>';
+  html+='<div class="barreira-bar"><div class="barreira-fill" style="width:'+barreira.pct+'%;background:'+barreira.cor+'"></div></div>';
+  html+='</div></div>';
+  if(isDigital){
+    html+='<div class="digital-notice">🌐 Modo digital ativo — os fornecedores abaixo operam sem restrição geográfica e entregam em todo o Brasil.</div>';
+  }
+  if(fornDig.length){
+    html+='<div class="v2-section-title">Fornecedores nacionais / digitais</div>';
+    fornDig.forEach(function(f){
+      var alcancePill=f.alcance==='global'?'<span class="bdg bp">🌍 Global</span>':f.alcance==='regional'?'<span class="bdg ba">🗺 Regional</span>':'<span class="bdg bt">🇧🇷 Nacional</span>';
+      html+='<div class="forn-digital-card">';
+      html+='<div class="forn-digital-top"><span class="forn-digital-name">'+f.nome+'</span>'+alcancePill+'</div>';
+      html+='<div class="forn-digital-meta">'+f.desc+'</div>';
+      html+='<div class="forn-digital-tags">';
+      f.tags.forEach(function(t){html+='<span class="bdg bgr">'+t+'</span>'});
+      html+='</div>';
+      html+='<a class="forn-link-btn" href="'+f.site+'" target="_blank" rel="noopener">Acessar site ↗</a>';
+      html+='</div>';
+    });
+  } else {
+    html+='<div class="ibox warn" style="margin-top:.5rem">Sem fornecedores digitais mapeados para esta área ainda. Em breve.</div>';
+  }
+  el.innerHTML=html;
+}
+
+/* ══ V4 PREVIEW: RENDER POLOS ══ */
+function renderPolos(area){
+  var el=document.getElementById('tab-polos');
+  var polosArea=POLOS.filter(function(p){return p.areas.indexOf(S.area)>=0});
+  var html='<div class="ibox warn" style="margin-bottom:1rem">⚡ Prévia do V4 — Polos Comerciais. Em breve com perfis completos, rotas e integração no mapa.</div>';
+  if(!polosArea.length){
+    html+='<div class="empty-hist"><span class="eicon">🏬</span><p>Nenhum polo mapeado para esta área ainda.<br>Em breve: todos os polos do Brasil por nicho.</p></div>';
+  } else {
+    html+='<div class="v2-section-title">Polos relevantes para '+area.label+' <span class="v4-tag">V4</span></div>';
+    polosArea.forEach(function(p){
+      html+='<div class="polo-preview-card">';
+      html+='<div class="polo-header">';
+      html+='<div><div class="polo-nome">'+p.emoji+' '+p.nome+'</div><div class="polo-loc">📍 '+p.cidade+'</div></div>';
+      html+='<div style="text-align:right">';
+      html+=(p.aceitaMei?'<span class="bdg bt" style="display:block;margin-bottom:3px">MEI ✓</span>':'<span class="bdg br" style="display:block;margin-bottom:3px">CNPJ req.</span>');
+      html+=(p.online?'<span class="bdg bb">Online</span>':'<span class="bdg bgr">Presencial</span>');
+      html+='</div></div>';
+      html+='<div class="polo-desc">'+p.desc+'</div>';
+      html+='<div class="polo-stats">';
+      html+='<span class="polo-stat">💰 Pedido mín. <strong>'+p.ticketMin+'</strong></span>';
+      p.especialidades.slice(0,3).forEach(function(e){html+='<span class="polo-stat">· '+e+'</span>'});
+      html+='</div>';
+      html+='<div style="margin-top:8px;font-size:11px;color:var(--text3)">💡 '+p.dicas+'</div>';
+      html+='</div>';
+    });
+    var outrosPolos=POLOS.filter(function(p){return p.areas.indexOf(S.area)<0}).slice(0,2);
+    if(outrosPolos.length){
+      html+='<div class="v2-section-title" style="margin-top:1.25rem">Outros polos relevantes no Brasil</div>';
+      outrosPolos.forEach(function(p){
+        html+='<div class="polo-preview-card" style="opacity:.7">';
+        html+='<div class="polo-header"><div><div class="polo-nome">'+p.emoji+' '+p.nome+'</div><div class="polo-loc">📍 '+p.cidade+' · '+p.especialidades[0]+'</div></div></div>';
+        html+='</div>';
+      });
+    }
+  }
+  el.innerHTML=html;
+}
+
+/* ══ V3: NOMES EXTRAS ══ */
   alimentacao:['Distribuidora Central Alimentos Ltda','Atacadão Norte Comércio ME','Frigorífico Regional Nordeste Eireli','Insumos Culinários Brasil ME','Central do Sabor Distribuidora','Abastece Fácil Ltda','Grãos & Cia Atacado ME','Frigorífico Nordeste ME','Distribuidora Alimentos Boa Vista Ltda','Temperos Brasil Distribuidora Ltda','Asa Branca Alimentos ME','Distribuidora São Francisco Eireli'],
   moda:['Confecções do Nordeste Ltda','Atacado Moda Brasil ME','Fashion Distribuidora Eireli','Tecidos & Aviamentos Ltda','Roupa Fácil Atacado','Moda Regional Distribuidora ME','Confecção Sol Nascente ME','Têxtil Norte Ltda'],
   tecnologia:['Tech Distribuidora Ltda','Eletrônicos do Brasil ME','Insumos TI Nordeste Eireli','Computadores & Cia Ltda','Digital Store Atacado ME','InfoParts Distribuidora Ltda'],
@@ -647,11 +1054,176 @@ var NOMES={
 };
 var PORTES=['MEI','ME','ME','EPP','Ltda','Ltda'];
 
+/* ══ USUÁRIO & HISTÓRICO ══ */
+var USER={nome:'',historico:[]};
+var STORAGE_KEY='fornecedorbr_user';
+
+function carregarUsuario(){
+  try{
+    var raw=localStorage.getItem(STORAGE_KEY);
+    if(raw){
+      USER=JSON.parse(raw);
+      if(!USER.historico) USER.historico=[];
+      atualizarHeaderUsuario();
+      if(USER.nome) mostrarGreeting();
+    } else {
+      setTimeout(function(){
+        document.getElementById('modal-welcome').style.display='flex';
+        setTimeout(function(){document.getElementById('modal-name-input').focus()},100);
+      },600);
+    }
+  }catch(e){USER={nome:'',historico:[]};}
+}
+
+function salvarStorage(){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(USER));}catch(e){}
+}
+
+function salvarNome(){
+  var nome=document.getElementById('modal-name-input').value.trim();
+  if(!nome) return;
+  USER.nome=nome;
+  salvarStorage();
+  document.getElementById('modal-welcome').style.display='none';
+  atualizarHeaderUsuario();
+  mostrarGreeting();
+}
+
+function pularCadastro(){
+  document.getElementById('modal-welcome').style.display='none';
+}
+
+function atualizarHeaderUsuario(){
+  if(!USER.nome) return;
+  document.getElementById('hbadge-default').style.display='none';
+  var hu=document.getElementById('header-user');
+  hu.style.display='flex';
+  var iniciais=USER.nome.split(' ').slice(0,2).map(function(p){return p[0]}).join('').toUpperCase();
+  document.getElementById('user-avatar').textContent=iniciais;
+  document.getElementById('user-name-hdr').textContent=USER.nome.split(' ')[0];
+  var qtd=USER.historico.length;
+  document.getElementById('hist-count-badge').textContent=qtd+' pesquisa'+(qtd!==1?'s':'');
+}
+
+function mostrarGreeting(){
+  if(!USER.nome) return;
+  var bar=document.getElementById('greeting-bar');
+  bar.style.display='flex';
+  document.getElementById('greeting-name').textContent=USER.nome.split(' ')[0];
+}
+
+function salvarPesquisa(area,mercado,sat){
+  if(!USER.nome) return;
+  var pesquisa={
+    id:Date.now(),
+    ts:new Date().toISOString(),
+    area:S.area,
+    modo:S.modo||S_MODO,
+    areaLabel:((AREAS[S.area]||AREAS_EXTRA[S.area])||AREAS.alimentacao).label,
+    cidade:S.cidade,
+    uf:S.uf,
+    raio:S.raio,
+    cep:S.cep,
+    lat:S.lat,
+    lng:S.lng,
+    popEstimada:S.popEstimada,
+    perfil:S.perfil,
+    capital:S.capital,
+    totalFornecedores:fornecedores.length,
+    mercadoTotal:mercado.total,
+    mercadoMktShare:mercado.mktShare,
+    saturacaoIndice:sat.indice,
+    avgScore:Math.round(fornecedores.reduce(function(a,f){return a+f.score},0)/fornecedores.length)
+  };
+  USER.historico.unshift(pesquisa);
+  if(USER.historico.length>20) USER.historico=USER.historico.slice(0,20);
+  salvarStorage();
+  atualizarHeaderUsuario();
+}
+
+function renderHistorico(){
+  var el=document.getElementById('hist-list');
+  var sub=document.getElementById('hist-sub');
+  if(!USER.historico.length){
+    el.innerHTML='<div class="empty-hist"><span class="eicon">🔍</span><p>Nenhuma pesquisa salva ainda.<br>Faça sua primeira análise para ver o histórico aqui.</p></div>';
+    sub.textContent='Nenhuma pesquisa salva ainda.';
+    return;
+  }
+  sub.textContent=USER.historico.length+' pesquisa'+(USER.historico.length!==1?'s':'')+' salva'+(USER.historico.length!==1?'s':'')+'. Clique para recarregar.';
+  var html='';
+  USER.historico.forEach(function(p,i){
+    var dt=new Date(p.ts);
+    var dtStr=dt.toLocaleDateString('pt-BR')+' '+dt.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+    var areaEmoji={alimentacao:'🍽️',moda:'👗',tecnologia:'💻',beleza:'✨',construcao:'🏗️',saude:'🏥'}[p.area]||'📊';
+    var satCor=p.saturacaoIndice>70?'var(--red)':p.saturacaoIndice>40?'var(--amber)':'var(--green)';
+    html+='<div class="hist-card" onclick="recarregarPesquisa('+i+')">';
+    html+='<button class="hist-del" onclick="event.stopPropagation();deletarPesquisa('+i+')" title="Remover">✕</button>';
+    html+='<div class="hist-top">';
+    html+='<div class="hist-title">'+areaEmoji+' '+p.areaLabel+' · '+p.cidade+' – '+p.uf+'</div>';
+    html+='<div class="hist-date">'+dtStr+'</div>';
+    html+='</div>';
+    html+='<div class="hist-meta">CEP '+p.cep.replace(/(\d{5})(\d{3})/,'$1-$2')+' · Raio '+p.raio+'km · Perfil: '+(p.perfil||'—')+'</div>';
+    html+='<div class="hist-stats">';
+    html+='<span class="hist-stat">🏢 <strong>'+p.totalFornecedores+'</strong> fornecedores</span>';
+    html+='<span class="hist-stat">💰 <strong>R$ '+fmtK(p.mercadoTotal)+'</strong>/mês</span>';
+    html+='<span class="hist-stat">🛡 Score <strong>'+p.avgScore+'</strong>/100</span>';
+    html+='<span class="hist-stat">Saturação: <strong style="color:'+satCor+'">'+p.saturacaoIndice+'%</strong></span>';
+    html+='</div>';
+    html+='</div>';
+  });
+  el.innerHTML=html;
+}
+
+function recarregarPesquisa(i){
+  var p=USER.historico[i];
+  S.area=p.area; S.cidade=p.cidade; S.uf=p.uf;
+  S.raio=p.raio; S.cep=p.cep; S.lat=p.lat; S.lng=p.lng;
+  S.popEstimada=p.popEstimada; S.perfil=p.perfil; S.capital=p.capital;
+  if(mapObj){mapObj.remove();mapObj=null;circleObj=null;pinLayer=null;heatLayer=null;}
+  go('s-loading');
+  animLoading().then(function(){
+    var area=AREAS[S.area]||AREAS_EXTRA[S.area]||AREAS.alimentacao;
+    fornecedores=gerarFornecedores(area);
+    calcScores();
+    var mercado=calcMercado(area);
+    document.getElementById('st-forn').textContent=fornecedores.length;
+    document.getElementById('st-raio').textContent=isDigital?'Nacional':S.raio+'km';
+    document.getElementById('st-mercado').textContent='R$'+fmtK(mercado.total);
+    document.getElementById('res-title').textContent='Análise — '+area.label;
+    document.getElementById('res-sub').textContent=fornecedores.length+' fornecedores mapeados · '+S.cidade+' – '+S.uf+' · Raio '+S.raio+'km · Pop. ~'+fmtNum(S.popEstimada)+' hab.';
+    document.getElementById('raio-map').value=S.raio;
+    document.getElementById('rv-map').textContent=S.raio+'km';
+    renderNichos(area);
+    renderInteligencia(area,mercado);
+    renderFornecedores(area);
+    setTab('nichos',document.querySelectorAll('.tab-btn')[0]);
+    go('s-result');
+  });
+}
+
+function deletarPesquisa(i){
+  USER.historico.splice(i,1);
+  salvarStorage();
+  atualizarHeaderUsuario();
+  renderHistorico();
+}
+
+function limparHistorico(){
+  if(!confirm('Apagar todas as pesquisas?')) return;
+  USER.historico=[];
+  salvarStorage();
+  atualizarHeaderUsuario();
+  renderHistorico();
+}
+
+document.addEventListener('DOMContentLoaded',carregarUsuario);
+
 /* ══ NAV ══ */
 function go(id){
   document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});
   document.getElementById(id).classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
+  if(id==='s-hist') renderHistorico();
 }
 function sel(btn,key,val){
   btn.parentElement.querySelectorAll('.opt-btn').forEach(function(b){b.classList.remove('selected')});
@@ -703,14 +1275,19 @@ function estimarPop(cidade){
 
 /* ══ BUSCA PRINCIPAL ══ */
 async function iniciarBusca(){
-  S.raio=parseInt(document.getElementById('raio-in').value);
+  var isDigital=(S_MODO==='digital'||S.area==='infoproduto'||S.area==='dropshipping');
+  S.raio=isDigital?999:parseInt(document.getElementById('raio-in').value);
+  if(!S.cidade&&isDigital){S.cidade='Brasil';S.uf='BR';}
   S.area=S.area||'alimentacao';
+  if(mapObj){mapObj.remove();mapObj=null;circleObj=null;pinLayer=null;heatLayer=null;}
   go('s-loading');
   await animLoading();
-  var area=AREAS[S.area];
+  var area=AREAS[S.area]||AREAS_EXTRA[S.area]||AREAS.alimentacao;
   fornecedores=gerarFornecedores(area);
   calcScores();
   var mercado=calcMercado(area);
+  var sat=calcSaturacao(area);
+  salvarPesquisa(area,mercado,sat);
   document.getElementById('st-forn').textContent=fornecedores.length;
   document.getElementById('st-raio').textContent=S.raio+'km';
   document.getElementById('st-mercado').textContent='R$'+fmtK(mercado.total);
@@ -728,7 +1305,7 @@ async function iniciarBusca(){
 async function animLoading(){
   var steps=[
     {id:'ls0',txt:'✓ CEP localizado: '+S.cidade+' – '+S.uf,prog:16},
-    {id:'ls1',txt:'✓ CNAEs mapeados para '+(AREAS[S.area]||AREAS.alimentacao).label,prog:33},
+    {id:'ls1',txt:'✓ CNAEs mapeados para '+((AREAS[S.area]||AREAS_EXTRA[S.area])||AREAS.alimentacao).label,prog:33},
     {id:'ls2',txt:'✓ Score de confiabilidade calculado',prog:50},
     {id:'ls3',txt:'✓ Saturação do nicho analisada',prog:66},
     {id:'ls4',txt:'✓ Mercado endereçável estimado',prog:83},
@@ -748,7 +1325,7 @@ function delay(ms){return new Promise(function(r){setTimeout(r,ms);})}
 
 /* ══ GERAR FORNECEDORES ══ */
 function gerarFornecedores(area){
-  var nomes=NOMES[S.area]||NOMES.alimentacao;
+  var nomes=(NOMES[S.area]||NOMES_EXTRA[S.area])||NOMES.alimentacao;
   var result=[];
   for(var i=0;i<Math.min(nomes.length,12);i++){
     var ang=Math.random()*2*Math.PI;
@@ -774,7 +1351,20 @@ function gerarFornecedores(area){
   result.sort(function(a,b){return a.dist-b.dist});
   return result;
 }
-function gerarCNPJ(){var n=function(){return Math.floor(Math.random()*10)};return n()+''+n()+'.'+n()+''+n()+''+n()+'.'+n()+''+n()+''+n()+'/0001-'+n()+''+n()}
+function gerarCNPJ(){
+  var n=[];
+  for(var i=0;i<8;i++) n.push(Math.floor(Math.random()*9));
+  n.push(0,0,0,1);
+  var calc=function(arr,len){
+    var soma=0,pos=len-7;
+    for(var k=len;k>=1;k--){soma+=arr[len-k]*(pos--);if(pos<2)pos=9;}
+    var r=soma%11;return r<2?0:11-r;
+  };
+  var d1=calc(n,12); n.push(d1);
+  var d2=calc(n,13); n.push(d2);
+  var s=n.join('');
+  return s.slice(0,2)+'.'+s.slice(2,5)+'.'+s.slice(5,8)+'/'+s.slice(8,12)+'-'+s.slice(12,14);
+}
 function gerarData(anosOp){var y=new Date().getFullYear()-anosOp;var m=String(1+Math.floor(Math.random()*12)).padStart(2,'0');var d=String(1+Math.floor(Math.random()*28)).padStart(2,'0');return d+'/'+m+'/'+y}
 
 /* ══ V2: SCORE CONFIABILIDADE ══ */
@@ -1039,17 +1629,23 @@ async function buscarCnpj(){
 function setTab(name,btn){
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
   btn.classList.add('active');
-  ['nichos','inteligencia','fornecedores','cnpj','mapa'].forEach(function(t){
+  ['nichos','inteligencia','fornecedores','digital','polos','cnpj','mapa'].forEach(function(t){
     document.getElementById('tab-'+t).style.display=(t===name)?'block':'none';
   });
   if(name==='mapa') setTimeout(initMap,120);
+  if(name==='digital') renderDigital(AREAS[S.area]||AREAS_EXTRA[S.area]||AREAS.alimentacao);
+  if(name==='polos') renderPolos(AREAS[S.area]||AREAS_EXTRA[S.area]||AREAS.alimentacao);
 }
 
 /* ══ MAPA ══ */
 function initMap(){
-  if(mapObj){mapObj.invalidateSize();return}
+  if(mapObj){
+    mapObj.remove();
+    mapObj=null;circleObj=null;pinLayer=null;heatLayer=null;
+  }
   var c=[S.lat,S.lng];
-  mapObj=L.map('lmap',{scrollWheelZoom:false,zoomControl:true}).setView(c,11);
+  var zoom=S.raio<=30?12:S.raio<=80?11:S.raio<=150?10:9;
+  mapObj=L.map('lmap',{scrollWheelZoom:false,zoomControl:true}).setView(c,zoom);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OSM'}).addTo(mapObj);
   circleObj=L.circle(c,{radius:S.raio*1000,color:'#0099ff',fillColor:'#0099ff',fillOpacity:0.05,weight:1.5}).addTo(mapObj);
   L.circleMarker(c,{radius:12,color:'#185FA5',fillColor:'#0099ff',fillOpacity:1,weight:2.5}).addTo(mapObj)
@@ -1090,7 +1686,14 @@ function toggleLayer(mode,btn){
 function upRadius(v){
   document.getElementById('rv-map').textContent=v+'km';
   S.raio=parseInt(v);
-  if(circleObj) circleObj.setRadius(v*1000);
+  if(circleObj){
+    circleObj.setRadius(S.raio*1000);
+    circleObj.setLatLng([S.lat,S.lng]);
+  }
+  if(mapObj){
+    var zoom=S.raio<=30?12:S.raio<=80?11:S.raio<=150?10:9;
+    mapObj.setView([S.lat,S.lng],zoom);
+  }
 }
 
 /* ══ HELPERS ══ */
