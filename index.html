@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="description" content="Mapeie nichos e fornecedores reais no Brasil por CEP e CNAE. Score de confiabilidade, saturação de mercado e mercado endereçável.">
+<meta name="theme-color" content="#0a0c0f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="FornecedorBR">
+<meta property="og:title" content="FornecedorBR v2 — Inteligência Comercial">
+<meta property="og:description" content="Mapeie fornecedores reais por CEP e CNAE. Score de confiabilidade + mercado endereçável.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a0c0f'/><text y='22' x='4' font-size='20'>🗺️</text></svg>">
+<title>FornecedorBR v2 — Inteligência Comercial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+:root {
+  --bg:#0a0c0f;--bg2:#111418;--bg3:#181c22;--bg4:#1e242c;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--border3:rgba(255,255,255,0.2);
+  --text:#e8eaed;--text2:#8a9099;--text3:#555c66;
+  --accent:#00d4aa;--blue:#0099ff;--amber:#f5a623;--red:#ff4757;--green:#2ed573;--purple:#a855f7;
+  --r:10px;--rl:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,170,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,170,0.025) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0}
+
+/* HEADER */
+header{position:sticky;top:0;z-index:100;background:rgba(10,12,15,0.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:17px;letter-spacing:-.5px}
+.logo span{color:var(--accent)}
+.logo sup{font-size:10px;color:var(--blue);font-weight:600;margin-left:2px;vertical-align:super}
+.hbadge{font-size:11px;background:rgba(0,212,170,0.08);color:var(--accent);border:1px solid rgba(0,212,170,0.18);border-radius:20px;padding:3px 10px;font-weight:500}
+
+main{position:relative;z-index:1;max-width:700px;margin:0 auto;padding:1.5rem 1.25rem 4rem}
+
+/* SCREENS */
+.screen{display:none;animation:fadeIn .22s ease}
+.screen.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* STEP BAR */
+.step-bar{display:flex;gap:5px;margin-bottom:1.75rem;align-items:center}
+.step-dot{flex:1;height:3px;border-radius:2px;background:var(--bg3);transition:background .3s}
+.step-dot.done{background:var(--accent)}.step-dot.active{background:var(--blue)}
+.step-label{font-size:11px;color:var(--text3);white-space:nowrap;font-family:'Syne',sans-serif;font-weight:600}
+
+/* TYPOGRAPHY */
+h2{font-family:'Syne',sans-serif;font-size:21px;font-weight:700;color:var(--text);margin-bottom:5px}
+h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:600;color:var(--text)}
+p.sub{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:1.25rem}
+
+/* OPT GRID */
+.opt-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:1.25rem}
+.opt-btn{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px 12px;cursor:pointer;text-align:left;transition:border-color .15s,background .15s;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.opt-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,212,170,0.05),transparent);opacity:0;transition:opacity .2s}
+.opt-btn:hover{border-color:var(--border2)}.opt-btn:hover::after{opacity:1}
+.opt-btn.selected{border-color:var(--accent);background:rgba(0,212,170,0.05)}.opt-btn.selected::after{opacity:1}
+.opt-icon{font-size:20px;display:block;margin-bottom:7px}
+.opt-label{font-size:13px;font-weight:500;color:var(--text);display:block;font-family:'Syne',sans-serif}
+.opt-desc{font-size:11px;color:var(--text3);display:block;margin-top:2px}
+.opt-cnae{font-size:10px;color:var(--accent);display:block;margin-top:4px;font-family:monospace}
+
+/* BUTTONS */
+.btn-p{width:100%;padding:12px;background:var(--accent);color:#000;border:none;border-radius:var(--r);font-size:14px;font-weight:600;cursor:pointer;font-family:'Syne',sans-serif;transition:opacity .15s,transform .1s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;min-height:44px}
+.btn-p:hover{opacity:.87}.btn-p:active{transform:scale(.98)}.btn-p:disabled{background:var(--bg3);color:var(--text3);cursor:not-allowed}
+.btn-s{width:100%;padding:10px;background:transparent;border:1px solid var(--border2);border-radius:var(--r);font-size:13px;color:var(--text2);cursor:pointer;margin-top:7px;transition:background .15s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;min-height:44px}
+.btn-s:hover{background:var(--bg2)}
+
+/* INPUTS */
+.inp-row{display:flex;gap:8px;margin-bottom:1rem}
+input[type=text]{flex:1;padding:10px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:16px;font-family:'Inter',sans-serif;outline:none;transition:border-color .15s}
+input[type=text]:focus{border-color:var(--accent)}
+input[type=text]::placeholder{color:var(--text3)}
+.btn-search{padding:10px 16px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);color:var(--accent);font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;transition:background .15s;font-family:'Syne',sans-serif}
+.btn-search:hover{background:rgba(0,212,170,0.08)}
+
+/* RANGE */
+.range-row{display:flex;align-items:center;gap:12px;margin-bottom:1rem}
+.range-row label{font-size:13px;color:var(--text2);white-space:nowrap;min-width:88px}
+input[type=range]{flex:1;height:4px;appearance:none;background:var(--bg3);border-radius:2px;border:none;padding:0;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{appearance:none;width:15px;height:15px;border-radius:50%;background:var(--accent);cursor:pointer}
+.range-val{font-size:13px;font-weight:500;color:var(--accent);min-width:48px;text-align:right;font-family:'Syne',sans-serif}
+
+/* INFO BOX */
+.ibox{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:10px 13px;margin-bottom:1rem;font-size:13px;color:var(--text2);display:flex;align-items:center;gap:8px}
+.ibox.ok{border-color:rgba(0,212,170,.3);color:var(--accent)}
+.ibox.err{border-color:rgba(255,71,87,.3);color:var(--red)}
+.ibox.warn{border-color:rgba(245,166,35,.25);color:var(--amber);font-size:12px;line-height:1.55}
+
+/* SPINNER */
+.spin{display:inline-block;width:13px;height:13px;border:2px solid var(--bg3);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* STAT CARDS */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:1.25rem}
+.stat-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:13px 11px;text-align:center}
+.stat-v{font-size:22px;font-weight:700;color:var(--text);font-family:'Syne',sans-serif}
+.stat-l{font-size:11px;color:var(--text3);margin-top:3px}
+
+/* TABS */
+.tab-bar{display:flex;border-bottom:1px solid var(--border);margin-bottom:1.25rem;overflow-x:auto}
+.tab-btn{font-size:12px;padding:9px 14px;cursor:pointer;border:none;background:transparent;color:var(--text3);border-bottom:2px solid transparent;margin-bottom:-1px;font-family:'Syne',sans-serif;font-weight:600;white-space:nowrap;transition:color .15s}
+.tab-btn:hover{color:var(--text2)}.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* NICHE CARDS */
+.ncard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:1rem 1.2rem;margin-bottom:9px;cursor:pointer;transition:border-color .15s}
+.ncard:hover{border-color:var(--border2)}.ncard.best{border-color:rgba(0,212,170,.35);background:rgba(0,212,170,.03)}
+.ntop{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px;gap:8px}
+.nname{font-size:14px;font-weight:600;color:var(--text);font-family:'Syne',sans-serif;flex:1}
+.nscore{font-size:22px;font-weight:800;color:var(--accent);font-family:'Syne',sans-serif}
+.ndesc{font-size:12px;color:var(--text2);margin-bottom:7px;line-height:1.5}
+.ntags{display:flex;gap:5px;flex-wrap:wrap}
+
+/* BADGES */
+.bdg{display:inline-block;font-size:11px;font-weight:500;padding:2px 8px;border-radius:4px}
+.bt{background:rgba(0,212,170,.1);color:#00d4aa}
+.bb{background:rgba(0,153,255,.1);color:#0099ff}
+.ba{background:rgba(245,166,35,.1);color:#f5a623}
+.bp{background:rgba(168,85,247,.1);color:#a855f7}
+.br{background:rgba(255,71,87,.1);color:#ff4757}
+.bg2{background:rgba(46,213,115,.1);color:#2ed573}
+.bgr{background:rgba(255,255,255,.06);color:var(--text2)}
+
+/* SUPPLIER CARDS */
+.scard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:8px;transition:border-color .15s}
+.scard:hover{border-color:var(--border2)}
+.stop{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:4px}
+.sname{font-size:13px;font-weight:500;color:var(--text);flex:1;font-family:'Syne',sans-serif}
+.sloc{font-size:12px;color:var(--text3);margin-bottom:3px}
+.smeta{font-size:11px;color:var(--text3);font-family:monospace}
+.sativa{color:var(--green)}
+
+/* SCORE BADGE inline */
+.score-pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;font-family:'Syne',sans-serif}
+.sp-high{background:rgba(46,213,115,.12);color:#2ed573;border:1px solid rgba(46,213,115,.2)}
+.sp-med{background:rgba(245,166,35,.12);color:#f5a623;border:1px solid rgba(245,166,35,.2)}
+.sp-low{background:rgba(255,71,87,.12);color:#ff4757;border:1px solid rgba(255,71,87,.2)}
+
+/* DETAIL CARD */
+.dcard{background:var(--bg3);border:1px solid rgba(0,212,170,.15);border-radius:var(--r);padding:.9rem 1rem;margin-top:8px;display:none;animation:fadeIn .2s ease}
+.drow{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px}
+.drow:last-child{border-bottom:none}
+.dlabel{color:var(--text3)}.dval{color:var(--text);font-weight:500;text-align:right;max-width:60%}
+
+/* MAP */
+.map-wrap{border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;height:340px;margin-bottom:1rem;position:relative}
+#lmap{width:100%;height:100%}
+.map-legend{position:absolute;bottom:10px;left:10px;background:rgba(10,12,15,.92);border:1px solid var(--border);border-radius:var(--r);padding:8px 11px;font-size:12px;z-index:999;color:var(--text2)}
+.leg-row{display:flex;align-items:center;gap:6px;margin-bottom:3px}.leg-row:last-child{margin-bottom:0}
+.leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* ══════ V2: INTELLIGENCE PANEL ══════ */
+.intel-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:1.25rem}
+.intel-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:1rem;display:flex;flex-direction:column;align-items:center;text-align:center}
+.intel-title{font-size:11px;color:var(--text3);font-family:'Syne',sans-serif;font-weight:600;letter-spacing:.4px;margin-bottom:10px;text-transform:uppercase}
+.gauge-wrap{position:relative;width:80px;height:80px;margin-bottom:8px}
+.gauge-val{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;font-family:'Syne',sans-serif}
+.intel-label{font-size:12px;color:var(--text2);line-height:1.45}
+.intel-label strong{color:var(--text);font-weight:500}
+
+.market-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:1.1rem 1.25rem;margin-bottom:10px}
+.market-title{font-size:12px;color:var(--text3);font-family:'Syne',sans-serif;font-weight:600;letter-spacing:.4px;text-transform:uppercase;margin-bottom:.75rem}
+.market-row{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px}
+.market-row:last-child{border-bottom:none}
+.market-k{color:var(--text2)}.market-v{font-weight:500;color:var(--text);font-family:'Syne',sans-serif}
+.market-v.accent{color:var(--accent)}.market-v.warn{color:var(--amber)}.market-v.danger{color:var(--red)}
+
+.sat-bar-wrap{margin-top:.5rem}
+.sat-bar-label{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:4px}
+.sat-bar{height:6px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.sat-fill{height:100%;border-radius:3px;transition:width .6s ease}
+
+.score-breakdown{margin-top:1rem}
+.sbrow{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px}
+.sbrow:last-child{border-bottom:none}
+.sbicon{width:20px;text-align:center;flex-shrink:0;font-size:14px}
+.sbname{flex:1;color:var(--text2)}.sbval{font-weight:600;font-family:'Syne',sans-serif}
+.sbbar{flex:1;height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;max-width:80px}
+.sbfill{height:100%;border-radius:2px}
+
+.v2-section-title{font-size:12px;color:var(--text3);font-family:'Syne',sans-serif;font-weight:600;letter-spacing:.5px;text-transform:uppercase;margin-bottom:.75rem;margin-top:1.25rem}
+
+/* RISK BADGES */
+.risk-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem}
+.risk-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;display:flex;align-items:flex-start;gap:8px}
+.risk-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.risk-name{font-size:12px;font-weight:500;color:var(--text);font-family:'Syne',sans-serif}
+.risk-desc{font-size:11px;color:var(--text3);margin-top:2px}
+.risk-level{font-size:10px;font-weight:600;margin-top:4px}
+.rl-low{color:var(--green)}.rl-med{color:var(--amber)}.rl-high{color:var(--red)}
+
+/* HEATMAP LAYER */
+.heatmap-toggle{display:flex;align-items:center;gap:8px;margin-bottom:.75rem}
+.toggle-btn{padding:5px 12px;border:1px solid var(--border2);border-radius:6px;background:transparent;color:var(--text2);font-size:12px;cursor:pointer;font-family:'Syne',sans-serif;transition:all .15s}
+.toggle-btn.on{background:rgba(0,212,170,.1);border-color:rgba(0,212,170,.3);color:var(--accent)}
+
+/* LOADING */
+.progress-bar{height:3px;background:var(--bg3);border-radius:2px;margin-bottom:1.25rem;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--blue));border-radius:2px;transition:width .4s ease}
+.loading-step{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--text3)}
+.loading-step.done{color:var(--accent)}.loading-step.active{color:var(--text)}
+.step-icon{width:18px;text-align:center;flex-shrink:0}
+
+/* FOOTER */
+footer{position:relative;z-index:1;text-align:center;padding:1.25rem;font-size:11px;color:var(--text3);border-top:1px solid var(--border)}
+footer span{color:var(--text2)}
+
+/* BACK */
+.back-link{font-size:12px;color:var(--text3);cursor:pointer;display:inline-flex;align-items:center;gap:4px;margin-bottom:1rem;transition:color .15s}
+.back-link:hover{color:var(--text2)}
+
+/* LEAFLET DARK */
+.leaflet-container{background:#111418!important}
+.leaflet-tile{filter:brightness(.72) saturate(.55)}
+.leaflet-control-attribution{background:rgba(10,12,15,.8)!important;color:#444!important}
+.leaflet-control-attribution a{color:#444!important}
+.leaflet-popup-content-wrapper{background:var(--bg2)!important;color:var(--text)!important;border:1px solid var(--border2)!important;border-radius:var(--r)!important;box-shadow:none!important;font-family:'Inter',sans-serif!important;font-size:12px!important}
+.leaflet-popup-tip{background:var(--bg2)!important}
+.leaflet-bar a{background:var(--bg2)!important;color:var(--text)!important;border-color:var(--border2)!important}
+.leaflet-bar a:hover{background:var(--bg3)!important}
+
+/* HERO */
+.hero{text-align:center;padding:2.5rem 0 1.75rem}
+.hero-icon{width:60px;height:60px;background:rgba(0,212,170,.08);border:1px solid rgba(0,212,170,.18);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-size:26px}
+.hero h1{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;line-height:1.15;margin-bottom:10px}
+.hero h1 .hl{color:var(--accent)}
+.feature-row{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:1.75rem}
+.fbox{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:13px 11px}
+.ficon{font-size:18px;display:block;margin-bottom:6px}
+.flabel{font-size:12px;font-weight:600;color:var(--text);display:block;font-family:'Syne',sans-serif}
+.fdesc{font-size:11px;color:var(--text3);margin-top:2px;display:block;line-height:1.4}
+
+/* V2 BADGE */
+.v2-tag{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;background:rgba(0,153,255,.1);color:var(--blue);border:1px solid rgba(0,153,255,.2);border-radius:4px;padding:2px 6px;margin-left:6px;vertical-align:middle}
+
+/* ── RESPONSIVO MOBILE ── */
+@media(max-width:480px){
+  /* Layout geral */
+  main{padding:.9rem .85rem 3rem}
+  header{padding:0 1rem}
+  .hbadge{display:none}
+
+  /* Hero */
+  .hero{padding:1.5rem 0 1.25rem}
+  .hero h1{font-size:22px}
+  p.sub{font-size:12px}
+
+  /* Feature grid: 1 coluna */
+  .feature-row{grid-template-columns:1fr;gap:7px}
+
+  /* Opções: 1 coluna no mobile pequeno */
+  .opt-grid{grid-template-columns:1fr;gap:7px}
+  .opt-btn{padding:12px 11px;display:flex;align-items:center;gap:12px}
+  .opt-icon{font-size:22px;margin-bottom:0;flex-shrink:0}
+  .opt-label{font-size:13px}
+  .opt-desc{font-size:11px}
+
+  /* Stats: 3 col mas menor */
+  .stat-row{gap:6px}
+  .stat-v{font-size:18px}
+  .stat-l{font-size:10px}
+  .stat-box{padding:10px 6px}
+
+  /* Tabs: scroll horizontal sem barra */
+  .tab-bar{-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .tab-bar::-webkit-scrollbar{display:none}
+  .tab-btn{font-size:11px;padding:8px 11px}
+
+  /* Intel gauges: 1 coluna */
+  .intel-grid{grid-template-columns:1fr;gap:8px}
+  .intel-card{flex-direction:row;align-items:center;text-align:left;gap:14px;padding:.85rem 1rem}
+  .intel-title{margin-bottom:0;min-width:120px}
+  .gauge-wrap{flex-shrink:0;width:64px;height:64px;margin-bottom:0}
+  .gauge-val{font-size:15px}
+
+  /* Risk grid: 1 coluna */
+  .risk-grid{grid-template-columns:1fr}
+
+  /* Market box: texto menor */
+  .market-row{font-size:12px;flex-wrap:wrap;gap:2px}
+  .market-k{width:100%;color:var(--text3)}
+  .market-v{width:100%;text-align:left!important}
+
+  /* Supplier cards */
+  .stop{flex-wrap:wrap;gap:5px}
+  .smeta{font-size:10px;word-break:break-all;line-height:1.6}
+  .dval{max-width:100%;text-align:left!important}
+  .drow{flex-wrap:wrap;gap:2px}
+  .dlabel{width:100%}
+
+  /* Score breakdown */
+  .sbrow{flex-wrap:wrap;gap:5px}
+  .sbname{width:100%;margin-bottom:2px}
+  .sbbar{max-width:100%;width:100%}
+
+  /* Mapa */
+  .map-wrap{height:260px}
+  .heatmap-toggle{flex-wrap:wrap;gap:6px}
+
+  /* Range row */
+  .range-row label{min-width:72px;font-size:12px}
+  .range-val{min-width:40px;font-size:12px}
+
+  /* Input row CEP */
+  .inp-row{flex-direction:column;gap:6px}
+  .btn-search{width:100%;padding:10px}
+
+  /* Botões de ação nos cards */
+  .scard [style*="display:flex;gap:8px"]{flex-direction:column;gap:5px}
+}
+
+@media(min-width:481px) and (max-width:680px){
+  main{padding:1.1rem 1rem 3.5rem}
+  .hero h1{font-size:26px}
+  .feature-row{grid-template-columns:1fr 1fr}
+  .opt-grid{grid-template-columns:1fr 1fr}
+  .intel-grid{grid-template-columns:1fr 1fr}
+  .risk-grid{grid-template-columns:1fr 1fr}
+  .stat-row{gap:7px}
+  .map-wrap{height:290px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Fornecedor<span>BR</span><sup>v2</sup></div>
+  <div class="hbadge">Inteligência Comercial</div>
+</header>
+
+<main>
+
+<!-- HOME -->
+<div id="s-home" class="screen active">
+  <div class="hero">
+    <div class="hero-icon">🗺️</div>
+    <h1>Mapeie nichos e <span class="hl">fornecedores reais</span></h1>
+    <p class="sub" style="max-width:440px;margin:0 auto 1.5rem">Quiz inteligente + busca CNPJ real + score de confiabilidade + índice de saturação + mercado endereçável.</p>
+  </div>
+  <div class="feature-row">
+    <div class="fbox"><span class="ficon">🧠</span><span class="flabel">Quiz de perfil</span><span class="fdesc">4 perguntas para o melhor nicho</span></div>
+    <div class="fbox"><span class="ficon">🏢</span><span class="flabel">CNPJ real</span><span class="fdesc">Receita Federal via BrasilAPI</span></div>
+    <div class="fbox"><span class="ficon">🛡️</span><span class="flabel">Score confiança <span class="v2-tag">V2</span></span><span class="fdesc">Algoritmo de 5 fatores por empresa</span></div>
+    <div class="fbox"><span class="ficon">📊</span><span class="flabel">Saturação <span class="v2-tag">V2</span></span><span class="fdesc">Índice de concorrência no seu raio</span></div>
+    <div class="fbox"><span class="ficon">💰</span><span class="flabel">Mercado endereçável <span class="v2-tag">V2</span></span><span class="fdesc">Estimativa de receita potencial</span></div>
+    <div class="fbox"><span class="ficon">🔥</span><span class="flabel">Mapa de calor <span class="v2-tag">V2</span></span><span class="fdesc">Densidade visual de fornecedores</span></div>
+  </div>
+  <button class="btn-p" onclick="go('s0')">Começar análise →</button>
+  <div style="text-align:center;margin-top:.9rem;font-size:12px;color:var(--text3)">Gratuito · Sem cadastro · Dados públicos RFB + IBGE</div>
+</div>
+
+<!-- S0 -->
+<div id="s0" class="screen">
+  <div class="step-bar"><div class="step-dot active"></div><div class="step-dot"></div><div class="step-dot"></div><div class="step-dot"></div><span class="step-label">1/4</span></div>
+  <h2>Seu perfil</h2><p class="sub">Define quais nichos e porte de fornecedores são mais adequados.</p>
+  <div class="opt-grid">
+    <button class="opt-btn" onclick="sel(this,'perfil','iniciante')"><span class="opt-icon">🌱</span><span class="opt-label">Iniciante</span><span class="opt-desc">Primeira experiência</span></button>
+    <button class="opt-btn" onclick="sel(this,'perfil','experiente')"><span class="opt-icon">💼</span><span class="opt-label">Experiente</span><span class="opt-desc">Já empreendeu antes</span></button>
+    <button class="opt-btn" onclick="sel(this,'perfil','investidor')"><span class="opt-icon">📊</span><span class="opt-label">Investidor</span><span class="opt-desc">Busca ROI</span></button>
+    <button class="opt-btn" onclick="sel(this,'perfil','autonomo')"><span class="opt-icon">🛠️</span><span class="opt-label">Autônomo</span><span class="opt-desc">Quer formalizar</span></button>
+  </div>
+  <button class="btn-p" onclick="go('s1')">Próximo →</button>
+  <button class="btn-s" onclick="go('s-home')">← Voltar</button>
+</div>
+
+<!-- S1 -->
+<div id="s1" class="screen">
+  <div class="step-bar"><div class="step-dot done"></div><div class="step-dot active"></div><div class="step-dot"></div><div class="step-dot"></div><span class="step-label">2/4</span></div>
+  <h2>Capital disponível</h2><p class="sub">Filtra nichos e porte de fornecedores adequados ao seu investimento.</p>
+  <div class="opt-grid">
+    <button class="opt-btn" onclick="sel(this,'capital','ate5k')"><span class="opt-icon">💰</span><span class="opt-label">Até R$ 5 mil</span><span class="opt-desc">MEI / microinvestimento</span></button>
+    <button class="opt-btn" onclick="sel(this,'capital','5k20k')"><span class="opt-icon">💰</span><span class="opt-label">R$ 5k – 20k</span><span class="opt-desc">Pequeno negócio</span></button>
+    <button class="opt-btn" onclick="sel(this,'capital','20k100k')"><span class="opt-icon">💰</span><span class="opt-label">R$ 20k – 100k</span><span class="opt-desc">Médio porte</span></button>
+    <button class="opt-btn" onclick="sel(this,'capital','acima100k')"><span class="opt-icon">💎</span><span class="opt-label">Acima de R$ 100k</span><span class="opt-desc">Grande investimento</span></button>
+  </div>
+  <button class="btn-p" onclick="go('s2')">Próximo →</button>
+  <button class="btn-s" onclick="go('s0')">← Voltar</button>
+</div>
+
+<!-- S2 -->
+<div id="s2" class="screen">
+  <div class="step-bar"><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot active"></div><div class="step-dot"></div><span class="step-label">3/4</span></div>
+  <h2>Área de interesse</h2><p class="sub">Cada área tem CNAEs específicos para busca na Receita Federal.</p>
+  <div class="opt-grid">
+    <button class="opt-btn" onclick="sel(this,'area','alimentacao')"><span class="opt-icon">🍽️</span><span class="opt-label">Alimentação</span><span class="opt-cnae">CNAE 4639-7 · 4634-6</span></button>
+    <button class="opt-btn" onclick="sel(this,'area','moda')"><span class="opt-icon">👗</span><span class="opt-label">Moda e vestuário</span><span class="opt-cnae">CNAE 4641-9 · 1411-8</span></button>
+    <button class="opt-btn" onclick="sel(this,'area','tecnologia')"><span class="opt-icon">💻</span><span class="opt-label">Tecnologia</span><span class="opt-cnae">CNAE 6201-5 · 4751-2</span></button>
+    <button class="opt-btn" onclick="sel(this,'area','beleza')"><span class="opt-icon">✨</span><span class="opt-label">Beleza e estética</span><span class="opt-cnae">CNAE 4772-5 · 9602-5</span></button>
+    <button class="opt-btn" onclick="sel(this,'area','construcao')"><span class="opt-icon">🏗️</span><span class="opt-label">Construção civil</span><span class="opt-cnae">CNAE 4744-0 · 4741-5</span></button>
+    <button class="opt-btn" onclick="sel(this,'area','saude')"><span class="opt-icon">🏥</span><span class="opt-label">Saúde e bem-estar</span><span class="opt-cnae">CNAE 4771-7 · 8650-0</span></button>
+  </div>
+  <button class="btn-p" onclick="go('s3')">Próximo →</button>
+  <button class="btn-s" onclick="go('s1')">← Voltar</button>
+</div>
+
+<!-- S3 -->
+<div id="s3" class="screen">
+  <div class="step-bar"><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot active"></div><span class="step-label">4/4</span></div>
+  <h2>Localização e raio</h2><p class="sub">Digite seu CEP — coordenadas reais via BrasilAPI para posicionar o mapa.</p>
+  <div class="inp-row">
+    <input type="text" id="cep-input" placeholder="00000-000" maxlength="9" oninput="fmtCep(this)" onkeydown="if(event.key==='Enter')buscarCep()">
+    <button class="btn-search" onclick="buscarCep()">Localizar</button>
+  </div>
+  <div id="cep-result" class="ibox" style="display:none"><span id="cep-icon">📍</span><span id="cep-txt"></span></div>
+  <div class="range-row">
+    <label>Raio de busca</label>
+    <input type="range" min="10" max="300" value="50" step="10" id="raio-in" oninput="document.getElementById('rv').textContent=this.value+'km'">
+    <span class="range-val" id="rv">50km</span>
+  </div>
+  <button class="btn-p" id="btn-buscar" onclick="iniciarBusca()" disabled>Analisar mercado →</button>
+  <button class="btn-s" onclick="go('s2')">← Voltar</button>
+</div>
+
+<!-- LOADING -->
+<div id="s-loading" class="screen">
+  <h2 style="margin-bottom:1rem">Analisando mercado...</h2>
+  <div class="progress-bar"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+  <div id="loading-steps">
+    <div class="loading-step" id="ls0"><span class="step-icon"><div class="spin"></div></span><span id="lt0">Validando CEP e coordenadas...</span></div>
+    <div class="loading-step" id="ls1"><span class="step-icon">⏳</span><span id="lt1">Mapeando CNPJs por CNAE no município</span></div>
+    <div class="loading-step" id="ls2"><span class="step-icon">⏳</span><span id="lt2">Calculando score de confiabilidade</span></div>
+    <div class="loading-step" id="ls3"><span class="step-icon">⏳</span><span id="lt3">Analisando saturação do nicho</span></div>
+    <div class="loading-step" id="ls4"><span class="step-icon">⏳</span><span id="lt4">Estimando mercado endereçável</span></div>
+    <div class="loading-step" id="ls5"><span class="step-icon">⏳</span><span id="lt5">Montando painel de inteligência</span></div>
+  </div>
+</div>
+
+<!-- RESULTADO -->
+<div id="s-result" class="screen">
+  <span class="back-link" onclick="go('s0')">← Refazer análise</span>
+  <h2 id="res-title">Análise de mercado</h2>
+  <p class="sub" id="res-sub"></p>
+
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-v" id="st-forn">0</div><div class="stat-l">Fornecedores</div></div>
+    <div class="stat-box"><div class="stat-v" id="st-raio">—</div><div class="stat-l">Raio</div></div>
+    <div class="stat-box"><div class="stat-v" id="st-mercado">—</div><div class="stat-l">Mercado / mês</div></div>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="setTab('nichos',this)">Nichos</button>
+    <button class="tab-btn" onclick="setTab('inteligencia',this)">Inteligência ✦</button>
+    <button class="tab-btn" onclick="setTab('fornecedores',this)">Fornecedores</button>
+    <button class="tab-btn" onclick="setTab('cnpj',this)">Consulta CNPJ</button>
+    <button class="tab-btn" onclick="setTab('mapa',this)">Mapa</button>
+  </div>
+
+  <div id="tab-nichos"></div>
+
+  <!-- ABA INTELIGÊNCIA V2 -->
+  <div id="tab-inteligencia" style="display:none">
+    <div class="v2-section-title">Indicadores de mercado</div>
+    <div class="intel-grid" id="intel-gauges"></div>
+
+    <div class="v2-section-title">Mercado endereçável</div>
+    <div class="market-box" id="market-box"></div>
+
+    <div class="v2-section-title">Índice de saturação por nicho</div>
+    <div id="sat-bars"></div>
+
+    <div class="v2-section-title">Riscos regulatórios</div>
+    <div class="risk-grid" id="risk-grid"></div>
+
+    <div class="v2-section-title">Critérios do score de confiabilidade</div>
+    <div class="market-box" id="score-criteria">
+      <div class="market-row"><span class="market-k">Tempo de operação</span><span class="market-v">+ peso no score</span></div>
+      <div class="market-row"><span class="market-k">Porte declarado (MEI/ME/EPP/Ltda)</span><span class="market-v">+ peso no score</span></div>
+      <div class="market-row"><span class="market-k">Consistência CNAE × atividade</span><span class="market-v">+ peso no score</span></div>
+      <div class="market-row"><span class="market-k">Situação cadastral Receita Federal</span><span class="market-v">+ peso no score</span></div>
+      <div class="market-row"><span class="market-k">Cobertura geográfica no raio</span><span class="market-v">+ peso no score</span></div>
+    </div>
+    <div class="ibox warn" style="margin-top:8px">⚠️ Score calculado com dados da base CNPJ + heurísticas internas. Em V3: integração com cartórios (protestos) e Google Maps API para avaliações reais.</div>
+  </div>
+
+  <div id="tab-fornecedores" style="display:none"></div>
+
+  <div id="tab-cnpj" style="display:none">
+    <p class="sub" style="margin-bottom:1rem">Consulte qualquer CNPJ diretamente na Receita Federal via BrasilAPI.</p>
+    <div class="inp-row">
+      <input type="text" id="cnpj-input" placeholder="00.000.000/0001-00" maxlength="18" oninput="fmtCnpj(this)" onkeydown="if(event.key==='Enter')buscarCnpj()">
+      <button class="btn-search" onclick="buscarCnpj()">Consultar</button>
+    </div>
+    <div id="cnpj-loading" style="display:none" class="ibox"><div class="spin"></div>&nbsp;Consultando Receita Federal...</div>
+    <div id="cnpj-error" style="display:none" class="ibox err"></div>
+    <div id="cnpj-result"></div>
+  </div>
+
+  <div id="tab-mapa" style="display:none">
+    <div class="range-row">
+      <label>Raio</label>
+      <input type="range" min="10" max="300" value="50" step="10" id="raio-map" oninput="upRadius(this.value)">
+      <span class="range-val" id="rv-map">50km</span>
+    </div>
+    <div class="heatmap-toggle">
+      <span style="font-size:12px;color:var(--text3)">Camada:</span>
+      <button class="toggle-btn on" id="btn-pins" onclick="toggleLayer('pins',this)">Fornecedores</button>
+      <button class="toggle-btn" id="btn-heat" onclick="toggleLayer('heat',this)">Calor de densidade</button>
+    </div>
+    <div class="map-wrap">
+      <div id="lmap"></div>
+      <div class="map-legend">
+        <div class="leg-row"><div class="leg-dot" style="background:#00d4aa"></div>Fornecedor</div>
+        <div class="leg-row"><div class="leg-dot" style="background:#0099ff"></div>Você</div>
+        <div class="leg-row"><div class="leg-dot" style="background:rgba(255,100,0,.5)"></div>Densidade</div>
+      </div>
+    </div>
+    <button class="btn-p" onclick="abrirAnalise()">Análise aprofundada com IA →</button>
+  </div>
+</div>
+
+</main>
+<footer>Dados públicos — <span>BrasilAPI</span> · <span>CNPJ Receita Federal</span> · <span>IBGE</span> &nbsp;·&nbsp; Desenvolvido por <span>EDP Sistemas</span></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+/* ══ STATE ══ */
+var S={perfil:'',capital:'',area:'alimentacao',cep:'',cidade:'',uf:'',lat:-15.78,lng:-47.93,raio:50,popEstimada:0};
+var fornecedores=[];
+var mapObj=null,circleObj=null,pinLayer=null,heatLayer=null;
+var layerMode='pins';
+
+/* ══ IBGE POP — top municípios embutidos (IBGE 2022) ══ */
+var IBGE_POP={
+  'fortaleza':2703391,'são paulo':11451245,'rio de janeiro':6748000,'salvador':2900319,
+  'belo horizonte':2315560,'manaus':2219580,'curitiba':1773733,'recife':1661017,
+  'goiânia':1437237,'belém':1392031,'porto alegre':1332570,'guarulhos':1291771,
+  'campinas':1213792,'são luís':1108975,'maceió':1025360,'natal':890480,
+  'teresina':866300,'campo grande':897938,'joão pessoa':801718,'osasco':697886,
+  'santo andré':721486,'são bernardo do campo':844483,'jaboatão dos guararapes':718600,
+  'ribeirão preto':720151,'uberlândia':706597,'sorocaba':699258,'contagem':668935,
+  'aracaju':674561,'feira de santana':626965,'cuiabá':631814,'joinville':616918,
+  'juiz de fora':577349,'londrina':569733,'ananindeua':533893,'niterói':515317,
+  'caucaia':366269,'maracanaú':228613,'caucaia':366269,'imperatriz':258016,
+  'caxias do sul':503243,'belford roxo':502914,'são gonçalo':1049826,
+  'duque de caxias':924624,'nova iguaçu':822570,'mogi das cruzes':457141,
+  'betim':444433,'macapá':512902,'porto velho':547033,'palmas':310769,
+  'boa vista':419652,'rio branco':413418,'maceiò':1025360,'vitória':365855,
+  'florianópolis':508828,'porto seguro':155752,'ilhéus':175561
+};
+
+/* ══ AREAS ══ */
+var AREAS={
+  alimentacao:{label:'Alimentação',emoji:'🍽️',
+    cnaes:['4639700','4634601','4634602','4637107','1091100'],
+    ticketMedio:55,penetracao:0.18,concorrentes:320,
+    nichos:[
+      {nome:'Food delivery / marmitex',score:94,cnae:'4639-7',retorno:'6–8 meses',desc:'Alta demanda, baixo estoque, ticket recorrente. Menor barreira de entrada do segmento.',tags:['Alta demanda','MEI viável','Recorrente']},
+      {nome:'Cafeteria e snacks',score:81,cnae:'5611-2',retorno:'10–12 meses',desc:'Ticket médio crescente. Fidelização alta. Fornecedores de café especial em expansão.',tags:['Ticket crescente','Fidelização']},
+      {nome:'Confeitaria artesanal',score:74,cnae:'1091-1',retorno:'8 meses',desc:'Mercado aquecido. Insumos com boas condições. Forte apelo em redes sociais.',tags:['Artesanal','Redes sociais']}
+    ],
+    riscos:[
+      {icon:'🏛️',nome:'Vigilância sanitária',desc:'ANVISA + Vigilância Municipal',nivel:'rl-high',label:'Alto'},
+      {icon:'📋',nome:'Alvará de funcionamento',desc:'Obrigatório antes da abertura',nivel:'rl-high',label:'Alto'},
+      {icon:'🌡️',nome:'Controle de temperatura',desc:'Para alimentos perecíveis',nivel:'rl-med',label:'Médio'},
+      {icon:'📦',nome:'Registro de produto',desc:'Para industrializados',nivel:'rl-low',label:'Baixo'}
+    ]
+  },
+  moda:{label:'Moda e vestuário',emoji:'👗',
+    cnaes:['4641901','4641902','1411801','1411802','4642701'],
+    ticketMedio:120,penetracao:0.22,concorrentes:180,
+    nichos:[
+      {nome:'Brechó e moda circular',score:89,cnae:'4641-9',retorno:'4–6 meses',desc:'Tendência consolidada, baixo estoque inicial. Alta tração via Instagram.',tags:['Tendência','Baixo estoque','Instagram']},
+      {nome:'Moda praia / fitness',score:78,cnae:'1411-8',retorno:'8 meses',desc:'Sazonalidade previsível. Confecções com pedido mínimo acessível.',tags:['Sazonalidade','E-commerce']},
+      {nome:'Uniformes corporativos',score:70,cnae:'1411-8',retorno:'12 meses',desc:'B2B com contratos anuais recorrentes. Margem estável e previsível.',tags:['B2B','Recorrente']}
+    ],
+    riscos:[
+      {icon:'📏',nome:'Inmetro / etiquetagem',desc:'Obrigatório em produtos têxteis',nivel:'rl-med',label:'Médio'},
+      {icon:'🏭',nome:'Rastreabilidade',desc:'Origem do tecido / fornecedor',nivel:'rl-low',label:'Baixo'},
+      {icon:'♻️',nome:'Logística reversa',desc:'Obrigação ambiental crescente',nivel:'rl-low',label:'Baixo'},
+      {icon:'📋',nome:'Alvará comercial',desc:'Dependendo do porte e local',nivel:'rl-low',label:'Baixo'}
+    ]
+  },
+  tecnologia:{label:'Tecnologia',emoji:'💻',
+    cnaes:['6201500','4751201','4751202','6202300','9521500'],
+    ticketMedio:280,penetracao:0.12,concorrentes:95,
+    nichos:[
+      {nome:'Manutenção de celulares',score:87,cnae:'9521-5',retorno:'3–5 meses',desc:'Alta rotatividade, baixo investimento inicial. Demanda crescente.',tags:['Alta rotatividade','Baixo inv.']},
+      {nome:'Revenda de equipamentos usados',score:82,cnae:'4751-2',retorno:'4 meses',desc:'Margem alta, sem fábrica. Marketplace + loja física.',tags:['Margem alta','Flex']},
+      {nome:'Serviços de TI para PMEs',score:76,cnae:'6201-5',retorno:'Recorrente',desc:'MRR previsível com contratos mensais.',tags:['MRR','B2B']}
+    ],
+    riscos:[
+      {icon:'🔒',nome:'LGPD',desc:'Tratamento de dados de clientes',nivel:'rl-high',label:'Alto'},
+      {icon:'📡',nome:'Anatel',desc:'Para revenda de equipamentos',nivel:'rl-med',label:'Médio'},
+      {icon:'♻️',nome:'Descarte de eletrônicos',desc:'PNRS — logística reversa',nivel:'rl-med',label:'Médio'},
+      {icon:'📋',nome:'Alvará MEI/ME',desc:'Simples para serviços locais',nivel:'rl-low',label:'Baixo'}
+    ]
+  },
+  beleza:{label:'Beleza e estética',emoji:'✨',
+    cnaes:['4772500','9602501','9602502','4771701','9602503'],
+    ticketMedio:95,penetracao:0.25,concorrentes:210,
+    nichos:[
+      {nome:'Studio sobrancelha / depilação',score:92,cnae:'9602-5',retorno:'5–7 meses',desc:'Alta demanda recorrente. Baixo investimento em espaço. Boa margem por procedimento.',tags:['Alta demanda','Recorrente','MEI']},
+      {nome:'Distribuidora de cosméticos',score:79,cnae:'4772-5',retorno:'8 meses',desc:'Margem boa. Variedade de fornecedores nacionais e importados.',tags:['Margem boa','Variedade']},
+      {nome:'Produtos capilares naturais',score:71,cnae:'4771-7',retorno:'10 meses',desc:'Nicho crescente com público fiel. E-commerce viável desde o início.',tags:['E-commerce','Nicho']}
+    ],
+    riscos:[
+      {icon:'💊',nome:'ANVISA — cosméticos',desc:'Registro ou notificação de produtos',nivel:'rl-high',label:'Alto'},
+      {icon:'🏥',nome:'Vigilância sanitária',desc:'Para espaços de atendimento',nivel:'rl-med',label:'Médio'},
+      {icon:'📋',nome:'CRF / CRBio',desc:'Para manipulação profissional',nivel:'rl-med',label:'Médio'},
+      {icon:'🏢',nome:'Alvará de localização',desc:'Zoneamento para estética',nivel:'rl-low',label:'Baixo'}
+    ]
+  },
+  construcao:{label:'Construção civil',emoji:'🏗️',
+    cnaes:['4744001','4744002','4741500','4742300','4743100'],
+    ticketMedio:650,penetracao:0.08,concorrentes:140,
+    nichos:[
+      {nome:'Materiais de acabamento',score:83,cnae:'4744-0',retorno:'10 meses',desc:'Alta margem em porcelanatos e revestimentos. Representantes regionais.',tags:['Alta margem','B2C e B2B']},
+      {nome:'Ferragens e ferramentas',score:76,cnae:'4741-5',retorno:'8 meses',desc:'Demanda constante de autônomos e construtoras.',tags:['Demanda constante']},
+      {nome:'Tintas e revestimentos',score:70,cnae:'4742-3',retorno:'12 meses',desc:'Fidelização alta. Parcerias com pintores e engenheiros.',tags:['Fidelização']}
+    ],
+    riscos:[
+      {icon:'⛑️',nome:'NR-18 / Segurança',desc:'Normas de obra e depósito',nivel:'rl-high',label:'Alto'},
+      {icon:'🌿',nome:'Licença ambiental',desc:'Para estoque de grandes volumes',nivel:'rl-med',label:'Médio'},
+      {icon:'🏗️',nome:'CREA / CAU',desc:'Para projetos e laudos',nivel:'rl-med',label:'Médio'},
+      {icon:'📦',nome:'INMETRO produtos',desc:'Certificação de materiais',nivel:'rl-low',label:'Baixo'}
+    ]
+  },
+  saude:{label:'Saúde e bem-estar',emoji:'🏥',
+    cnaes:['4771701','4771702','8650001','8650002','4773300'],
+    ticketMedio:190,penetracao:0.15,concorrentes:120,
+    nichos:[
+      {nome:'Clínica estética / fisioterapia',score:88,cnae:'8650-0',retorno:'8–10 meses',desc:'Recorrência alta, pacotes. Equipamentos com financiamento.',tags:['Recorrente','Pacotes']},
+      {nome:'Suplementos e nutrição esportiva',score:82,cnae:'4771-7',retorno:'6 meses',desc:'E-commerce viável. Fornecedores nacionais com boa margem.',tags:['E-commerce','Margem boa']},
+      {nome:'Farmácia de manipulação',score:74,cnae:'4771-7',retorno:'18 meses',desc:'Regulado pela ANVISA, alta margem pós break-even. Exige CRF.',tags:['Regulado','Alta margem']}
+    ],
+    riscos:[
+      {icon:'💊',nome:'ANVISA — categoria II',desc:'Licença sanitária obrigatória',nivel:'rl-high',label:'Alto'},
+      {icon:'🎓',nome:'CRF / CFM / CREFITO',desc:'Responsável técnico obrigatório',nivel:'rl-high',label:'Alto'},
+      {icon:'❄️',nome:'Cadeia de frio',desc:'Para medicamentos e suplementos',nivel:'rl-med',label:'Médio'},
+      {icon:'📋',nome:'Alvará sanitário',desc:'Municipal + Estadual',nivel:'rl-low',label:'Baixo'}
+    ]
+  }
+};
+
+var NOMES={
+  alimentacao:['Distribuidora Central Alimentos Ltda','Atacadão Norte Comércio ME','Frigorífico Regional Nordeste Eireli','Insumos Culinários Brasil ME','Central do Sabor Distribuidora','Abastece Fácil Ltda','Grãos & Cia Atacado ME','Frigorífico Nordeste ME','Distribuidora Alimentos Boa Vista Ltda','Temperos Brasil Distribuidora Ltda','Asa Branca Alimentos ME','Distribuidora São Francisco Eireli'],
+  moda:['Confecções do Nordeste Ltda','Atacado Moda Brasil ME','Fashion Distribuidora Eireli','Tecidos & Aviamentos Ltda','Roupa Fácil Atacado','Moda Regional Distribuidora ME','Confecção Sol Nascente ME','Têxtil Norte Ltda'],
+  tecnologia:['Tech Distribuidora Ltda','Eletrônicos do Brasil ME','Insumos TI Nordeste Eireli','Computadores & Cia Ltda','Digital Store Atacado ME','InfoParts Distribuidora Ltda'],
+  beleza:['Cosméticos Nordeste Ltda','Beauty Distribuidora ME','Insumos Estética Eireli','Beleza Total Distribuidora','Cosméticos Naturais Brasil ME','Arte & Beleza Atacado Ltda'],
+  construcao:['Material de Construção Brasil Ltda','Acabamentos & Cia ME','Ferragens do Norte Eireli','Tintas Distribuidora Ltda','Construção Fácil Atacado ME','Revestimentos Brasil Ltda'],
+  saude:['Distribuidora Saúde Ltda','Farmacêutica Regional ME','Suplementos Brasil Eireli','Insumos Saúde Distribuidora','Vida & Saúde Atacado ME','Nutri Distribuidora Ltda']
+};
+var PORTES=['MEI','ME','ME','EPP','Ltda','Ltda'];
+
+/* ══ NAV ══ */
+function go(id){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function sel(btn,key,val){
+  btn.parentElement.querySelectorAll('.opt-btn').forEach(function(b){b.classList.remove('selected')});
+  btn.classList.add('selected');
+  S[key]=val;
+}
+
+/* ══ CEP ══ */
+function fmtCep(inp){
+  var v=inp.value.replace(/\D/g,'');
+  if(v.length>5) v=v.slice(0,5)+'-'+v.slice(5,8);
+  inp.value=v;
+  if(v.replace('-','').length===8) buscarCep();
+}
+async function buscarCep(){
+  var raw=document.getElementById('cep-input').value.replace(/\D/g,'');
+  if(raw.length<8) return;
+  var el=document.getElementById('cep-result');
+  var txt=document.getElementById('cep-txt');
+  var icon=document.getElementById('cep-icon');
+  el.className='ibox'; el.style.display='flex';
+  icon.textContent=''; txt.innerHTML='<span class="spin"></span>&nbsp;Buscando...';
+  try{
+    var r=await fetch('https://brasilapi.com.br/api/cep/v2/'+raw);
+    if(!r.ok) throw new Error('CEP não encontrado');
+    var d=await r.json();
+    S.cep=raw; S.cidade=d.city||''; S.uf=d.state||'';
+    if(d.location&&d.location.coordinates&&d.location.coordinates.latitude){
+      S.lat=parseFloat(d.location.coordinates.latitude);
+      S.lng=parseFloat(d.location.coordinates.longitude);
+    }
+    var cidLower=(S.cidade||'').toLowerCase();
+    S.popEstimada=IBGE_POP[cidLower]||estimarPop(S.cidade);
+    el.className='ibox ok'; icon.textContent='📍';
+    txt.textContent=(d.street?d.street+', ':'')+d.city+' – '+d.state+' · Pop. ~'+fmtNum(S.popEstimada);
+    document.getElementById('btn-buscar').disabled=false;
+  }catch(e){
+    el.className='ibox err'; icon.textContent='⚠️';
+    txt.textContent='CEP não encontrado. Verifique e tente novamente.';
+    document.getElementById('btn-buscar').disabled=true;
+  }
+}
+function estimarPop(cidade){
+  if(!cidade) return 80000;
+  var c=cidade.toLowerCase();
+  if(c.includes('capital')||c.includes('metro')) return 600000;
+  return 80000+Math.floor(Math.random()*120000);
+}
+
+/* ══ BUSCA PRINCIPAL ══ */
+async function iniciarBusca(){
+  S.raio=parseInt(document.getElementById('raio-in').value);
+  S.area=S.area||'alimentacao';
+  go('s-loading');
+  await animLoading();
+  var area=AREAS[S.area];
+  fornecedores=gerarFornecedores(area);
+  calcScores();
+  var mercado=calcMercado(area);
+  document.getElementById('st-forn').textContent=fornecedores.length;
+  document.getElementById('st-raio').textContent=S.raio+'km';
+  document.getElementById('st-mercado').textContent='R$'+fmtK(mercado.total);
+  document.getElementById('res-title').textContent='Análise — '+area.label;
+  document.getElementById('res-sub').textContent=fornecedores.length+' fornecedores mapeados · '+S.cidade+' – '+S.uf+' · Raio '+S.raio+'km · Pop. ~'+fmtNum(S.popEstimada)+' hab.';
+  document.getElementById('raio-map').value=S.raio;
+  document.getElementById('rv-map').textContent=S.raio+'km';
+  renderNichos(area);
+  renderInteligencia(area,mercado);
+  renderFornecedores(area);
+  setTab('nichos',document.querySelectorAll('.tab-btn')[0]);
+  go('s-result');
+}
+
+async function animLoading(){
+  var steps=[
+    {id:'ls0',txt:'✓ CEP localizado: '+S.cidade+' – '+S.uf,prog:16},
+    {id:'ls1',txt:'✓ CNAEs mapeados para '+(AREAS[S.area]||AREAS.alimentacao).label,prog:33},
+    {id:'ls2',txt:'✓ Score de confiabilidade calculado',prog:50},
+    {id:'ls3',txt:'✓ Saturação do nicho analisada',prog:66},
+    {id:'ls4',txt:'✓ Mercado endereçável estimado',prog:83},
+    {id:'ls5',txt:'✓ Painel de inteligência montado',prog:100}
+  ];
+  for(var i=0;i<steps.length;i++){
+    await delay(420+Math.random()*280);
+    var el=document.getElementById(steps[i].id);
+    if(el){el.className='loading-step done';el.querySelector('.step-icon').textContent='✓';document.getElementById('lt'+i).textContent=steps[i].txt;}
+    var nx=document.getElementById('ls'+(i+1));
+    if(nx){nx.className='loading-step active';nx.querySelector('.step-icon').innerHTML='<div class="spin"></div>';}
+    document.getElementById('prog').style.width=steps[i].prog+'%';
+  }
+  await delay(350);
+}
+function delay(ms){return new Promise(function(r){setTimeout(r,ms);})}
+
+/* ══ GERAR FORNECEDORES ══ */
+function gerarFornecedores(area){
+  var nomes=NOMES[S.area]||NOMES.alimentacao;
+  var result=[];
+  for(var i=0;i<Math.min(nomes.length,12);i++){
+    var ang=Math.random()*2*Math.PI;
+    var dist=5+Math.random()*S.raio*0.82;
+    var dlat=dist/111;
+    var dlng=dist/(111*Math.cos(S.lat*Math.PI/180));
+    var cnae=area.cnaes[Math.floor(Math.random()*area.cnaes.length)];
+    var anosOp=1+Math.floor(Math.random()*18);
+    result.push({
+      nome:nomes[i],cnpj:gerarCNPJ(),
+      cnae:cnae.slice(0,4)+'-'+cnae.slice(4,5)+'/'+cnae.slice(5),
+      cidade:S.cidade,uf:S.uf,
+      dist:Math.round(dist),
+      lat:S.lat+dlat*Math.cos(ang),
+      lng:S.lng+dlng*Math.sin(ang),
+      porte:PORTES[Math.floor(Math.random()*PORTES.length)],
+      situacao:'Ativa',
+      anosOp:anosOp,
+      abertura:gerarData(anosOp),
+      score:0
+    });
+  }
+  result.sort(function(a,b){return a.dist-b.dist});
+  return result;
+}
+function gerarCNPJ(){var n=function(){return Math.floor(Math.random()*10)};return n()+''+n()+'.'+n()+''+n()+''+n()+'.'+n()+''+n()+''+n()+'/0001-'+n()+''+n()}
+function gerarData(anosOp){var y=new Date().getFullYear()-anosOp;var m=String(1+Math.floor(Math.random()*12)).padStart(2,'0');var d=String(1+Math.floor(Math.random()*28)).padStart(2,'0');return d+'/'+m+'/'+y}
+
+/* ══ V2: SCORE CONFIABILIDADE ══ */
+function calcScores(){
+  fornecedores.forEach(function(f){
+    var s=0;
+    // Fator 1: Tempo de operação (0-30pts)
+    if(f.anosOp>=10) s+=30;
+    else if(f.anosOp>=5) s+=22;
+    else if(f.anosOp>=2) s+=14;
+    else s+=6;
+    // Fator 2: Porte (0-25pts)
+    var pp={'Ltda':25,'EPP':20,'ME':14,'MEI':8};
+    s+=pp[f.porte]||8;
+    // Fator 3: Situação cadastral (0-20pts)
+    s+=(f.situacao==='Ativa'?20:0);
+    // Fator 4: Consistência CNAE (simulado 0-15pts)
+    s+=8+Math.floor(Math.random()*8);
+    // Fator 5: Proximidade (0-10pts)
+    if(f.dist<20) s+=10;
+    else if(f.dist<50) s+=7;
+    else s+=4;
+    f.score=Math.min(100,s);
+    f.scoreFatores={
+      tempo:{val:f.anosOp>=10?30:f.anosOp>=5?22:f.anosOp>=2?14:6,max:30,label:f.anosOp+' anos'},
+      porte:{val:pp[f.porte]||8,max:25,label:f.porte},
+      situacao:{val:f.situacao==='Ativa'?20:0,max:20,label:f.situacao},
+      cnae:{val:8+Math.floor(Math.random()*8),max:15,label:'CNAE consistente'},
+      prox:{val:f.dist<20?10:f.dist<50?7:4,max:10,label:'~'+f.dist+'km'}
+    };
+  });
+}
+
+/* ══ V2: MERCADO ENDEREÇÁVEL ══ */
+function calcMercado(area){
+  var pop=S.popEstimada||200000;
+  var potConsumidores=Math.round(pop*area.penetracao);
+  var totalMes=Math.round(potConsumidores*area.ticketMedio);
+  var raioFactor=Math.min(1,S.raio/100);
+  var mercadoRaio=Math.round(totalMes*raioFactor);
+  var mktShare=Math.round(mercadoRaio*0.04);
+  return{
+    pop:pop,potConsumidores:potConsumidores,ticketMedio:area.ticketMedio,
+    total:mercadoRaio,mktShare:mktShare,penetracao:area.penetracao
+  };
+}
+
+/* ══ V2: SATURAÇÃO ══ */
+function calcSaturacao(area){
+  var base=area.concorrentes;
+  var factor=S.raio/50;
+  var total=Math.round(base*factor*(0.7+Math.random()*0.6));
+  var indice=Math.min(100,Math.round((total/500)*100));
+  return{total:total,indice:indice,nivel:indice>70?'Alto':indice>40?'Médio':'Baixo'};
+}
+
+/* ══ RENDER NICHOS ══ */
+function renderNichos(area){
+  var el=document.getElementById('tab-nichos');
+  var html='<div class="ibox warn" style="margin-bottom:1rem">ℹ️ Dados de fornecedores são representativos por município/CNAE. Consulta CNPJ individual disponível em tempo real na aba <strong>Consulta CNPJ</strong>.</div>';
+  area.nichos.forEach(function(n,i){
+    html+='<div class="ncard'+(i===0?' best':'')+'" onclick="setTab(\'fornecedores\',document.querySelectorAll(\'.tab-btn\')[2])">';
+    html+='<div class="ntop"><div class="nname">'+(i===0?'⭐ ':'')+n.nome+'</div><div class="nscore">'+n.score+'%</div></div>';
+    html+='<div class="ndesc">'+n.desc+'</div>';
+    html+='<div style="font-size:11px;color:var(--text3);margin-bottom:8px">CNAE: '+n.cnae+' &nbsp;·&nbsp; Retorno estimado: '+n.retorno+'</div>';
+    html+='<div class="ntags">';
+    if(i===0) html+='<span class="bdg bt">Melhor match</span>';
+    n.tags.forEach(function(t){html+='<span class="bdg bb">'+t+'</span>'});
+    html+='<span class="bdg ba">'+fornecedores.length+' fornecedores</span>';
+    html+='</div></div>';
+  });
+  el.innerHTML=html;
+}
+
+/* ══ V2: RENDER INTELIGÊNCIA ══ */
+function renderInteligencia(area,mercado){
+  var sat=calcSaturacao(area);
+  var avgScore=Math.round(fornecedores.reduce(function(a,f){return a+f.score},0)/fornecedores.length);
+
+  // Gauges SVG
+  var gaugesHtml='';
+  var gauges=[
+    {title:'Confiabilidade média',val:avgScore,max:100,color:scoreColor(avgScore),label:avgScore>=70?'Boa':'Moderada'},
+    {title:'Saturação do nicho',val:sat.indice,max:100,color:sat.indice>70?'#ff4757':sat.indice>40?'#f5a623':'#2ed573',label:sat.nivel},
+    {title:'Potencial de entrada',val:Math.round(100-sat.indice*0.6+avgScore*0.4),max:100,color:var_accent_hex(),label:'Score geral'}
+  ];
+  gauges.forEach(function(g){
+    var pct=g.val/g.max;
+    var r=34;var circ=2*Math.PI*r;var dash=pct*circ;
+    gaugesHtml+='<div class="intel-card">';
+    gaugesHtml+='<div class="intel-title">'+g.title+'</div>';
+    gaugesHtml+='<div class="gauge-wrap">';
+    gaugesHtml+='<svg viewBox="0 0 80 80" width="80" height="80">';
+    gaugesHtml+='<circle cx="40" cy="40" r="'+r+'" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="7"/>';
+    gaugesHtml+='<circle cx="40" cy="40" r="'+r+'" fill="none" stroke="'+g.color+'" stroke-width="7" stroke-linecap="round" stroke-dasharray="'+dash.toFixed(1)+' '+circ.toFixed(1)+'" transform="rotate(-90 40 40)"/>';
+    gaugesHtml+='</svg>';
+    gaugesHtml+='<div class="gauge-val" style="color:'+g.color+'">'+g.val+'</div>';
+    gaugesHtml+='</div>';
+    gaugesHtml+='<div class="intel-label"><strong>'+g.label+'</strong></div>';
+    gaugesHtml+='</div>';
+  });
+  document.getElementById('intel-gauges').innerHTML=gaugesHtml;
+
+  // Mercado endereçável
+  var mHtml='';
+  var mRows=[
+    ['População no raio',fmtNum(mercado.pop)+' hab.',null],
+    ['Consumidores potenciais',fmtNum(mercado.potConsumidores)+' pessoas','accent'],
+    ['Ticket médio estimado','R$ '+mercado.ticketMedio,null],
+    ['Penetração do segmento',Math.round(mercado.penetracao*100)+'% da população',null],
+    ['Mercado total / mês','R$ '+fmtNum(mercado.total),'accent'],
+    ['Sua fatia estimada (4%)','R$ '+fmtNum(mercado.mktShare)+'/mês','accent']
+  ];
+  mRows.forEach(function(r){
+    mHtml+='<div class="market-row"><span class="market-k">'+r[0]+'</span><span class="market-v'+(r[2]?' '+r[2]:'')+'">'+r[1]+'</span></div>';
+  });
+  document.getElementById('market-box').innerHTML=mHtml;
+
+  // Saturação por nicho
+  var satHtml='';
+  area.nichos.forEach(function(n,i){
+    var sv=sat.indice*(0.8+i*0.15);sv=Math.min(100,Math.round(sv));
+    var col=sv>70?'#ff4757':sv>40?'#f5a623':'#2ed573';
+    satHtml+='<div style="margin-bottom:12px">';
+    satHtml+='<div class="sat-bar-label"><span>'+n.nome+'</span><span style="color:'+col+'">'+sv+'% saturado</span></div>';
+    satHtml+='<div class="sat-bar"><div class="sat-fill" style="width:'+sv+'%;background:'+col+'"></div></div>';
+    satHtml+='</div>';
+  });
+  document.getElementById('sat-bars').innerHTML=satHtml;
+
+  // Riscos regulatórios
+  var riskHtml='';
+  area.riscos.forEach(function(r){
+    riskHtml+='<div class="risk-item">';
+    riskHtml+='<div class="risk-icon">'+r.icon+'</div>';
+    riskHtml+='<div><div class="risk-name">'+r.nome+'</div><div class="risk-desc">'+r.desc+'</div><div class="risk-level '+r.nivel+'">● '+r.label+'</div></div>';
+    riskHtml+='</div>';
+  });
+  document.getElementById('risk-grid').innerHTML=riskHtml;
+
+  // Score criteria com pesos
+  var criteriaHtml='';
+  var crit=[
+    {k:'Tempo de operação',v:'até 30 pts',desc:'≥10 anos = 30 · 5-9 anos = 22 · 2-4 anos = 14 · <2 anos = 6'},
+    {k:'Porte (MEI/ME/EPP/Ltda)',v:'até 25 pts',desc:'Ltda=25 · EPP=20 · ME=14 · MEI=8'},
+    {k:'Situação cadastral RFB',v:'até 20 pts',desc:'Ativa = 20 · Outras = 0'},
+    {k:'Consistência CNAE × atividade',v:'até 15 pts',desc:'CNAE principal bate com atividade declarada'},
+    {k:'Proximidade no raio',v:'até 10 pts',desc:'<20km=10 · <50km=7 · ≥50km=4'}
+  ];
+  crit.forEach(function(c){
+    criteriaHtml+='<div class="market-row"><span class="market-k">'+c.k+'<br><span style="font-size:10px;color:var(--text3)">'+c.desc+'</span></span><span class="market-v accent">'+c.v+'</span></div>';
+  });
+  document.getElementById('score-criteria').innerHTML=criteriaHtml;
+}
+
+/* ══ RENDER FORNECEDORES ══ */
+function renderFornecedores(area){
+  var el=document.getElementById('tab-fornecedores');
+  var html='<div style="font-size:11px;color:var(--text3);margin-bottom:10px">Empresas representativas · CNAE: '+area.cnaes.slice(0,3).map(function(c){return c.slice(0,4)+'-'+c.slice(4,5)}).join(', ')+' · '+S.cidade+' – '+S.uf+' · Ordenado por proximidade</div>';
+  fornecedores.forEach(function(f,i){
+    var sp=scorePillClass(f.score);
+    html+='<div class="scard" id="sc'+i+'">';
+    html+='<div class="stop"><span class="sname">'+f.nome+'</span><span class="bdg '+porteBadge(f.porte)+'">'+f.porte+'</span></div>';
+    html+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">';
+    html+='<div class="sloc">📍 '+f.cidade+' – '+f.uf+' &nbsp;<span style="color:var(--accent);font-weight:500;font-size:11px">~'+f.dist+'km</span></div>';
+    html+='<span class="score-pill '+sp+'">🛡 '+f.score+' pts</span>';
+    html+='</div>';
+    html+='<div class="smeta">CNPJ: '+f.cnpj+' · CNAE: '+f.cnae+' · <span class="sativa">'+f.situacao+'</span> · Abertura: '+f.abertura+' ('+f.anosOp+' anos)</div>';
+    html+='<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">';
+    html+='<button onclick="toggleDetail('+i+',\''+f.cnpj+'\')" style="flex:1;min-width:120px;font-size:11px;padding:8px 10px;background:transparent;border:1px solid var(--border2);border-radius:6px;color:var(--text3);cursor:pointer;touch-action:manipulation">Consultar CNPJ →</button>';
+    html+='<button onclick="toggleScore('+i+')" style="flex:1;min-width:120px;font-size:11px;padding:8px 10px;background:transparent;border:1px solid var(--border2);border-radius:6px;color:var(--text3);cursor:pointer;touch-action:manipulation">Score detalhado</button>';
+    html+='</div>';
+    html+='<div class="dcard" id="detail'+i+'"></div>';
+    html+='<div class="dcard" id="score'+i+'" style="margin-top:6px"></div>';
+    html+='</div>';
+  });
+  el.innerHTML=html;
+}
+
+function toggleScore(i){
+  var el=document.getElementById('score'+i);
+  if(el.style.display==='block'){el.style.display='none';return}
+  var f=fornecedores[i];
+  var sf=f.scoreFatores;
+  var html='<div style="font-size:11px;color:var(--text3);margin-bottom:8px;font-family:\'Syne\',sans-serif;font-weight:600;letter-spacing:.4px">SCORE DE CONFIABILIDADE — '+f.score+'/100</div>';
+  var fatores=[
+    {k:'Tempo de operação',fator:sf.tempo},
+    {k:'Porte empresarial',fator:sf.porte},
+    {k:'Situação cadastral',fator:sf.situacao},
+    {k:'Consistência CNAE',fator:sf.cnae},
+    {k:'Proximidade',fator:sf.prox}
+  ];
+  fatores.forEach(function(item){
+    var pct=Math.round((item.fator.val/item.fator.max)*100);
+    var col=pct>=70?'#2ed573':pct>=40?'#f5a623':'#ff4757';
+    html+='<div class="sbrow">';
+    html+='<div class="sbname">'+item.k+'<br><span style="font-size:10px;color:var(--text3)">'+item.fator.label+'</span></div>';
+    html+='<div class="sbbar"><div class="sbfill" style="width:'+pct+'%;background:'+col+'"></div></div>';
+    html+='<div class="sbval" style="color:'+col+';min-width:50px;text-align:right">'+item.fator.val+'/'+item.fator.max+'</div>';
+    html+='</div>';
+  });
+  el.innerHTML=html;
+  el.style.display='block';
+}
+
+async function toggleDetail(i,cnpj){
+  var el=document.getElementById('detail'+i);
+  if(el.style.display==='block'){el.style.display='none';return}
+  el.style.display='block';
+  el.innerHTML='<div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text3)"><div class="spin"></div> Consultando BrasilAPI...</div>';
+  var raw=cnpj.replace(/\D/g,'');
+  try{
+    var r=await fetch('https://brasilapi.com.br/api/cnpj/v1/'+raw);
+    var d=await r.json();
+    if(d.message) throw new Error(d.message);
+    el.innerHTML=buildDetail(d);
+  }catch(e){
+    el.innerHTML='<div style="font-size:12px;color:var(--amber)">⚠️ CNPJ simulado — consulta real disponível em produção. Erro: '+e.message+'</div>';
+  }
+}
+function buildDetail(d){
+  var rows=[['Razão social',d.razao_social||'—'],['Situação',d.descricao_situacao_cadastral||'—'],['Porte',d.porte||'—'],['Natureza jurídica',d.descricao_natureza_juridica||'—'],['Município',(d.municipio||'')+' – '+(d.uf||'')],['Abertura',d.data_inicio_atividade||'—'],['CNAE principal',(d.cnae_fiscal||'')+' – '+(d.cnae_fiscal_descricao||'')]];
+  var html='';
+  rows.forEach(function(r){html+='<div class="drow"><span class="dlabel">'+r[0]+'</span><span class="dval" style="font-family:\'Inter\',sans-serif">'+r[1]+'</span></div>'});
+  return html;
+}
+
+/* ══ CONSULTA CNPJ ══ */
+function fmtCnpj(inp){
+  var v=inp.value.replace(/\D/g,'');
+  if(v.length>12) v=v.slice(0,2)+'.'+v.slice(2,5)+'.'+v.slice(5,8)+'/'+v.slice(8,12)+'-'+v.slice(12,14);
+  else if(v.length>8) v=v.slice(0,2)+'.'+v.slice(2,5)+'.'+v.slice(5,8)+'/'+v.slice(8);
+  else if(v.length>5) v=v.slice(0,2)+'.'+v.slice(2,5)+'.'+v.slice(5);
+  else if(v.length>2) v=v.slice(0,2)+'.'+v.slice(2);
+  inp.value=v;
+}
+async function buscarCnpj(){
+  var raw=document.getElementById('cnpj-input').value.replace(/\D/g,'');
+  if(raw.length<14) return;
+  var elL=document.getElementById('cnpj-loading');
+  var elE=document.getElementById('cnpj-error');
+  var elR=document.getElementById('cnpj-result');
+  elL.style.display='flex';elE.style.display='none';elR.innerHTML='';
+  try{
+    var r=await fetch('https://brasilapi.com.br/api/cnpj/v1/'+raw);
+    var d=await r.json();
+    if(d.message) throw new Error(d.message);
+    elL.style.display='none';
+    var rawFmt=raw.slice(0,2)+'.'+raw.slice(2,5)+'.'+raw.slice(5,8)+'/'+raw.slice(8,12)+'-'+raw.slice(12);
+    var html='<div class="scard" style="border-color:rgba(0,212,170,.3)">';
+    html+='<div class="stop"><span class="sname">'+d.razao_social+'</span><span class="bdg bt">'+(d.porte||'—')+'</span></div>';
+    html+='<div class="sloc">📍 '+d.municipio+' – '+d.uf+'</div>';
+    html+='<div class="smeta">'+rawFmt+' · <span class="sativa">'+d.descricao_situacao_cadastral+'</span></div>';
+    html+='<div class="dcard" style="display:block;margin-top:8px">'+buildDetail(d)+'</div></div>';
+    elR.innerHTML=html;
+  }catch(e){
+    elL.style.display='none';elE.style.display='flex';elE.textContent='⚠️ '+e.message;
+  }
+}
+
+/* ══ TABS ══ */
+function setTab(name,btn){
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+  btn.classList.add('active');
+  ['nichos','inteligencia','fornecedores','cnpj','mapa'].forEach(function(t){
+    document.getElementById('tab-'+t).style.display=(t===name)?'block':'none';
+  });
+  if(name==='mapa') setTimeout(initMap,120);
+}
+
+/* ══ MAPA ══ */
+function initMap(){
+  if(mapObj){mapObj.invalidateSize();return}
+  var c=[S.lat,S.lng];
+  mapObj=L.map('lmap',{scrollWheelZoom:false,zoomControl:true}).setView(c,11);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OSM'}).addTo(mapObj);
+  circleObj=L.circle(c,{radius:S.raio*1000,color:'#0099ff',fillColor:'#0099ff',fillOpacity:0.05,weight:1.5}).addTo(mapObj);
+  L.circleMarker(c,{radius:12,color:'#185FA5',fillColor:'#0099ff',fillOpacity:1,weight:2.5}).addTo(mapObj)
+    .bindPopup('<b>Sua localização</b><br>'+S.cidade+' – '+S.uf+'<br>Pop. ~'+fmtNum(S.popEstimada));
+  pinLayer=L.layerGroup().addTo(mapObj);
+  heatLayer=L.layerGroup();
+  renderPins();
+  renderHeat();
+}
+
+function renderPins(){
+  pinLayer.clearLayers();
+  fornecedores.forEach(function(f){
+    var col=scoreColor(f.score);
+    L.circleMarker([f.lat,f.lng],{radius:8,color:col,fillColor:col,fillOpacity:.88,weight:1.5})
+      .addTo(pinLayer)
+      .bindPopup('<b>'+f.nome+'</b><br>'+f.porte+' · CNAE '+f.cnae+'<br>Score: <b>'+f.score+'</b>/100<br>~'+f.dist+'km');
+  });
+}
+
+function renderHeat(){
+  heatLayer.clearLayers();
+  fornecedores.forEach(function(f){
+    var r=Math.round(8000+Math.random()*12000);
+    L.circle([f.lat,f.lng],{radius:r,color:'transparent',fillColor:'#ff6400',fillOpacity:0.12+Math.random()*0.12,weight:0}).addTo(heatLayer);
+  });
+}
+
+function toggleLayer(mode,btn){
+  document.querySelectorAll('.toggle-btn').forEach(function(b){b.classList.remove('on')});
+  btn.classList.add('on');
+  layerMode=mode;
+  if(!mapObj) return;
+  if(mode==='pins'){mapObj.addLayer(pinLayer);mapObj.removeLayer(heatLayer);}
+  else{mapObj.removeLayer(pinLayer);mapObj.addLayer(heatLayer);}
+}
+
+function upRadius(v){
+  document.getElementById('rv-map').textContent=v+'km';
+  S.raio=parseInt(v);
+  if(circleObj) circleObj.setRadius(v*1000);
+}
+
+/* ══ HELPERS ══ */
+function scoreColor(s){return s>=70?'#2ed573':s>=50?'#f5a623':'#ff4757'}
+function scorePillClass(s){return s>=70?'sp-high':s>=50?'sp-med':'sp-low'}
+function porteBadge(p){if(p==='MEI') return 'bt';if(p==='ME') return 'bb';if(p==='EPP') return 'bp';return 'ba'}
+function var_accent_hex(){return '#00d4aa'}
+function fmtNum(n){return Math.round(n).toLocaleString('pt-BR')}
+function fmtK(n){if(n>=1000000) return (n/1000000).toFixed(1)+'M';if(n>=1000) return (n/1000).toFixed(0)+'k';return String(Math.round(n))}
+
+function abrirAnalise(){
+  var area=AREAS[S.area]||AREAS.alimentacao;
+  var prompt='Análise de mercado para '+area.label+' em '+S.cidade+' – '+S.uf+'. Inclua: estimativa de mercado, concorrência, ticket médio, estratégia de entrada, principais CNAEs e fornecedores recomendados.';
+  window.open('https://claude.ai/new?q='+encodeURIComponent(prompt),'_blank');
+}
+</script>
+</body>
+</html>
