@@ -26,7 +26,7 @@
   --r:10px;--rl:16px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:clip}
 body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,170,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,170,0.025) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0}
 
 /* HEADER */
@@ -103,7 +103,8 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:15px;height:15px;b
 .stat-l{font-size:11px;color:var(--text3);margin-top:3px}
 
 /* TABS */
-.tab-bar{display:flex;border-bottom:1px solid var(--border);margin-bottom:1.25rem;overflow-x:auto}
+.tab-bar{display:flex;border-bottom:1px solid var(--border);margin-bottom:1.25rem;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;scroll-behavior:smooth}
+.tab-bar::-webkit-scrollbar{display:none}
 .tab-btn{font-size:12px;padding:9px 14px;cursor:pointer;border:none;background:transparent;color:var(--text3);border-bottom:2px solid transparent;margin-bottom:-1px;font-family:'Syne',sans-serif;font-weight:600;white-space:nowrap;transition:color .15s}
 .tab-btn:hover{color:var(--text2)}.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
 
@@ -350,8 +351,6 @@ footer span{color:var(--text2)}
   .stat-box{padding:10px 6px}
 
   /* Tabs: scroll horizontal sem barra */
-  .tab-bar{-webkit-overflow-scrolling:touch;scrollbar-width:none}
-  .tab-bar::-webkit-scrollbar{display:none}
   .tab-btn{font-size:11px;padding:8px 11px}
 
   /* Intel gauges: 1 coluna */
@@ -884,14 +883,18 @@ var FORN_DIGITAIS={
 
 /* ══ V4 PREVIEW: POLOS COMERCIAIS ══ */
 var POLOS=[
-  {nome:'Brás + Bom Retiro',cidade:'São Paulo – SP',emoji:'👗',especialidades:['Moda feminina','Moda masculina','Calçados','Acessórios'],ticketMin:'R$ 200',aceitaMei:true,online:true,areas:['moda','beleza'],desc:'Maior polo de moda do Brasil. +15 mil estabelecimentos em ~2km². Representantes vendem online com envio nacional.',dicas:'Visite na madrugada (4h–9h) para melhor atendimento. Terças e quintas têm maior variedade.'},
-  {nome:'25 de Março',cidade:'São Paulo – SP',emoji:'🛍️',especialidades:['Variedades','Importados','Embalagens','Brindes','Decoração'],ticketMin:'R$ 150',aceitaMei:true,online:true,areas:['moda','dropshipping','tecnologia'],desc:'Polo de variedades e importados mais famoso do Brasil. Ideal para quem busca mix amplo com preço de atacado.',dicas:'Chegue cedo — movimento intenso após as 10h. Negocie à vista para descontos de 10–20%.'},
-  {nome:'Santa Ifigênia',cidade:'São Paulo – SP',emoji:'💻',especialidades:['Eletrônicos','Informática','Celulares','Componentes','Games'],ticketMin:'R$ 300',aceitaMei:true,online:true,areas:['tecnologia'],desc:'Centro eletrônico referência nacional. Distribuidores com preço abaixo do varejo e representantes para todo Brasil.',dicas:'Pesquise preços em pelo menos 3 lojas antes de fechar. Exija nota fiscal sempre.'},
+  {nome:'Brás + Bom Retiro',cidade:'São Paulo – SP',emoji:'👗',especialidades:['Moda feminina','Moda masculina','Calçados','Acessórios'],ticketMin:'R$ 200',aceitaMei:true,online:true,areas:['moda','beleza','dropshipping'],desc:'Maior polo de moda do Brasil. +15 mil estabelecimentos em ~2km². Representantes vendem online com envio nacional.',dicas:'Visite na madrugada (4h–9h) para melhor atendimento. Terças e quintas têm maior variedade.'},
+  {nome:'25 de Março',cidade:'São Paulo – SP',emoji:'🛍️',especialidades:['Variedades','Importados','Embalagens','Brindes','Decoração'],ticketMin:'R$ 150',aceitaMei:true,online:true,areas:['moda','dropshipping','tecnologia','alimentacao','saude','beleza'],desc:'Polo de variedades e importados mais famoso do Brasil. Ideal para quem busca mix amplo com preço de atacado.',dicas:'Chegue cedo — movimento intenso após as 10h. Negocie à vista para descontos de 10–20%.'},
+  {nome:'Santa Ifigênia',cidade:'São Paulo – SP',emoji:'💻',especialidades:['Eletrônicos','Informática','Celulares','Componentes','Games'],ticketMin:'R$ 300',aceitaMei:true,online:true,areas:['tecnologia','dropshipping'],desc:'Centro eletrônico referência nacional. Distribuidores com preço abaixo do varejo e representantes para todo Brasil.',dicas:'Pesquise preços em pelo menos 3 lojas antes de fechar. Exija nota fiscal sempre.'},
   {nome:'Polo de Caruaru',cidade:'Caruaru – PE',emoji:'👕',especialidades:['Confecções','Moda popular','Uniformes'],ticketMin:'R$ 100',aceitaMei:true,online:false,areas:['moda'],desc:'Maior polo de confecções do Nordeste. Preços muito competitivos e pedido mínimo acessível para MEI.',dicas:'Concentrado na Feira da Sulanca — sábados são o dia principal. Ótimo para iniciantes com pouco capital.'},
   {nome:'Polo Joalheiro de Limeira',cidade:'Limeira – SP',emoji:'💍',especialidades:['Semijoias','Bijuterias','Folheados'],ticketMin:'R$ 250',aceitaMei:true,online:true,areas:['moda','beleza'],desc:'Capital nacional das semijoias. Mais de 400 fabricantes com venda direta e representantes online.',dicas:'Muitos fabricantes vendem pelo WhatsApp. Busque por "atacado semijoias Limeira" para fornecedores online.'},
   {nome:'Polo Calçadista de Franca',cidade:'Franca – SP',emoji:'👟',especialidades:['Calçados masculinos','Couro','Acessórios'],ticketMin:'R$ 400',aceitaMei:false,online:true,areas:['moda'],desc:'Capital do calçado masculino brasileiro. Fábricas vendem direto com qualidade premium.',dicas:'Exige CNPJ ativo (não MEI) para a maioria dos fornecedores. Pedido mínimo mais elevado.'},
-  {nome:'Feira da Madrugada',cidade:'São Paulo – SP',emoji:'🌙',especialidades:['Mix geral','Importados','Roupas','Acessórios','Utilidades'],ticketMin:'R$ 100',aceitaMei:true,online:false,areas:['moda','dropshipping'],desc:'Maior feira atacadista noturna do Brasil. Funciona das 22h às 6h. Preços muito competitivos.',dicas:'Leve dinheiro e sacolas próprias. Melhor custo-benefício em mix variado para revendedores iniciantes.'},
-  {nome:'Polo de Novo Hamburgo',cidade:'Novo Hamburgo – RS',emoji:'👡',especialidades:['Calçados femininos','Moda gaúcha','Couro'],ticketMin:'R$ 350',aceitaMei:false,online:true,areas:['moda'],desc:'Referência em calçados femininos e couro. Parte dos fabricantes aceita pedidos online com frete nacional.',dicas:'Visite durante a Couromoda (janeiro) para os melhores preços e lançamentos da temporada.'}
+  {nome:'Feira da Madrugada',cidade:'São Paulo – SP',emoji:'🌙',especialidades:['Mix geral','Importados','Roupas','Acessórios','Utilidades'],ticketMin:'R$ 100',aceitaMei:true,online:false,areas:['moda','dropshipping','alimentacao','beleza','construcao'],desc:'Maior feira atacadista noturna do Brasil. Funciona das 22h às 6h. Preços muito competitivos.',dicas:'Leve dinheiro e sacolas próprias. Melhor custo-benefício em mix variado para revendedores iniciantes.'},
+  {nome:'Polo de Novo Hamburgo',cidade:'Novo Hamburgo – RS',emoji:'👡',especialidades:['Calçados femininos','Moda gaúcha','Couro'],ticketMin:'R$ 350',aceitaMei:false,online:true,areas:['moda'],desc:'Referência em calçados femininos e couro. Parte dos fabricantes aceita pedidos online com frete nacional.',dicas:'Visite durante a Couromoda (janeiro) para os melhores preços e lançamentos da temporada.'},
+  {nome:'CEAGESP / Ceasa',cidade:'São Paulo – SP (e regionais)',emoji:'🥦',especialidades:['Hortifruti','Cereais','Laticínios','Peixes','Flores'],ticketMin:'R$ 150',aceitaMei:true,online:false,areas:['alimentacao'],desc:'Maior entreposto de abastecimento do Brasil. Funciona nas madrugadas — preços até 60% abaixo do varejo para insumos de restaurantes e marmitarias.',dicas:'Chegue entre 3h e 6h para melhor seleção. Leve caixa térmica para perecíveis. Aceita MEI com nota.'},
+  {nome:'Polo Atacadista de Duque de Caxias',cidade:'Duque de Caxias – RJ',emoji:'🏭',especialidades:['Químicos','Cosméticos','Higiene','Limpeza'],ticketMin:'R$ 300',aceitaMei:true,online:true,areas:['beleza','saude','alimentacao'],desc:'Polo industrial com distribuidoras de cosméticos, higiene e produtos de limpeza. Muitos fornecedores com venda online e representantes nacionais.',dicas:'Ótimo para quem busca cosméticos e insumos de beleza com preço de fábrica.'},
+  {nome:'Polo de Materiais de Construção — Região do ABC',cidade:'São Paulo – SP',emoji:'🧱',especialidades:['Cimento','Ferro','Tintas','Cerâmicas','Hidráulica'],ticketMin:'R$ 500',aceitaMei:false,online:true,areas:['construcao'],desc:'Concentração de distribuidoras e importadoras de materiais de construção no ABC Paulista. Representantes com cobertura nacional.',dicas:'Exige CNPJ ativo (ME ou acima). Negocie prazo de pagamento — 28/56 dias é padrão.'},
+  {nome:'Distrito das Farmácias — Rua Barão de Itapetininga',cidade:'São Paulo – SP',emoji:'💊',especialidades:['Medicamentos','Insumos farmacêuticos','Dermocosméticos','Equipamentos médicos'],ticketMin:'R$ 400',aceitaMei:false,online:true,areas:['saude'],desc:'Polo de distribuidoras de insumos farmacêuticos e produtos de saúde em SP. Exige CRF e CNPJ regularizado.',dicas:'Obrigatório ter responsável técnico (farmacêutico) para compra de insumos controlados.'}
 ];
 
 var NOMES_EXTRA={
@@ -1042,6 +1045,7 @@ function renderPolos(area){
 }
 
 /* ══ V3: NOMES EXTRAS ══ */
+var NOMES={
   alimentacao:['Distribuidora Central Alimentos Ltda','Atacadão Norte Comércio ME','Frigorífico Regional Nordeste Eireli','Insumos Culinários Brasil ME','Central do Sabor Distribuidora','Abastece Fácil Ltda','Grãos & Cia Atacado ME','Frigorífico Nordeste ME','Distribuidora Alimentos Boa Vista Ltda','Temperos Brasil Distribuidora Ltda','Asa Branca Alimentos ME','Distribuidora São Francisco Eireli'],
   moda:['Confecções do Nordeste Ltda','Atacado Moda Brasil ME','Fashion Distribuidora Eireli','Tecidos & Aviamentos Ltda','Roupa Fácil Atacado','Moda Regional Distribuidora ME','Confecção Sol Nascente ME','Têxtil Norte Ltda'],
   tecnologia:['Tech Distribuidora Ltda','Eletrônicos do Brasil ME','Insumos TI Nordeste Eireli','Computadores & Cia Ltda','Digital Store Atacado ME','InfoParts Distribuidora Ltda'],
