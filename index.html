@@ -406,6 +406,59 @@ footer span{color:var(--text2)}
   .stat-row{gap:7px}
   .map-wrap{height:290px}
 }
+
+/* ── V5: ANÁLISE IA ── */
+.ia-box{background:var(--bg2);border:1px solid rgba(0,212,170,.2);border-radius:var(--rl);padding:1.1rem 1.25rem;margin-bottom:1rem}
+.ia-header{display:flex;align-items:center;gap:10px;margin-bottom:.75rem}
+.ia-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0;animation:pulse 1.4s ease infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+.ia-title{font-size:13px;font-weight:600;color:var(--accent);font-family:'Syne',sans-serif}
+.ia-content{font-size:13px;color:var(--text2);line-height:1.75;white-space:pre-wrap}
+.ia-content h3{font-size:14px;font-weight:600;color:var(--text);font-family:'Syne',sans-serif;margin:1rem 0 .4rem}
+.ia-content strong{color:var(--text);font-weight:500}
+.ia-actions{display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap}
+.btn-ia{flex:1;min-width:140px;padding:11px;background:rgba(0,212,170,.1);border:1px solid rgba(0,212,170,.25);border-radius:var(--r);color:var(--accent);font-size:13px;font-weight:600;cursor:pointer;font-family:'Syne',sans-serif;transition:background .15s;touch-action:manipulation}
+.btn-ia:hover{background:rgba(0,212,170,.18)}
+.btn-ia:disabled{opacity:.5;cursor:not-allowed}
+.ia-saved{font-size:11px;color:var(--green);margin-top:.5rem;display:none}
+
+/* ── V4: POLOS COMPLETOS ── */
+.polo-card{background:var(--bg2);border:1px solid rgba(245,166,35,.2);border-radius:var(--rl);padding:1rem 1.2rem;margin-bottom:10px}
+.polo-card-header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px}
+.polo-card-nome{font-size:15px;font-weight:700;color:var(--text);font-family:'Syne',sans-serif}
+.polo-card-loc{font-size:12px;color:var(--amber);margin-top:2px;display:flex;align-items:center;gap:4px}
+.polo-card-badges{display:flex;flex-direction:column;gap:4px;align-items:flex-end;flex-shrink:0}
+.polo-card-desc{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:10px}
+.polo-card-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.polo-info-item{background:var(--bg3);border-radius:6px;padding:7px 9px}
+.polo-info-label{font-size:10px;color:var(--text3);margin-bottom:2px;text-transform:uppercase;letter-spacing:.4px;font-family:'Syne',sans-serif}
+.polo-info-val{font-size:12px;font-weight:500;color:var(--text)}
+.polo-dica{background:rgba(245,166,35,.05);border:1px solid rgba(245,166,35,.15);border-radius:6px;padding:8px 10px;font-size:11px;color:var(--amber);line-height:1.55;margin-bottom:8px}
+.polo-esp-list{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
+.polo-mapa-btn{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:6px 12px;background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.2);border-radius:6px;color:var(--amber);text-decoration:none;cursor:pointer;transition:background .15s;touch-action:manipulation}
+.polo-mapa-btn:hover{background:rgba(245,166,35,.2)}
+.polo-mini{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:9px 12px;margin-bottom:7px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:border-color .15s}
+.polo-mini:hover{border-color:rgba(245,166,35,.3)}
+.polo-mini-icon{font-size:20px;flex-shrink:0}
+.polo-mini-body{flex:1}
+.polo-mini-nome{font-size:13px;font-weight:500;color:var(--text);font-family:'Syne',sans-serif}
+.polo-mini-loc{font-size:11px;color:var(--text3)}
+
+/* fornecedores — links */
+.forn-links{display:flex;gap:6px;margin-top:7px;flex-wrap:wrap}
+.flink{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:5px 9px;border-radius:6px;text-decoration:none;cursor:pointer;transition:background .15s;touch-action:manipulation;border:1px solid}
+.flink-maps{background:rgba(0,153,255,.08);border-color:rgba(0,153,255,.2);color:var(--blue)}
+.flink-maps:hover{background:rgba(0,153,255,.16)}
+.flink-rfb{background:rgba(0,212,170,.07);border-color:rgba(0,212,170,.18);color:var(--accent)}
+.flink-rfb:hover{background:rgba(0,212,170,.15)}
+.flink-search{background:rgba(255,255,255,.05);border-color:var(--border2);color:var(--text2)}
+.flink-search:hover{background:rgba(255,255,255,.1)}
+.forn-disclaimer{font-size:10px;color:var(--text3);margin-top:5px;line-height:1.5}
+
+@media(max-width:480px){
+  .polo-card-grid{grid-template-columns:1fr}
+  .ia-actions{flex-direction:column}
+}
 </style>
 </head>
 <body>
@@ -536,28 +589,91 @@ footer span{color:var(--text2)}
 <!-- S4 — LOCALIZAÇÃO ADAPTATIVA -->
 <div id="s4" class="screen">
   <div class="step-bar"><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot active"></div><span class="step-label">5/5</span></div>
-  <h2 id="s4-title">Localização e raio</h2>
-  <p class="sub" id="s4-sub">Digite seu CEP para posicionar o mapa e calcular o mercado local.</p>
+  <h2 id="s4-title">Sua localização</h2>
+  <p class="sub" id="s4-sub">Informe seu CEP ou selecione seu estado para mapear o mercado na sua região.</p>
+
+  <!-- TABS DE LOCALIZAÇÃO -->
+  <div style="display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:1rem">
+    <button class="tab-btn active" id="loc-tab-cep" onclick="setLocTab('cep')" style="font-size:12px;padding:8px 14px">Por CEP</button>
+    <button class="tab-btn" id="loc-tab-uf" onclick="setLocTab('uf')" style="font-size:12px;padding:8px 14px">Por estado</button>
+  </div>
+
+  <!-- BLOCO CEP -->
   <div id="s4-cep-block">
     <div class="inp-row">
       <input type="text" id="cep-input" placeholder="00000-000" maxlength="9" oninput="fmtCep(this)" onkeydown="if(event.key==='Enter')buscarCep()">
       <button class="btn-search" onclick="buscarCep()">Localizar</button>
     </div>
     <div id="cep-result" class="ibox" style="display:none"><span id="cep-icon">📍</span><span id="cep-txt"></span></div>
-    <div class="range-row" id="raio-block">
-      <label>Raio de busca</label>
-      <input type="range" min="10" max="300" value="50" step="10" id="raio-in" oninput="document.getElementById('rv').textContent=this.value+'km'">
-      <span class="range-val" id="rv">50km</span>
+    <div style="font-size:11px;color:var(--text3);margin-bottom:.75rem;margin-top:-.25rem">
+      Não sabe seu CEP? <span style="color:var(--blue);cursor:pointer;text-decoration:underline" onclick="setLocTab('uf')">Selecione por estado →</span>
     </div>
   </div>
+
+  <!-- BLOCO UF -->
+  <div id="s4-uf-block" style="display:none">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem">
+      <div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:5px;font-family:'Syne',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.4px">Estado</div>
+        <select id="uf-select" onchange="selecionarUF(this.value)" style="width:100%;padding:10px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:14px;font-family:'Inter',sans-serif">
+          <option value="">Selecione o estado</option>
+          <option value="AC">Acre</option><option value="AL">Alagoas</option>
+          <option value="AP">Amapá</option><option value="AM">Amazonas</option>
+          <option value="BA">Bahia</option><option value="CE">Ceará</option>
+          <option value="DF">Distrito Federal</option><option value="ES">Espírito Santo</option>
+          <option value="GO">Goiás</option><option value="MA">Maranhão</option>
+          <option value="MT">Mato Grosso</option><option value="MS">Mato Grosso do Sul</option>
+          <option value="MG">Minas Gerais</option><option value="PA">Pará</option>
+          <option value="PB">Paraíba</option><option value="PR">Paraná</option>
+          <option value="PE">Pernambuco</option><option value="PI">Piauí</option>
+          <option value="RJ">Rio de Janeiro</option><option value="RN">Rio Grande do Norte</option>
+          <option value="RS">Rio Grande do Sul</option><option value="RO">Rondônia</option>
+          <option value="RR">Roraima</option><option value="SC">Santa Catarina</option>
+          <option value="SP">São Paulo</option><option value="SE">Sergipe</option>
+          <option value="TO">Tocantins</option>
+        </select>
+      </div>
+      <div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:5px;font-family:'Syne',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.4px">Cidade (opcional)</div>
+        <input type="text" id="cidade-input" placeholder="Ex: Fortaleza" style="width:100%;padding:10px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:14px" oninput="atualizarCidade(this.value)">
+      </div>
+    </div>
+    <div id="uf-result" class="ibox" style="display:none"><span id="uf-icon">📍</span><span id="uf-txt"></span></div>
+  </div>
+
+  <!-- BLOCO DIGITAL -->
   <div id="s4-digital-block" style="display:none">
-    <div class="digital-notice">🌐 No modo digital o raio geográfico não limita seus fornecedores. Informe o CEP apenas para calcular o mercado endereçável da sua região.</div>
-    <div class="inp-row">
-      <input type="text" id="cep-input-dig" placeholder="00000-000" maxlength="9" oninput="fmtCepDig(this)" onkeydown="if(event.key==='Enter')buscarCepDig()">
-      <button class="btn-search" onclick="buscarCepDig()">Localizar</button>
+    <div class="digital-notice">🌐 Modo digital — o raio não limita seus fornecedores. O estado serve para estimar o mercado local.</div>
+    <div style="margin-bottom:1rem">
+      <div style="font-size:11px;color:var(--text3);margin-bottom:5px;font-family:'Syne',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.4px">Seu estado</div>
+      <select id="uf-select-dig" onchange="selecionarUFDig(this.value)" style="width:100%;padding:10px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:14px;font-family:'Inter',sans-serif">
+        <option value="">Selecione o estado</option>
+        <option value="AC">Acre</option><option value="AL">Alagoas</option>
+        <option value="AP">Amapá</option><option value="AM">Amazonas</option>
+        <option value="BA">Bahia</option><option value="CE">Ceará</option>
+        <option value="DF">Distrito Federal</option><option value="ES">Espírito Santo</option>
+        <option value="GO">Goiás</option><option value="MA">Maranhão</option>
+        <option value="MT">Mato Grosso</option><option value="MS">Mato Grosso do Sul</option>
+        <option value="MG">Minas Gerais</option><option value="PA">Pará</option>
+        <option value="PB">Paraíba</option><option value="PR">Paraná</option>
+        <option value="PE">Pernambuco</option><option value="PI">Piauí</option>
+        <option value="RJ">Rio de Janeiro</option><option value="RN">Rio Grande do Norte</option>
+        <option value="RS">Rio Grande do Sul</option><option value="RO">Rondônia</option>
+        <option value="RR">Roraima</option><option value="SC">Santa Catarina</option>
+        <option value="SP">São Paulo</option><option value="SE">Sergipe</option>
+        <option value="TO">Tocantins</option>
+      </select>
     </div>
     <div id="cep-result-dig" class="ibox" style="display:none"><span id="cep-icon-dig">📍</span><span id="cep-txt-dig"></span></div>
   </div>
+
+  <!-- RAIO (só para modo local/nacional/hibrido) -->
+  <div class="range-row" id="raio-block" style="margin-top:.5rem">
+    <label>Raio de busca</label>
+    <input type="range" min="10" max="300" value="50" step="10" id="raio-in" oninput="document.getElementById('rv').textContent=this.value+'km'">
+    <span class="range-val" id="rv">50km</span>
+  </div>
+
   <button class="btn-p" id="btn-buscar" onclick="iniciarBusca()" disabled>Analisar mercado →</button>
   <button class="btn-s" onclick="go('s3')">← Voltar</button>
 </div>
@@ -583,9 +699,9 @@ footer span{color:var(--text2)}
   <p class="sub" id="res-sub"></p>
 
   <div class="stat-row">
-    <div class="stat-box"><div class="stat-v" id="st-forn">0</div><div class="stat-l">Fornecedores</div></div>
-    <div class="stat-box"><div class="stat-v" id="st-raio">—</div><div class="stat-l">Raio</div></div>
-    <div class="stat-box"><div class="stat-v" id="st-mercado">—</div><div class="stat-l">Mercado / mês</div></div>
+    <div class="stat-box"><div class="stat-v" id="st-forn">0</div><div class="stat-l">Fornecedores mapeados</div></div>
+    <div class="stat-box"><div class="stat-v" id="st-raio">—</div><div class="stat-l">Raio de atuação</div></div>
+    <div class="stat-box"><div class="stat-v" id="st-mercado">—</div><div class="stat-l">Mercado potencial/mês</div></div>
   </div>
 
   <div class="tab-bar">
@@ -596,33 +712,39 @@ footer span{color:var(--text2)}
     <button class="tab-btn" onclick="setTab('polos',this)">Polos V4 ✦</button>
     <button class="tab-btn" onclick="setTab('cnpj',this)">Consulta CNPJ</button>
     <button class="tab-btn" onclick="setTab('mapa',this)">Mapa</button>
+    <button class="tab-btn" onclick="setTab('ia',this)">Análise IA ✦</button>
   </div>
 
   <div id="tab-nichos"></div>
 
-  <!-- ABA INTELIGÊNCIA V2 -->
+  <!-- ABA INTELIGÊNCIA V2/V3 -->
   <div id="tab-inteligencia" style="display:none">
-    <div class="v2-section-title">Indicadores de mercado</div>
+
+    <!-- SEÇÃO NACIONAL -->
+    <div class="v2-section-title">🇧🇷 Panorama nacional — nível Brasil</div>
+    <div id="intel-nacional"></div>
+
+    <div style="border-top:1px solid var(--border);margin:1.25rem 0 1rem"></div>
+
+    <!-- SEÇÃO LOCAL -->
+    <div class="v2-section-title" id="intel-local-title">📍 Análise local — sua região</div>
+    <div class="v2-section-title" style="margin-top:0;color:var(--text3);font-size:11px;letter-spacing:0;text-transform:none;font-weight:400;margin-bottom:.75rem" id="intel-local-sub"></div>
+
+    <div class="v2-section-title">Indicadores da sua região</div>
     <div class="intel-grid" id="intel-gauges"></div>
 
-    <div class="v2-section-title">Mercado endereçável</div>
+    <div class="v2-section-title">Mercado endereçável local</div>
     <div class="market-box" id="market-box"></div>
 
-    <div class="v2-section-title">Índice de saturação por nicho</div>
+    <div class="v2-section-title">Saturação por nicho na região</div>
     <div id="sat-bars"></div>
 
     <div class="v2-section-title">Riscos regulatórios</div>
     <div class="risk-grid" id="risk-grid"></div>
 
-    <div class="v2-section-title">Critérios do score de confiabilidade</div>
-    <div class="market-box" id="score-criteria">
-      <div class="market-row"><span class="market-k">Tempo de operação</span><span class="market-v">+ peso no score</span></div>
-      <div class="market-row"><span class="market-k">Porte declarado (MEI/ME/EPP/Ltda)</span><span class="market-v">+ peso no score</span></div>
-      <div class="market-row"><span class="market-k">Consistência CNAE × atividade</span><span class="market-v">+ peso no score</span></div>
-      <div class="market-row"><span class="market-k">Situação cadastral Receita Federal</span><span class="market-v">+ peso no score</span></div>
-      <div class="market-row"><span class="market-k">Cobertura geográfica no raio</span><span class="market-v">+ peso no score</span></div>
-    </div>
-    <div class="ibox warn" style="margin-top:8px">⚠️ Score calculado com dados da base CNPJ + heurísticas internas. Em V3: integração com cartórios (protestos) e Google Maps API para avaliações reais.</div>
+    <div class="v2-section-title">Score de confiabilidade — critérios</div>
+    <div class="market-box" id="score-criteria"></div>
+    <div class="ibox warn" style="margin-top:8px">⚠️ Score baseado em heurísticas — tempo de operação, porte, situação RFB, consistência CNAE e proximidade. Para análise aprofundada por UF use a aba <strong>Análise IA ✦</strong>.</div>
   </div>
 
   <div id="tab-fornecedores" style="display:none"></div>
@@ -640,6 +762,66 @@ footer span{color:var(--text2)}
     <div id="cnpj-loading" style="display:none" class="ibox"><div class="spin"></div>&nbsp;Consultando Receita Federal...</div>
     <div id="cnpj-error" style="display:none" class="ibox err"></div>
     <div id="cnpj-result"></div>
+  </div>
+
+  <div id="tab-ia" style="display:none">
+    <div class="v2-section-title">Análise de mercado com IA</div>
+    <p class="sub" style="margin-bottom:1rem">Gere uma análise completa e personalizada — visão nacional ou aprofundada por UF.</p>
+
+    <div id="ia-area-info" class="ibox" style="margin-bottom:1rem;font-size:13px"></div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem" id="ia-config">
+      <div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:5px;font-family:'Syne',sans-serif;font-weight:600;letter-spacing:.4px;text-transform:uppercase">Escopo</div>
+        <select id="ia-escopo" style="width:100%;padding:9px 11px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:13px;font-family:'Inter',sans-serif">
+          <option value="nacional">🇧🇷 Brasil — panorama nacional</option>
+          <option value="uf">📍 Por estado (UF)</option>
+        </select>
+      </div>
+      <div id="ia-uf-wrap">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:5px;font-family:'Syne',sans-serif;font-weight:600;letter-spacing:.4px;text-transform:uppercase">Estado</div>
+        <select id="ia-uf" style="width:100%;padding:9px 11px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:13px;font-family:'Inter',sans-serif">
+          <option value="">Selecione o UF</option>
+          <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+          <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+          <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+          <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+          <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+          <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+          <option>SP</option><option>SE</option><option>TO</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.25rem">
+      <div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:5px;font-family:'Syne',sans-serif;font-weight:600;letter-spacing:.4px;text-transform:uppercase">Profundidade</div>
+        <select id="ia-prof" style="width:100%;padding:9px 11px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:13px;font-family:'Inter',sans-serif">
+          <option value="completa">Completa (8 seções)</option>
+          <option value="resumida">Resumida (4 seções)</option>
+          <option value="entrada">Foco: estratégia de entrada</option>
+          <option value="fornecedores">Foco: fornecedores e CNAEs</option>
+        </select>
+      </div>
+      <div style="display:flex;align-items:flex-end">
+        <button class="btn-p" onclick="gerarAnaliseIA()" style="margin-bottom:0">Gerar análise →</button>
+      </div>
+    </div>
+
+    <div id="ia-result" style="display:none" class="ia-box">
+      <div class="ia-header"><div class="ia-dot" id="ia-dot"></div><div class="ia-title" id="ia-title">Gerando análise...</div></div>
+      <div class="ia-content" id="ia-content"></div>
+      <div class="ia-actions">
+        <button class="btn-ia" id="btn-salvar-ia" onclick="salvarAnaliseIA()">💾 Salvar no histórico</button>
+        <button class="btn-ia" onclick="gerarAnaliseIA()" style="background:rgba(0,153,255,.1);border-color:rgba(0,153,255,.25);color:var(--blue)">↺ Regenerar</button>
+        <button class="btn-ia" onclick="copiarAnaliseIA()" style="background:rgba(168,85,247,.1);border-color:rgba(168,85,247,.25);color:var(--purple)">📋 Copiar texto</button>
+      </div>
+      <div class="ia-saved" id="ia-saved">✓ Análise salva no histórico</div>
+    </div>
+
+    <div style="text-align:center;margin-top:.5rem;font-size:11px;color:var(--text3)">
+      Powered by Claude Sonnet 4 · Análise personalizada para empreendedores brasileiros
+    </div>
   </div>
 
   <div id="tab-mapa" style="display:none">
@@ -673,6 +855,137 @@ footer span{color:var(--text2)}
 /* ══ STATE ══ */
 var S={perfil:'',capital:'',area:'alimentacao',modo:'local',cep:'',cidade:'',uf:'',lat:-15.78,lng:-47.93,raio:50,popEstimada:0};
 var S_MODO='local';
+
+/* ══ COORDENADAS POR UF (fallback quando CEP não tem coords) ══ */
+var UF_COORDS={
+  AC:[-9.97,-67.81],AL:[-9.57,-36.78],AP:[0.03,-51.07],AM:[-3.10,-60.02],
+  BA:[-12.97,-38.50],CE:[-3.72,-38.54],DF:[-15.78,-47.93],ES:[-20.32,-40.34],
+  GO:[-16.68,-49.26],MA:[-2.53,-44.30],MT:[-15.60,-56.10],MS:[-20.44,-54.65],
+  MG:[-19.92,-43.94],PA:[-1.46,-48.50],PB:[-7.12,-34.86],PR:[-25.43,-49.27],
+  PE:[-8.05,-34.88],PI:[-5.09,-42.80],RJ:[-22.91,-43.17],RN:[-5.80,-35.21],
+  RS:[-30.03,-51.23],RO:[-8.76,-63.90],RR:[2.82,-60.67],SC:[-27.60,-48.55],
+  SP:[-23.55,-46.63],SE:[-10.91,-37.07],TO:[-10.25,-48.32]
+};
+
+/* ══ DADOS NACIONAIS POR ÁREA (nível Brasil) ══ */
+var INTEL_BRASIL={
+  alimentacao:{
+    mercadoTotal:'R$ 2,1 trilhões/ano',
+    crescimento:'+8,4% ao ano (IBGE 2023)',
+    ticketMedio:'R$ 38–85 (varia: delivery vs restaurante)',
+    concorrencia:'Alta — 6,4 milhões de estabelecimentos no Brasil',
+    penetracao:'100% da população consome',
+    cnaes:[
+      {cod:'4639-7',desc:'Comércio atacadista de produtos alimentícios em geral'},
+      {cod:'5611-2',desc:'Restaurantes e similares'},
+      {cod:'5620-1',desc:'Fornecimento de alimentos preparados (marmitaria)'},
+      {cod:'1091-1',desc:'Fabricação de produtos de panificação e confeitaria'}
+    ],
+    estrategia:'Nichos de menor concorrência: alimentação saudável, fit e sem glúten crescem acima de 20% ao ano. Delivery tem barreira de entrada mínima — CAC recuperado em 2–3 meses com operação enxuta.',
+    forn_destaque:['CEAGESP (SP)','Makro Atacadista','Frubana','Atacadão','Distribuidoras regionais de CNAE 4639-7']
+  },
+  moda:{
+    mercadoTotal:'R$ 185 bilhões/ano',
+    crescimento:'+6,2% ao ano (ABVTEX 2023)',
+    ticketMedio:'R$ 80–350 (varejo popular vs premium)',
+    concorrencia:'Média — concentrada em SP, RJ, CE',
+    penetracao:'95% da população compra moda ao menos 1x/mês',
+    cnaes:[
+      {cod:'4641-9',desc:'Comércio atacadista de vestuário e acessórios'},
+      {cod:'1411-8',desc:'Confecção de roupas íntimas e trajes'},
+      {cod:'4642-7',desc:'Comércio atacadista de artigos do vestuário e complementos'}
+    ],
+    estrategia:'Moda circular (brechó) e moda fitness têm crescimento de 30%+/ano. Brás e Bom Retiro atendem todo o Brasil. E-commerce via Instagram/TikTok tem CAC muito baixo para segmentos nichados.',
+    forn_destaque:['Polo do Brás (SP)','Moda Center Caruaru (PE)','Polo Bom Retiro (SP)','Feira da Madrugada (SP)','Confecções atacado online']
+  },
+  tecnologia:{
+    mercadoTotal:'R$ 92 bilhões/ano (serviços + revenda)',
+    crescimento:'+14% ao ano (IDC Brasil 2023)',
+    ticketMedio:'R$ 150–800 (manutenção) · R$ 1.500–8.000 (projetos TI)',
+    concorrencia:'Baixa a média — demanda supera oferta de qualidade',
+    penetracao:'87% dos brasileiros têm smartphone (Ipea 2023)',
+    cnaes:[
+      {cod:'9521-5',desc:'Reparação e manutenção de equipamentos de informática'},
+      {cod:'6201-5',desc:'Desenvolvimento de programas de computador sob encomenda'},
+      {cod:'4751-2',desc:'Comércio varejista especializado de equipamentos'},
+      {cod:'6202-3',desc:'Desenvolvimento e licenciamento de programas customizáveis'}
+    ],
+    estrategia:'Manutenção de celulares tem retorno em 90 dias. TI para PMEs tem MRR previsível — contrato de R$800–1.500/mês por cliente. Baixíssima necessidade de estoque.',
+    forn_destaque:['Santa Ifigênia (SP)','Mercado Livre B2B','Dell Parceiros','Intelbras Revendas','Distribuidoras de peças eletrônicas']
+  },
+  beleza:{
+    mercadoTotal:'R$ 117 bilhões/ano',
+    crescimento:'+10,5% ao ano (ABIHPEC 2023)',
+    ticketMedio:'R$ 60–250 (estética) · R$ 25–120 (cosméticos)',
+    concorrencia:'Alta em grandes centros · Média no interior',
+    penetracao:'Brasil é o 4º maior mercado mundial de beleza',
+    cnaes:[
+      {cod:'9602-5',desc:'Serviços de estética e outros serviços de cuidados com a beleza'},
+      {cod:'4772-5',desc:'Comércio varejista de cosméticos, produtos de perfumaria'},
+      {cod:'4771-7',desc:'Comércio varejista de produtos farmacêuticos'}
+    ],
+    estrategia:'Studio de sobrancelha e depilação tem menor ticket mas altíssima recorrência (cliente retorna a cada 15–21 dias). Cosméticos naturais e veganos crescem 28%/ano e têm margem acima de 60%.',
+    forn_destaque:['Polo de Duque de Caxias (RJ)','Natura Distribuidores','Beauty Buy','Shopee Atacado Beleza','TotalBeleza']
+  },
+  construcao:{
+    mercadoTotal:'R$ 421 bilhões/ano (PIB construção civil)',
+    crescimento:'+4,7% ao ano (CBIC 2023)',
+    ticketMedio:'R$ 400–2.500 (materiais por compra)',
+    concorrencia:'Média — mercado fragmentado e regional',
+    penetracao:'Déficit habitacional de 8 milhões de unidades gera demanda constante',
+    cnaes:[
+      {cod:'4744-0',desc:'Comércio varejista de materiais de construção em geral'},
+      {cod:'4741-5',desc:'Comércio varejista de ferragens e ferramentas'},
+      {cod:'4742-3',desc:'Comércio varejista de material elétrico'},
+      {cod:'4743-1',desc:'Comércio varejista de vidros'}
+    ],
+    estrategia:'Acabamentos premium (porcelanato, mármore sintético) têm margem 3x maior que materiais básicos. Parcerias com construtoras geram pedidos recorrentes. Foco em obras de reforma cresce 12%/ano.',
+    forn_destaque:['Polo ABC Paulista (SP)','Leroy Merlin Atacado','Votorantim Revendas','Elgin Distribuidores','Cerâmicas do Nordeste']
+  },
+  saude:{
+    mercadoTotal:'R$ 343 bilhões/ano (saúde suplementar + privada)',
+    crescimento:'+9,8% ao ano (ANS 2023)',
+    ticketMedio:'R$ 120–600 (estética clínica) · R$ 80–250 (suplementos)',
+    concorrencia:'Média — regulação cria barreira de entrada natural',
+    penetracao:'47% dos brasileiros usam algum suplemento (Vigitel 2023)',
+    cnaes:[
+      {cod:'8650-0',desc:'Atividades de profissionais da área de saúde'},
+      {cod:'4771-7',desc:'Comércio varejista de produtos farmacêuticos'},
+      {cod:'4773-3',desc:'Comércio varejista de artigos médicos e ortopédicos'}
+    ],
+    estrategia:'Suplementação esportiva cresce 22%/ano — e-commerce viável com CAC baixo via influenciadores fitness. Clínicas de estética têm ticket alto e recorrência garantida por protocolos de manutenção.',
+    forn_destaque:['Vimer Distribuidora','Ultrafarma Atacado','Shopee Saúde','Integralmedica Revendas','Distribuidoras de insumos estéticos']
+  },
+  dropshipping:{
+    mercadoTotal:'R$ 45 bilhões/ano (e-commerce via dropshipping)',
+    crescimento:'+32% ao ano (E-Commerce Brasil 2023)',
+    ticketMedio:'R$ 60–180 (produto médio)',
+    concorrencia:'Alta — mas nichos específicos têm < 50 concorrentes diretos',
+    penetracao:'76% dos brasileiros compram online (NielsenIQ 2023)',
+    cnaes:[
+      {cod:'4789-0',desc:'Comércio varejista de outros produtos não especificados'},
+      {cod:'6204-0',desc:'Consultoria em tecnologia da informação'},
+      {cod:'4999-9',desc:'Outros serviços de entrega de produtos'}
+    ],
+    estrategia:'Nicho + produto exclusivo = margem acima de 40%. Produtos de solução de problema (ex: ergonômicos, organização) têm melhor conversão. Foco em Shopee e Mercado Livre para começar, Shopify para escalar.',
+    forn_destaque:['Dropi','Shopee Fornecedores','Alibaba Brasil','Importações Americanas','DSers/Oberlo']
+  },
+  infoproduto:{
+    mercadoTotal:'R$ 28 bilhões/ano (mercado EAD + infoprodutos)',
+    crescimento:'+41% ao ano (ABED 2023)',
+    ticketMedio:'R$ 97–2.400 (curso básico a mentoria premium)',
+    concorrencia:'Baixa a média — 95% do mercado está em nichos pouco explorados',
+    penetracao:'37 milhões de brasileiros fizeram algum curso online em 2023',
+    cnaes:[
+      {cod:'8599-6',desc:'Outras atividades de ensino não especificadas'},
+      {cod:'6201-5',desc:'Desenvolvimento de programas de computador'},
+      {cod:'7490-1',desc:'Outras atividades profissionais, científicas e técnicas'}
+    ],
+    estrategia:'Curso de nicho específico (ex: "Excel para RH", "Confeitaria árabe") converte 5–8x mais que cursos genéricos. Lançamento via PLR em 90 dias. MRR com membership a partir do 2º lançamento.',
+    forn_destaque:['Hotmart','Eduzz','Monetizze','Teachable','Kiwify']
+  }
+};
+
 var fornecedores=[];
 var mapObj=null,circleObj=null,pinLayer=null,heatLayer=null;
 var layerMode='pins';
@@ -912,6 +1225,78 @@ function selModo(btn,modo){
   S.modo=modo;
 }
 
+/* ══ LOCALIZAÇÃO — TABS CEP / UF ══ */
+var LOC_TAB = 'cep'; // 'cep' ou 'uf'
+
+function setLocTab(tab){
+  LOC_TAB = tab;
+  var isDigital = (S_MODO==='digital'||S.area==='infoproduto'||S.area==='dropshipping');
+  if(isDigital) return; // digital tem bloco próprio
+  document.getElementById('s4-cep-block').style.display = tab==='cep' ? 'block' : 'none';
+  document.getElementById('s4-uf-block').style.display  = tab==='uf'  ? 'block' : 'none';
+  document.getElementById('loc-tab-cep').classList.toggle('active', tab==='cep');
+  document.getElementById('loc-tab-uf').classList.toggle('active',  tab==='uf');
+  // Se já tem UF selecionado ao trocar de tab, habilitar botão
+  if(tab==='uf' && S.uf){
+    document.getElementById('btn-buscar').disabled = false;
+  }
+}
+
+var CIDADES_UF = {
+  AC:'Rio Branco',AL:'Maceió',AP:'Macapá',AM:'Manaus',BA:'Salvador',
+  CE:'Fortaleza',DF:'Brasília',ES:'Vitória',GO:'Goiânia',MA:'São Luís',
+  MT:'Cuiabá',MS:'Campo Grande',MG:'Belo Horizonte',PA:'Belém',
+  PB:'João Pessoa',PR:'Curitiba',PE:'Recife',PI:'Teresina',
+  RJ:'Rio de Janeiro',RN:'Natal',RS:'Porto Alegre',RO:'Porto Velho',
+  RR:'Boa Vista',SC:'Florianópolis',SP:'São Paulo',SE:'Aracaju',TO:'Palmas'
+};
+
+function selecionarUF(uf){
+  if(!uf) return;
+  S.uf = uf;
+  S.cidade = document.getElementById('cidade-input').value.trim() || CIDADES_UF[uf] || uf;
+  var coords = UF_COORDS[uf];
+  if(coords){ S.lat = coords[0]; S.lng = coords[1]; }
+  var cidLower = S.cidade.toLowerCase();
+  S.popEstimada = IBGE_POP[cidLower] || estimarPop(S.cidade);
+  var elR = document.getElementById('uf-result');
+  elR.style.display = 'flex';
+  elR.className = 'ibox ok';
+  document.getElementById('uf-icon').textContent = '📍';
+  document.getElementById('uf-txt').textContent = S.cidade + ' – ' + uf + ' · Pop. ~' + fmtNum(S.popEstimada);
+  document.getElementById('btn-buscar').disabled = false;
+}
+
+function atualizarCidade(val){
+  var uf = (document.getElementById('uf-select')||{}).value || S.uf;
+  if(!uf) return;
+  S.cidade = val.trim() || CIDADES_UF[uf] || uf;
+  if(val.trim()){
+    var cidLower = val.trim().toLowerCase();
+    S.popEstimada = IBGE_POP[cidLower] || estimarPop(val.trim());
+    var elR = document.getElementById('uf-result');
+    elR.style.display = 'flex';
+    elR.className = 'ibox ok';
+    document.getElementById('uf-icon').textContent = '📍';
+    document.getElementById('uf-txt').textContent = val.trim() + ' – ' + uf + ' · Pop. ~' + fmtNum(S.popEstimada);
+  }
+}
+
+function selecionarUFDig(uf){
+  if(!uf) return;
+  S.uf = uf;
+  S.cidade = CIDADES_UF[uf] || uf;
+  var coords = UF_COORDS[uf];
+  if(coords){ S.lat = coords[0]; S.lng = coords[1]; }
+  S.popEstimada = estimarPop(S.cidade);
+  var elR = document.getElementById('cep-result-dig');
+  elR.style.display = 'flex';
+  elR.className = 'ibox ok';
+  document.getElementById('cep-icon-dig').textContent = '📍';
+  document.getElementById('cep-txt-dig').textContent = S.cidade + ' – ' + uf;
+  document.getElementById('btn-buscar').disabled = false;
+}
+
 function irParaLocalizacao(){
   var isDigital=(S_MODO==='digital'||S.area==='infoproduto'||S.area==='dropshipping');
   var s4title=document.getElementById('s4-title');
@@ -919,18 +1304,32 @@ function irParaLocalizacao(){
   var cepBlock=document.getElementById('s4-cep-block');
   var digBlock=document.getElementById('s4-digital-block');
   var btnBuscar=document.getElementById('btn-buscar');
+  var ufBlock = document.getElementById('s4-uf-block');
+  var raioBlock = document.getElementById('raio-block');
+  var locTabCep = document.getElementById('loc-tab-cep');
+  var locTabUf  = document.getElementById('loc-tab-uf');
   if(isDigital){
     s4title.textContent='Sua região de referência';
-    s4sub.textContent='No modo digital não há barreira territorial. O CEP serve apenas para calcular o mercado local.';
+    s4sub.textContent='No modo digital não há barreira territorial. Selecione seu estado para estimar o mercado local.';
     cepBlock.style.display='none';
+    if(ufBlock) ufBlock.style.display='none';
     digBlock.style.display='block';
+    if(raioBlock) raioBlock.style.display='none';
+    if(locTabCep) locTabCep.style.display='none';
+    if(locTabUf)  locTabUf.style.display='none';
     btnBuscar.disabled=false;
   } else {
-    s4title.textContent='Localização e raio';
-    s4sub.textContent='Digite seu CEP para posicionar o mapa e calcular o mercado na sua região.';
-    cepBlock.style.display='block';
+    s4title.textContent='Sua localização';
+    s4sub.textContent='Informe seu CEP ou selecione seu estado para mapear o mercado na sua região.';
     digBlock.style.display='none';
-    btnBuscar.disabled=true;
+    if(raioBlock) raioBlock.style.display='flex';
+    if(locTabCep) locTabCep.style.display='block';
+    if(locTabUf)  locTabUf.style.display='block';
+    // Mostrar tab ativo
+    cepBlock.style.display = LOC_TAB==='cep' ? 'block' : 'none';
+    if(ufBlock) ufBlock.style.display = LOC_TAB==='uf' ? 'block' : 'none';
+    // Habilitar botão se já tem localização
+    btnBuscar.disabled = !(S.uf || S.cidade);
   }
   go('s4');
 }
@@ -943,7 +1342,9 @@ function fmtCepDig(inp){
 }
 
 async function buscarCepDig(){
-  var raw=document.getElementById('cep-input-dig').value.replace(/\D/g,'');
+  // Substituído por selecionarUFDig no modo digital
+  return;
+  var raw='';
   if(raw.length<8) return;
   var el=document.getElementById('cep-result-dig');
   var txt=document.getElementById('cep-txt-dig');
@@ -951,13 +1352,17 @@ async function buscarCepDig(){
   el.style.display='flex'; el.className='ibox';
   icon.textContent=''; txt.innerHTML='<span class="spin"></span>&nbsp;Buscando...';
   try{
-    var r=await fetch('https://brasilapi.com.br/api/cep/v2/'+raw);
+    var r=await fetch('/api/cep?cep='+raw);
     if(!r.ok) throw new Error('CEP não encontrado');
     var d=await r.json();
+    if(d.error) throw new Error(d.error);
     S.cep=raw; S.cidade=d.city||''; S.uf=d.state||'';
     if(d.location&&d.location.coordinates&&d.location.coordinates.latitude){
       S.lat=parseFloat(d.location.coordinates.latitude);
       S.lng=parseFloat(d.location.coordinates.longitude);
+    } else {
+      var ufCoords=UF_COORDS[S.uf];
+      if(ufCoords){S.lat=ufCoords[0];S.lng=ufCoords[1];}
     }
     var cidLower=(S.cidade||'').toLowerCase();
     S.popEstimada=IBGE_POP[cidLower]||estimarPop(S.cidade);
@@ -1010,33 +1415,50 @@ function renderDigital(area){
 function renderPolos(area){
   var el=document.getElementById('tab-polos');
   var polosArea=POLOS.filter(function(p){return p.areas.indexOf(S.area)>=0});
-  var html='<div class="ibox warn" style="margin-bottom:1rem">⚡ Prévia do V4 — Polos Comerciais. Em breve com perfis completos, rotas e integração no mapa.</div>';
+  var html='';
   if(!polosArea.length){
-    html+='<div class="empty-hist"><span class="eicon">🏬</span><p>Nenhum polo mapeado para esta área ainda.<br>Em breve: todos os polos do Brasil por nicho.</p></div>';
+    html+='<div class="empty-hist"><span class="eicon">🏬</span><p>Não há polo atacadista físico mapeado para '+area.label+'.<br>Esta área opera principalmente via fornecedores digitais — veja a aba Digital 🌐.</p></div>';
   } else {
-    html+='<div class="v2-section-title">Polos relevantes para '+area.label+' <span class="v4-tag">V4</span></div>';
+    html+='<div class="v2-section-title">'+polosArea.length+' polo'+(polosArea.length>1?'s':'')+' relevante'+(polosArea.length>1?'s':'')+' para '+area.label+'</div>';
     polosArea.forEach(function(p){
-      html+='<div class="polo-preview-card">';
-      html+='<div class="polo-header">';
-      html+='<div><div class="polo-nome">'+p.emoji+' '+p.nome+'</div><div class="polo-loc">📍 '+p.cidade+'</div></div>';
-      html+='<div style="text-align:right">';
-      html+=(p.aceitaMei?'<span class="bdg bt" style="display:block;margin-bottom:3px">MEI ✓</span>':'<span class="bdg br" style="display:block;margin-bottom:3px">CNPJ req.</span>');
-      html+=(p.online?'<span class="bdg bb">Online</span>':'<span class="bdg bgr">Presencial</span>');
+      var mapsQ=encodeURIComponent(p.nome+' '+p.cidade);
+      var mapsArea=encodeURIComponent(area.label+' atacado '+p.cidade);
+      html+='<div class="polo-card">';
+      html+='<div class="polo-card-header">';
+      html+='<div>';
+      html+='<div class="polo-card-nome">'+p.emoji+' '+p.nome+'</div>';
+      html+='<div class="polo-card-loc">📍 '+p.cidade+'</div>';
+      html+='</div>';
+      html+='<div class="polo-card-badges">';
+      html+=(p.aceitaMei?'<span class="bdg bt">MEI aceito</span>':'<span class="bdg br">CNPJ obrig.</span>');
+      html+=(p.online?'<span class="bdg bb">Vende online</span>':'<span class="bdg bgr">Só presencial</span>');
       html+='</div></div>';
-      html+='<div class="polo-desc">'+p.desc+'</div>';
-      html+='<div class="polo-stats">';
-      html+='<span class="polo-stat">💰 Pedido mín. <strong>'+p.ticketMin+'</strong></span>';
-      p.especialidades.slice(0,3).forEach(function(e){html+='<span class="polo-stat">· '+e+'</span>'});
+      html+='<div class="polo-card-desc">'+p.desc+'</div>';
+      html+='<div class="polo-esp-list">';
+      p.especialidades.forEach(function(e){html+='<span class="bdg bgr">'+e+'</span>'});
       html+='</div>';
-      html+='<div style="margin-top:8px;font-size:11px;color:var(--text3)">💡 '+p.dicas+'</div>';
+      html+='<div class="polo-card-grid">';
+      html+='<div class="polo-info-item"><div class="polo-info-label">Pedido mínimo</div><div class="polo-info-val">'+p.ticketMin+'</div></div>';
+      html+='<div class="polo-info-item"><div class="polo-info-label">Formato</div><div class="polo-info-val">'+(p.online?'Presencial + Online':'Presencial')+'</div></div>';
       html+='</div>';
+      html+='<div class="polo-dica">💡 '+p.dicas+'</div>';
+      html+='<div style="display:flex;gap:7px;flex-wrap:wrap">';
+      html+='<a class="polo-mapa-btn" href="https://www.google.com/maps/search/'+mapsQ+'" target="_blank" rel="noopener">📍 Ver no Maps</a>';
+      html+='<a class="polo-mapa-btn" href="https://www.google.com/search?q='+encodeURIComponent('fornecedores '+area.label+' '+p.nome+' atacado')+'" target="_blank" rel="noopener">🔍 Buscar fornecedores</a>';
+      if(p.online){
+        html+='<a class="polo-mapa-btn" href="https://www.google.com/search?q='+encodeURIComponent(p.nome+' online atacado comprar')+'" target="_blank" rel="noopener">🌐 Comprar online</a>';
+      }
+      html+='</div></div>';
     });
-    var outrosPolos=POLOS.filter(function(p){return p.areas.indexOf(S.area)<0}).slice(0,2);
+    var outrosPolos=POLOS.filter(function(p){return p.areas.indexOf(S.area)<0}).slice(0,3);
     if(outrosPolos.length){
-      html+='<div class="v2-section-title" style="margin-top:1.25rem">Outros polos relevantes no Brasil</div>';
+      html+='<div class="v2-section-title" style="margin-top:1.25rem">Outros polos do Brasil</div>';
       outrosPolos.forEach(function(p){
-        html+='<div class="polo-preview-card" style="opacity:.7">';
-        html+='<div class="polo-header"><div><div class="polo-nome">'+p.emoji+' '+p.nome+'</div><div class="polo-loc">📍 '+p.cidade+' · '+p.especialidades[0]+'</div></div></div>';
+        var mq=encodeURIComponent(p.nome+' '+p.cidade);
+        html+='<div class="polo-mini">';
+        html+='<div class="polo-mini-icon">'+p.emoji+'</div>';
+        html+='<div class="polo-mini-body"><div class="polo-mini-nome">'+p.nome+'</div><div class="polo-mini-loc">'+p.cidade+' · '+p.especialidades.slice(0,2).join(', ')+'</div></div>';
+        html+='<a href="https://www.google.com/maps/search/'+mq+'" target="_blank" rel="noopener" style="font-size:11px;color:var(--amber);white-space:nowrap">Ver Maps →</a>';
         html+='</div>';
       });
     }
@@ -1180,23 +1602,27 @@ function recarregarPesquisa(i){
   S.area=p.area; S.cidade=p.cidade; S.uf=p.uf;
   S.raio=p.raio; S.cep=p.cep; S.lat=p.lat; S.lng=p.lng;
   S.popEstimada=p.popEstimada; S.perfil=p.perfil; S.capital=p.capital;
+  S.modo=p.modo||'local'; S_MODO=p.modo||'local';
   if(mapObj){mapObj.remove();mapObj=null;circleObj=null;pinLayer=null;heatLayer=null;}
   go('s-loading');
   animLoading().then(function(){
     var area=AREAS[S.area]||AREAS_EXTRA[S.area]||AREAS.alimentacao;
+    var isDigRec=(S_MODO==='digital'||S.area==='infoproduto'||S.area==='dropshipping');
     fornecedores=gerarFornecedores(area);
     calcScores();
     var mercado=calcMercado(area);
+    var sat=calcSaturacao(area);
     document.getElementById('st-forn').textContent=fornecedores.length;
-    document.getElementById('st-raio').textContent=isDigital?'Nacional':S.raio+'km';
+    document.getElementById('st-raio').textContent=isDigRec?'Nacional':S.raio+'km';
     document.getElementById('st-mercado').textContent='R$'+fmtK(mercado.total);
     document.getElementById('res-title').textContent='Análise — '+area.label;
-    document.getElementById('res-sub').textContent=fornecedores.length+' fornecedores mapeados · '+S.cidade+' – '+S.uf+' · Raio '+S.raio+'km · Pop. ~'+fmtNum(S.popEstimada)+' hab.';
+    document.getElementById('res-sub').textContent=fornecedores.length+' fornecedores mapeados · '+S.cidade+' – '+S.uf+(isDigRec?'':' · Raio '+S.raio+'km')+' · Pop. ~'+fmtNum(S.popEstimada)+' hab.';
     document.getElementById('raio-map').value=S.raio;
     document.getElementById('rv-map').textContent=S.raio+'km';
     renderNichos(area);
     renderInteligencia(area,mercado);
     renderFornecedores(area);
+    iaGerada=''; iaArea=''; iaLoc='';
     setTab('nichos',document.querySelectorAll('.tab-btn')[0]);
     go('s-result');
   });
@@ -1237,7 +1663,7 @@ function fmtCep(inp){
   var v=inp.value.replace(/\D/g,'');
   if(v.length>5) v=v.slice(0,5)+'-'+v.slice(5,8);
   inp.value=v;
-  if(v.replace('-','').length===8) buscarCep();
+  if(v.replace('-','').length===8 && LOC_TAB==='cep') buscarCep();
 }
 async function buscarCep(){
   var raw=document.getElementById('cep-input').value.replace(/\D/g,'');
@@ -1248,9 +1674,10 @@ async function buscarCep(){
   el.className='ibox'; el.style.display='flex';
   icon.textContent=''; txt.innerHTML='<span class="spin"></span>&nbsp;Buscando...';
   try{
-    var r=await fetch('https://brasilapi.com.br/api/cep/v2/'+raw);
+    var r=await fetch('/api/cep?cep='+raw);
     if(!r.ok) throw new Error('CEP não encontrado');
     var d=await r.json();
+    if(d.error) throw new Error(d.error);
     S.cep=raw; S.cidade=d.city||''; S.uf=d.state||'';
     if(d.location&&d.location.coordinates&&d.location.coordinates.latitude){
       S.lat=parseFloat(d.location.coordinates.latitude);
@@ -1263,7 +1690,7 @@ async function buscarCep(){
     document.getElementById('btn-buscar').disabled=false;
   }catch(e){
     el.className='ibox err'; icon.textContent='⚠️';
-    txt.textContent='CEP não encontrado. Verifique e tente novamente.';
+    txt.innerHTML='CEP não encontrado. <span style="color:var(--blue);cursor:pointer;text-decoration:underline" onclick="setLocTab(\'uf\')">Usar estado →</span>';
     document.getElementById('btn-buscar').disabled=true;
   }
 }
@@ -1304,6 +1731,16 @@ async function iniciarBusca(){
 }
 
 async function animLoading(){
+  // resetar loading antes de cada run
+  document.getElementById('prog').style.width='0%';
+  for(var ri=0;ri<6;ri++){
+    var rs=document.getElementById('ls'+ri);
+    var rl=document.getElementById('lt'+ri);
+    if(rs){rs.className='loading-step';rs.querySelector('.step-icon').textContent='⏳';}
+    if(rl){var labels=['Validando CEP e coordenadas...','Mapeando CNPJs por CNAE','Calculando score de confiabilidade','Analisando saturação do nicho','Estimando mercado endereçável','Montando painel de inteligência'];rl.textContent=labels[ri]||'...';}
+  }
+  var el0=document.getElementById('ls0');
+  if(el0){el0.className='loading-step active';el0.querySelector('.step-icon').innerHTML='<div class="spin"></div>';}
   var steps=[
     {id:'ls0',txt:'✓ CEP localizado: '+S.cidade+' – '+S.uf,prog:16},
     {id:'ls1',txt:'✓ CNAEs mapeados para '+((AREAS[S.area]||AREAS_EXTRA[S.area])||AREAS.alimentacao).label,prog:33},
@@ -1313,14 +1750,14 @@ async function animLoading(){
     {id:'ls5',txt:'✓ Painel de inteligência montado',prog:100}
   ];
   for(var i=0;i<steps.length;i++){
-    await delay(420+Math.random()*280);
+    await delay(380+Math.random()*240);
     var el=document.getElementById(steps[i].id);
     if(el){el.className='loading-step done';el.querySelector('.step-icon').textContent='✓';document.getElementById('lt'+i).textContent=steps[i].txt;}
     var nx=document.getElementById('ls'+(i+1));
     if(nx){nx.className='loading-step active';nx.querySelector('.step-icon').innerHTML='<div class="spin"></div>';}
     document.getElementById('prog').style.width=steps[i].prog+'%';
   }
-  await delay(350);
+  await delay(280);
 }
 function delay(ms){return new Promise(function(r){setTimeout(r,ms);})}
 
@@ -1445,6 +1882,37 @@ function renderInteligencia(area,mercado){
   var sat=calcSaturacao(area);
   var avgScore=Math.round(fornecedores.reduce(function(a,f){return a+f.score},0)/fornecedores.length);
 
+  /* PAINEL NACIONAL */
+  var nb=INTEL_BRASIL[S.area]||INTEL_BRASIL.alimentacao;
+  var nhtml='';
+  nhtml+='<div class="market-box" style="margin-bottom:10px">';
+  nhtml+='<div class="market-row"><span class="market-k">Mercado total Brasil</span><span class="market-v accent">'+nb.mercadoTotal+'</span></div>';
+  nhtml+='<div class="market-row"><span class="market-k">Crescimento anual</span><span class="market-v" style="color:var(--green)">'+nb.crescimento+'</span></div>';
+  nhtml+='<div class="market-row"><span class="market-k">Ticket médio</span><span class="market-v">'+nb.ticketMedio+'</span></div>';
+  nhtml+='<div class="market-row"><span class="market-k">Concorrência</span><span class="market-v warn">'+nb.concorrencia+'</span></div>';
+  nhtml+='<div class="market-row"><span class="market-k">Penetração</span><span class="market-v">'+nb.penetracao+'</span></div>';
+  nhtml+='</div>';
+  nhtml+='<div class="v2-section-title">Estratégia de entrada</div>';
+  nhtml+='<div class="market-box" style="margin-bottom:10px"><div style="font-size:13px;color:var(--text2);line-height:1.65">'+nb.estrategia+'</div></div>';
+  nhtml+='<div class="v2-section-title">CNAEs principais</div>';
+  nhtml+='<div class="market-box" style="margin-bottom:10px">';
+  nb.cnaes.forEach(function(cn){
+    nhtml+='<div class="market-row"><span class="market-k" style="font-family:monospace;color:var(--accent)">'+cn.cod+'</span><span class="market-v" style="font-size:11px;text-align:right;max-width:60%">'+cn.desc+'</span></div>';
+  });
+  nhtml+='</div>';
+  nhtml+='<div class="v2-section-title">Fornecedores de referência nacional</div>';
+  nhtml+='<div class="market-box" style="margin-bottom:10px">';
+  nb.forn_destaque.forEach(function(f){nhtml+='<div class="market-row"><span class="market-k">🏭 '+f+'</span><a href="https://www.google.com/search?q='+encodeURIComponent(f+' atacado fornecedor')+'" target="_blank" style="font-size:11px;color:var(--blue)">buscar →</a></div>';});
+  nhtml+='</div>';
+  nhtml+='<div style="text-align:center;margin:1rem 0 .5rem">';
+  nhtml+='<button class="btn-ia" style="max-width:360px" onclick="irParaAbaIA()">Análise aprofundada por UF com IA ✦</button>';
+  nhtml+='</div>';
+  document.getElementById('intel-nacional').innerHTML=nhtml;
+
+  /* label local */
+  var locLabel=S.cidade?S.cidade+' – '+S.uf:'sua região';
+  document.getElementById('intel-local-sub').textContent='Dados calculados para '+locLabel+(S.raio<900?' no raio de '+S.raio+'km':'');
+
   // Gauges SVG
   var gaugesHtml='';
   var gauges=[
@@ -1524,21 +1992,30 @@ function renderInteligencia(area,mercado){
 /* ══ RENDER FORNECEDORES ══ */
 function renderFornecedores(area){
   var el=document.getElementById('tab-fornecedores');
-  var html='<div style="font-size:11px;color:var(--text3);margin-bottom:10px">Empresas representativas · CNAE: '+area.cnaes.slice(0,3).map(function(c){return c.slice(0,4)+'-'+c.slice(4,5)}).join(', ')+' · '+S.cidade+' – '+S.uf+' · Ordenado por proximidade</div>';
+  var qCnae=area.cnaes.slice(0,3).map(function(c){return c.slice(0,4)+'-'+c.slice(4,5)}).join(', ');
+  var html='<div class="ibox warn" style="margin-bottom:10px">⚠️ Fornecedores representativos gerados por município e CNAE. Os nomes são fictícios — use os links abaixo para encontrar empresas reais.</div>';
+  html+='<div style="font-size:11px;color:var(--text3);margin-bottom:10px">CNAE: '+qCnae+' · '+S.cidade+' – '+S.uf+' · Ordenado por proximidade estimada</div>';
   fornecedores.forEach(function(f,i){
     var sp=scorePillClass(f.score);
+    var busca=encodeURIComponent(f.nome+' '+S.cidade+' '+S.uf);
+    var maps=encodeURIComponent(area.label+' atacado '+S.cidade+' '+S.uf);
+    var rfbUrl='https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/consultas';
     html+='<div class="scard" id="sc'+i+'">';
     html+='<div class="stop"><span class="sname">'+f.nome+'</span><span class="bdg '+porteBadge(f.porte)+'">'+f.porte+'</span></div>';
     html+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">';
     html+='<div class="sloc">📍 '+f.cidade+' – '+f.uf+' &nbsp;<span style="color:var(--accent);font-weight:500;font-size:11px">~'+f.dist+'km</span></div>';
     html+='<span class="score-pill '+sp+'">🛡 '+f.score+' pts</span>';
     html+='</div>';
-    html+='<div class="smeta">CNPJ: '+f.cnpj+' · CNAE: '+f.cnae+' · <span class="sativa">'+f.situacao+'</span> · Abertura: '+f.abertura+' ('+f.anosOp+' anos)</div>';
-    html+='<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">';
-    html+='<button onclick="toggleDetail('+i+',\''+f.cnpj+'\')" style="flex:1;min-width:120px;font-size:11px;padding:8px 10px;background:transparent;border:1px solid var(--border2);border-radius:6px;color:var(--text3);cursor:pointer;touch-action:manipulation">Consultar CNPJ →</button>';
-    html+='<button onclick="toggleScore('+i+')" style="flex:1;min-width:120px;font-size:11px;padding:8px 10px;background:transparent;border:1px solid var(--border2);border-radius:6px;color:var(--text3);cursor:pointer;touch-action:manipulation">Score detalhado</button>';
+    html+='<div class="smeta">CNAE: '+f.cnae+' · Porte estimado: '+f.porte+' · ~'+f.anosOp+' anos no mercado</div>';
+    html+='<div class="forn-links">';
+    html+='<a class="flink flink-maps" href="https://www.google.com/maps/search/'+maps+'" target="_blank" rel="noopener">📍 Ver no Maps</a>';
+    html+='<a class="flink flink-search" href="https://www.google.com/search?q='+busca+'" target="_blank" rel="noopener">🔍 Buscar empresa</a>';
+    html+='<a class="flink flink-rfb" href="'+rfbUrl+'" target="_blank" rel="noopener">🏛 Receita Federal</a>';
     html+='</div>';
-    html+='<div class="dcard" id="detail'+i+'"></div>';
+    html+='<div class="forn-disclaimer">Links abrem busca real por '+area.label+' em '+S.cidade+'. Para consultar CNPJ específico use a aba Consulta CNPJ.</div>';
+    html+='<div style="margin-top:7px">';
+    html+='<button onclick="toggleScore('+i+')" style="font-size:11px;padding:6px 10px;background:transparent;border:1px solid var(--border2);border-radius:6px;color:var(--text3);cursor:pointer;touch-action:manipulation">Ver score detalhado</button>';
+    html+='</div>';
     html+='<div class="dcard" id="score'+i+'" style="margin-top:6px"></div>';
     html+='</div>';
   });
@@ -1578,8 +2055,9 @@ async function toggleDetail(i,cnpj){
   el.innerHTML='<div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text3)"><div class="spin"></div> Consultando BrasilAPI...</div>';
   var raw=cnpj.replace(/\D/g,'');
   try{
-    var r=await fetch('https://brasilapi.com.br/api/cnpj/v1/'+raw);
+    var r=await fetch('/api/cnpj?cnpj='+raw);
     var d=await r.json();
+    if(d.error) throw new Error(d.error);
     if(d.message) throw new Error(d.message);
     el.innerHTML=buildDetail(d);
   }catch(e){
@@ -1610,8 +2088,9 @@ async function buscarCnpj(){
   var elR=document.getElementById('cnpj-result');
   elL.style.display='flex';elE.style.display='none';elR.innerHTML='';
   try{
-    var r=await fetch('https://brasilapi.com.br/api/cnpj/v1/'+raw);
+    var r=await fetch('/api/cnpj?cnpj='+raw);
     var d=await r.json();
+    if(d.error) throw new Error(d.error);
     if(d.message) throw new Error(d.message);
     elL.style.display='none';
     var rawFmt=raw.slice(0,2)+'.'+raw.slice(2,5)+'.'+raw.slice(5,8)+'/'+raw.slice(8,12)+'-'+raw.slice(12);
@@ -1630,11 +2109,12 @@ async function buscarCnpj(){
 function setTab(name,btn){
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
   btn.classList.add('active');
-  ['nichos','inteligencia','fornecedores','digital','polos','cnpj','mapa'].forEach(function(t){
+  ['nichos','inteligencia','fornecedores','digital','polos','cnpj','mapa','ia'].forEach(function(t){
     document.getElementById('tab-'+t).style.display=(t===name)?'block':'none';
   });
   if(name==='mapa') setTimeout(initMap,120);
   if(name==='digital') renderDigital(AREAS[S.area]||AREAS_EXTRA[S.area]||AREAS.alimentacao);
+  if(name==='ia') initIA();
   if(name==='polos') renderPolos(AREAS[S.area]||AREAS_EXTRA[S.area]||AREAS.alimentacao);
 }
 
@@ -1706,10 +2186,178 @@ function fmtNum(n){return Math.round(n).toLocaleString('pt-BR')}
 function fmtK(n){if(n>=1000000) return (n/1000000).toFixed(1)+'M';if(n>=1000) return (n/1000).toFixed(0)+'k';return String(Math.round(n))}
 
 function abrirAnalise(){
-  var area=AREAS[S.area]||AREAS.alimentacao;
-  var prompt='Análise de mercado para '+area.label+' em '+S.cidade+' – '+S.uf+'. Inclua: estimativa de mercado, concorrência, ticket médio, estratégia de entrada, principais CNAEs e fornecedores recomendados.';
-  window.open('https://claude.ai/new?q='+encodeURIComponent(prompt),'_blank');
+  irParaAbaIA();
 }
+
+/* ══ V5: ANÁLISE IA ══ */
+var iaGerada = '';
+var iaArea   = '';
+var iaLoc    = '';
+
+function irParaAbaIA(){
+  var btn=document.querySelector('.tab-btn[onclick*="setTab(\'ia\'"]');
+  if(!btn) btn=Array.from(document.querySelectorAll('.tab-btn')).find(function(b){return b.textContent.includes('Análise IA')});
+  if(btn) setTab('ia',btn);
+}
+function renderMD(txt){
+  var h="font-family:Syne,sans-serif";
+  return txt
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    .replace(/^## (.+)$/gm,function(_,t){return "<h3 style='font-size:14px;font-weight:600;color:var(--text);"+h+";margin:1.1rem 0 .4rem'>"+t+"</h3>";})
+    .replace(/^### (.+)$/gm,function(_,t){return "<strong style='font-size:13px;color:var(--text);display:block;margin:.7rem 0 .2rem'>"+t+"</strong>";})
+    .replace(/\*\*(.+?)\*\*/g,function(_,t){return "<strong style='color:var(--text)'>"+t+"</strong>";})
+    .replace(/^- (.+)$/gm,function(_,t){return "<div style='display:flex;gap:6px;margin:.2rem 0'><span style='color:var(--accent)'>\u25b8</span><span>"+t+"</span></div>";})
+    .replace(/^(\d+)\. (.+)$/gm,function(_,n,t){return "<div style='display:flex;gap:8px;margin:.25rem 0'><span style='color:var(--accent);"+h+";font-weight:600;min-width:18px'>"+n+".</span><span>"+t+"</span></div>";})
+    .replace(/\n\n/g,"<br><br>").replace(/\n/g,"<br>");
+}
+
+function copiarAnaliseIA(){
+  if(!iaGerada) return;
+  navigator.clipboard.writeText(iaGerada).then(function(){
+    var btn=event.target;
+    btn.textContent='✓ Copiado!';
+    setTimeout(function(){btn.textContent='📋 Copiar texto'},2000);
+  }).catch(function(){
+    var ta=document.createElement('textarea');
+    ta.value=iaGerada;
+    document.body.appendChild(ta);ta.select();
+    document.execCommand('copy');document.body.removeChild(ta);
+  });
+}
+
+function initIA(){
+  var area = AREAS[S.area]||AREAS_EXTRA[S.area]||AREAS.alimentacao;
+  var loc  = S.cidade ? S.cidade+' – '+S.uf : 'Brasil';
+  var loc  = S.cidade ? S.cidade+' – '+S.uf : 'Brasil';
+  document.getElementById('ia-area-info').textContent =
+    '🎯 Área: '+area.label+' · Localização: '+loc+(S.raio<900?' · Raio '+S.raio+'km':' · Nacional');
+  // Pré-selecionar UF do usuário
+  var ufSel=document.getElementById('ia-uf');
+  if(ufSel&&S.uf) ufSel.value=S.uf;
+  // Esconder campo UF se escopo nacional
+  var escopoEl=document.getElementById('ia-escopo');
+  if(escopoEl) escopoEl.onchange=function(){
+    var ufWrap=document.getElementById('ia-uf-wrap');
+    if(ufWrap) ufWrap.style.opacity=this.value==='uf'?'1':'.4';
+  };
+  if(!iaGerada || iaArea!==S.area || iaLoc!==loc){
+    iaGerada=''; iaArea=S.area; iaLoc=loc;
+    document.getElementById('ia-result').style.display='none';
+    document.getElementById('ia-saved').style.display='none';
+  }
+}
+
+async function gerarAnaliseIA(){
+  var area   = AREAS[S.area]||AREAS_EXTRA[S.area]||AREAS.alimentacao;
+  var escopo = (document.getElementById('ia-escopo')||{}).value||'nacional';
+  var ufSel  = (document.getElementById('ia-uf')||{}).value||S.uf||'';
+  var prof   = (document.getElementById('ia-prof')||{}).value||'completa';
+  var capital= {ate5k:'até R$ 5 mil','5k20k':'R$ 5–20 mil','20k100k':'R$ 20–100 mil','acima100k':'acima de R$ 100 mil'}[S.capital]||'não informado';
+  var modo   = S.modo||S_MODO||'local';
+  var sat    = calcSaturacao(area);
+  var merc   = calcMercado(area);
+  var nb     = INTEL_BRASIL[S.area]||INTEL_BRASIL.alimentacao;
+
+  var locLabel = escopo==='uf'
+    ? (ufSel ? area.label+' no estado de '+ufSel : area.label+' no estado de '+S.uf)
+    : area.label+' no Brasil (panorama nacional)';
+
+  var secoes = {
+    completa: '1. Visão geral do mercado (3 parágrafos)\n2. Estimativa de mercado, tamanho e ticket médio\n3. Análise da concorrência e saturação\n4. Estratégia de entrada recomendada (passo a passo)\n5. CNAEs principais, enquadramento fiscal e MEI vs ME\n6. Fornecedores recomendados — locais, nacionais e digitais\n7. Riscos regulatórios e como mitigá-los\n8. Plano de ação — 30, 60 e 90 dias',
+    resumida: '1. Panorama do mercado\n2. Oportunidade e ticket médio\n3. Estratégia de entrada\n4. Próximos passos',
+    entrada:  '1. Por que este nicho agora\n2. Modelo de negócio recomendado\n3. Passo a passo para lançar em 90 dias\n4. Erros comuns a evitar\n5. Métricas de sucesso para os primeiros 6 meses',
+    fornecedores: '1. Principais fornecedores locais por CNAE e região\n2. Fornecedores nacionais e atacadistas online\n3. Polos comerciais relevantes\n4. Como negociar condições (prazo, pedido mínimo, exclusividade)\n5. Red flags: fornecedores a evitar'
+  };
+
+  var dadosCtx = escopo==='uf'
+    ? 'Estado analisado: '+ufSel+'\nMercado endereçável estimado: R$ '+Math.round(merc.total).toLocaleString('pt-BR')+'/mês\nSaturação no segmento: '+sat.indice+'%\nCapital disponível: '+capital+'\nModo de atuação: '+modo
+    : 'Mercado total Brasil: '+nb.mercadoTotal+'\nCrescimento: '+nb.crescimento+'\nTicket médio referência: '+nb.ticketMedio+'\nNível de concorrência: '+nb.concorrencia;
+
+  var prompt = 'Você é um especialista sênior em inteligência comercial para pequenos empreendedores brasileiros.\n\n'
+    +'CONTEXTO:\n'+dadosCtx+'\n\n'
+    +'Gere uma análise de mercado para: '+locLabel+'\n\n'
+    +'Estruture com as seguintes seções:\n'+secoes[prof]+'\n\n'
+    +'Use linguagem direta e prática. Inclua números e referências reais do mercado brasileiro. '
+    +'Formate com ## para seções e - para listas. Não use introduções genéricas.';
+
+  document.getElementById('ia-result').style.display='block';
+  document.getElementById('ia-dot').style.animation='pulse 1.4s ease infinite';
+  document.getElementById('ia-title').textContent='Gerando análise...';
+  document.getElementById('ia-content').textContent='';
+  document.getElementById('btn-salvar-ia').disabled=true;
+  document.getElementById('ia-saved').style.display='none';
+  iaGerada='';
+
+  try{
+    var resp = await fetch('/api/ai',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1500,
+        stream:true,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+
+    if(!resp.ok) throw new Error('API erro '+resp.status);
+    var reader = resp.body.getReader();
+    var decoder = new TextDecoder();
+    var content = document.getElementById('ia-content');
+    var buffer = '';
+
+    while(true){
+      var _ref = await reader.read();
+      var done=_ref.done, value=_ref.value;
+      if(done) break;
+      buffer += decoder.decode(value,{stream:true});
+      var lines = buffer.split('\n');
+      buffer = lines.pop();
+      for(var li=0;li<lines.length;li++){
+        var line=lines[li].trim();
+        if(!line.startsWith('data:')) continue;
+        var data=line.slice(5).trim();
+        if(data==='[DONE]') continue;
+        try{
+          var evt=JSON.parse(data);
+          if(evt.type==='content_block_delta'&&evt.delta&&evt.delta.text){
+            iaGerada+=evt.delta.text;
+            content.innerHTML=renderMD(iaGerada);
+          }
+        }catch(e){}
+      }
+    }
+    document.getElementById('ia-dot').style.animation='none';
+    document.getElementById('ia-dot').style.background='var(--green)';
+    document.getElementById('ia-title').textContent='Análise gerada · '+locLabel;
+    document.getElementById('btn-salvar-ia').disabled=false;
+  }catch(err){
+    document.getElementById('ia-dot').style.background='var(--red)';
+    document.getElementById('ia-dot').style.animation='none';
+    document.getElementById('ia-title').textContent='Erro ao gerar análise';
+    document.getElementById('ia-content').textContent='Erro: '+err.message+'. Verifique a conexão e tente novamente.';
+  }
+}
+
+function salvarAnaliseIA(){
+  if(!iaGerada||!USER.nome) return;
+  var area = AREAS[S.area]||AREAS_EXTRA[S.area]||AREAS.alimentacao;
+  var loc  = S.cidade?S.cidade+' – '+S.uf:'Brasil';
+  var entrada = {
+    id:Date.now(),ts:new Date().toISOString(),
+    tipo:'analise_ia',
+    area:S.area,areaLabel:area.label,
+    cidade:S.cidade,uf:S.uf,
+    conteudo:iaGerada.slice(0,2000)
+  };
+  if(!USER.analises) USER.analises=[];
+  USER.analises.unshift(entrada);
+  if(USER.analises.length>10) USER.analises=USER.analises.slice(0,10);
+  salvarStorage();
+  document.getElementById('ia-saved').style.display='block';
+  document.getElementById('btn-salvar-ia').disabled=true;
+}
+
 </script>
 </body>
 </html>
