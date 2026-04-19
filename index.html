@@ -459,6 +459,49 @@ footer span{color:var(--text2)}
   .polo-card-grid{grid-template-columns:1fr}
   .ia-actions{flex-direction:column}
 }
+
+/* ── V6: BUSCA POR PRODUTO ── */
+.v6-search-wrap{position:relative;margin-bottom:1rem}
+.v6-search-input{width:100%;padding:14px 50px 14px 16px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-size:15px;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s}
+.v6-search-input:focus{border-color:var(--accent)}
+.v6-search-input::placeholder{color:var(--text3)}
+.v6-search-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:18px;pointer-events:none}
+.v6-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem}
+.v6-tag{font-size:12px;padding:5px 11px;background:var(--bg2);border:1px solid var(--border);border-radius:20px;color:var(--text2);cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.v6-tag:hover{border-color:var(--accent);color:var(--accent)}
+.v6-cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-bottom:1.5rem}
+.v6-cat-btn{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:12px 10px;cursor:pointer;text-align:left;transition:border-color .15s;-webkit-tap-highlight-color:transparent}
+.v6-cat-btn:hover{border-color:var(--border2)}.v6-cat-btn.active{border-color:var(--accent);background:rgba(0,212,170,.05)}
+.v6-cat-icon{font-size:20px;display:block;margin-bottom:5px}
+.v6-cat-label{font-size:12px;font-weight:600;color:var(--text);font-family:'Syne',sans-serif}
+.v6-cat-count{font-size:10px;color:var(--text3);margin-top:2px}
+
+.v6-result-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:1.1rem 1.25rem;margin-bottom:10px;transition:border-color .15s;cursor:pointer}
+.v6-result-card:hover{border-color:var(--border2)}
+.v6-result-card.destaque{border-color:rgba(0,212,170,.35);background:rgba(0,212,170,.03)}
+.v6-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px}
+.v6-produto-nome{font-size:15px;font-weight:700;color:var(--text);font-family:'Syne',sans-serif}
+.v6-margem{font-size:20px;font-weight:800;color:var(--accent);font-family:'Syne',sans-serif}
+.v6-produto-desc{font-size:12px;color:var(--text2);line-height:1.55;margin-bottom:8px}
+.v6-produto-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
+.v6-detail{display:none;animation:fadeIn .2s ease}
+.v6-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.v6-info{background:var(--bg3);border-radius:6px;padding:8px 10px}
+.v6-info-l{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;font-family:'Syne',sans-serif;margin-bottom:2px}
+.v6-info-v{font-size:13px;font-weight:500;color:var(--text)}
+.v6-forn-list{margin-top:8px}
+.v6-forn-item{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px}
+.v6-forn-item:last-child{border-bottom:none}
+.v6-forn-nome{font-weight:500;color:var(--text);flex:1}
+.v6-forn-tipo{font-size:10px;color:var(--text3);margin-left:6px}
+.v6-empty{text-align:center;padding:2.5rem 1rem}
+.v6-empty-icon{font-size:40px;display:block;margin-bottom:.75rem;opacity:.35}
+.v6-ncm-badge{font-size:10px;font-family:monospace;background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:2px 6px;color:var(--text3)}
+
+@media(max-width:480px){
+  .v6-cat-grid{grid-template-columns:repeat(2,1fr)}
+  .v6-detail-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -520,8 +563,38 @@ footer span{color:var(--text2)}
     <div class="fbox"><span class="ficon">💰</span><span class="flabel">Mercado endereçável <span class="v2-tag">V2</span></span><span class="fdesc">Estimativa de receita potencial</span></div>
     <div class="fbox"><span class="ficon">🔥</span><span class="flabel">Mapa de calor <span class="v2-tag">V2</span></span><span class="fdesc">Densidade visual de fornecedores</span></div>
   </div>
-  <button class="btn-p" onclick="go('s0')">Começar análise →</button>
+  <button class="btn-p" onclick="go('s0')">Começar análise de nicho →</button>
+  <button class="btn-s" style="margin-top:8px;border-color:rgba(0,212,170,.25);color:var(--accent)" onclick="go('s-v6')">🔍 Buscar por produto específico <span class="v4-tag" style="background:rgba(0,212,170,.12);color:var(--accent);border-color:rgba(0,212,170,.25)">V6</span></button>
   <div style="text-align:center;margin-top:.9rem;font-size:12px;color:var(--text3)">Gratuito · Sem cadastro · Dados públicos RFB + IBGE</div>
+</div>
+
+<!-- ═══════════════════════ V6: BUSCA POR PRODUTO ══ -->
+<div id="s-v6" class="screen">
+  <span class="back-link" onclick="go('s-home')">← Voltar</span>
+  <h2>Busca por produto <span class="v4-tag" style="background:rgba(0,212,170,.1);color:var(--accent);border-color:rgba(0,212,170,.2)">V6</span></h2>
+  <p class="sub">Digite o produto que quer vender — o sistema identifica fornecedores, margem estimada, barreira de entrada e muito mais.</p>
+
+  <div class="v6-search-wrap">
+    <input type="text" class="v6-search-input" id="v6-search" placeholder="Ex: camiseta polo, marmita fit, capinha de celular..." oninput="v6Buscar(this.value)" onkeydown="if(event.key==='Enter')v6Buscar(this.value,true)">
+    <span class="v6-search-icon">🔍</span>
+  </div>
+
+  <div class="v2-section-title">Buscas populares</div>
+  <div class="v6-tags" id="v6-tags-pop"></div>
+
+  <div class="v2-section-title">Categorias</div>
+  <div class="v6-cat-grid" id="v6-cat-grid"></div>
+
+  <div id="v6-results" style="display:none">
+    <div class="v2-section-title" id="v6-results-title">Resultados</div>
+    <div id="v6-results-list"></div>
+  </div>
+
+  <div id="v6-empty" style="display:none" class="v6-empty">
+    <span class="v6-empty-icon">🔍</span>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:6px">Produto não encontrado na base.</p>
+    <p style="font-size:12px;color:var(--text3)">Tente termos mais simples ou navegue pelas categorias acima.</p>
+  </div>
 </div>
 
 <!-- S0 -->
@@ -1651,6 +1724,7 @@ function go(id){
   document.getElementById(id).classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
   if(id==='s-hist') renderHistorico();
+  if(id==='s-v6') initV6();
 }
 function sel(btn,key,val){
   btn.parentElement.querySelectorAll('.opt-btn').forEach(function(b){b.classList.remove('selected')});
@@ -2356,6 +2430,561 @@ function salvarAnaliseIA(){
   salvarStorage();
   document.getElementById('ia-saved').style.display='block';
   document.getElementById('btn-salvar-ia').disabled=true;
+}
+
+/* ══ V6: BASE DE PRODUTOS ══ */
+var V6_CATS = [
+  {id:'alimentacao', label:'Alimentação', icon:'🍽️', count:48},
+  {id:'moda',        label:'Moda',        icon:'👗', count:52},
+  {id:'tecnologia',  label:'Tecnologia',  icon:'💻', count:31},
+  {id:'beleza',      label:'Beleza',      icon:'✨', count:38},
+  {id:'construcao',  label:'Construção',  icon:'🏗️', count:24},
+  {id:'saude',       label:'Saúde',       icon:'🏥', count:29},
+  {id:'casa',        label:'Casa e deco', icon:'🏠', count:35},
+  {id:'pet',         label:'Pet shop',    icon:'🐾', count:22},
+  {id:'esporte',     label:'Esporte',     icon:'⚽', count:27},
+  {id:'infantil',    label:'Infantil',    icon:'🧸', count:19},
+  {id:'papelaria',   label:'Papelaria',   icon:'📚', count:16},
+  {id:'automotivo',  label:'Automotivo',  icon:'🚗', count:18}
+];
+
+var V6_POPULARES = [
+  'camiseta polo','marmita fit','capinha celular','bijuteria','squeeze',
+  'necessaire','vela aromática','mouse pad','tênis','cupcake','kit skincare',
+  'agenda','chinelo','brinquedo montessori','suplemento whey'
+];
+
+var V6_PRODUTOS = [
+
+/* ──────── ALIMENTAÇÃO ──────── */
+{nome:'Marmita fit / saudável',cat:'alimentacao',margem:'35–55%',
+  desc:'Produto de alta demanda e recorrência. Ticket entre R$15–35. Exige embalagem adequada e controle de temperatura.',
+  barreira:85,cnae:'5620-1',ncm:'2104.20',ticketMin:'R$ 12/un',pedidoMin:'50 unidades/semana',
+  tags:['Alta demanda','Recorrente','MEI viável'],
+  fornecedores:[
+    {nome:'CEAGESP / Ceasa regional',tipo:'local',link:'https://www.google.com/maps/search/ceasa+mercado+atacado'},
+    {nome:'Makro Atacadista',tipo:'nacional',link:'https://www.makro.com.br'},
+    {nome:'Frubana (app)',tipo:'digital',link:'https://www.frubana.com'},
+    {nome:'Atacadão',tipo:'nacional',link:'https://www.atacadao.com.br'}
+  ]},
+{nome:'Cupcake / bolo artesanal',cat:'alimentacao',margem:'55–70%',
+  desc:'Margem alta, custo de insumos baixo. Canais: encomenda direta, Instagram, iFood. Exige ANVISA para industrializar.',
+  barreira:60,cnae:'1091-1',ncm:'1905.90',ticketMin:'R$ 8/un',pedidoMin:'Sem mínimo',
+  tags:['Alta margem','Redes sociais','MEI viável'],
+  fornecedores:[
+    {nome:'Casa do Bolo (atacado)',tipo:'nacional',link:'https://www.google.com/search?q=atacado+insumos+confeitaria'},
+    {nome:'Barry Callebaut revendas',tipo:'nacional',link:'https://www.google.com/search?q=chocolate+cobertura+atacado'},
+    {nome:'Distribuidoras de insumos CNAE 4639-7',tipo:'local',link:'https://www.google.com/maps/search/distribuidor+insumos+alimenticios'}
+  ]},
+{nome:'Café especial / gourmet',cat:'alimentacao',margem:'45–65%',
+  desc:'Mercado em expansão. Venda online e em estúdios. Fornecedores em MG, ES, SP com envio nacional.',
+  barreira:30,cnae:'4637-1',ncm:'0901.21',ticketMin:'R$ 28/250g',pedidoMin:'R$ 200',
+  tags:['Tendência','E-commerce','Nacional'],
+  fornecedores:[
+    {nome:'Fazendas do Brasil (atacado)',tipo:'nacional',link:'https://www.google.com/search?q=cafe+especial+atacado+fornecedor'},
+    {nome:'Orfeu Cafés Especiais',tipo:'nacional',link:'https://www.orfeu.com.br'},
+    {nome:'Mercado do Café MG',tipo:'regional',link:'https://www.google.com/search?q=atacado+cafe+especial+minas+gerais'}
+  ]},
+{nome:'Brigadeiro gourmet',cat:'alimentacao',margem:'60–75%',
+  desc:'Ticket médio alto (R$4–8/un), baixo custo de produção. Muito bem posicionado em redes sociais e delivery.',
+  barreira:50,cnae:'1091-1',ncm:'1806.90',ticketMin:'R$ 3/un',pedidoMin:'Sem mínimo',
+  tags:['Alta margem','Instagram','Recorrente'],
+  fornecedores:[
+    {nome:'Harald (chocolate atacado)',tipo:'nacional',link:'https://www.google.com/search?q=Harald+chocolate+revendas'},
+    {nome:'Distribuidoras CNAE 4639-7',tipo:'local',link:'https://www.google.com/maps/search/distribuidor+insumos+alimenticios'},
+    {nome:'Cacau Show Franquia',tipo:'nacional',link:'https://www.cacaushow.com.br'}
+  ]},
+{nome:'Açaí na tigela',cat:'alimentacao',margem:'50–65%',
+  desc:'Alta demanda, baixo ticket unitário mas alto volume. Fornecedores em PA, AM com entrega nacional congelado.',
+  barreira:70,cnae:'5611-2',ncm:'0811.90',ticketMin:'R$ 18–35/tigela',pedidoMin:'R$ 300',
+  tags:['Alta demanda','Recorrente','Nordeste crescente'],
+  fornecedores:[
+    {nome:'Amazonfrut (atacado açaí)',tipo:'nacional',link:'https://www.google.com/search?q=acai+atacado+fornecedor+nacional'},
+    {nome:'Distribuidores regionais açaí',tipo:'local',link:'https://www.google.com/maps/search/distribuidor+acai+atacado'},
+    {nome:'Bem Açaí (atacado)',tipo:'nacional',link:'https://www.google.com/search?q=bem+acai+atacado'}
+  ]},
+{nome:'Salgado / coxinha artesanal',cat:'alimentacao',margem:'50–65%',
+  desc:'Alta demanda para eventos, festas e delivery. Produto com boa escala de produção e custo acessível.',
+  barreira:75,cnae:'5620-1',ncm:'1902.30',ticketMin:'R$ 3–7/un',pedidoMin:'Sem mínimo',
+  tags:['Alta demanda','Eventos','MEI viável'],
+  fornecedores:[
+    {nome:'Distribuidoras de insumos locais',tipo:'local',link:'https://www.google.com/maps/search/distribuidor+insumos+alimenticios'},
+    {nome:'Seara / BRF (atacado)',tipo:'nacional',link:'https://www.google.com/search?q=seara+brf+atacado+revendas'},
+    {nome:'Makro Atacadista',tipo:'nacional',link:'https://www.makro.com.br'}
+  ]},
+
+/* ──────── MODA ──────── */
+{nome:'Camiseta polo',cat:'moda',margem:'40–60%',
+  desc:'Produto atemporal, alta rotatividade. Brás e Bom Retiro têm preço de R$12–18 no atacado. Estampa própria diferencia.',
+  barreira:25,cnae:'4641-9',ncm:'6105.10',ticketMin:'R$ 12/un',pedidoMin:'R$ 200',
+  tags:['Alta rotatividade','Atacado acessível','Personalizável'],
+  fornecedores:[
+    {nome:'Polo do Brás — SP',tipo:'polo',link:'https://www.google.com/maps/search/bras+sao+paulo+moda+atacado'},
+    {nome:'Polo Bom Retiro — SP',tipo:'polo',link:'https://www.google.com/maps/search/bom+retiro+sao+paulo+atacado'},
+    {nome:'Moda Center Caruaru — PE',tipo:'polo',link:'https://www.google.com/maps/search/polo+moda+caruaru'},
+    {nome:'Brás Online',tipo:'digital',link:'https://brasonline.com.br'}
+  ]},
+{nome:'Vestido feminino',cat:'moda',margem:'45–65%',
+  desc:'Alta margem, especialmente em tecido viscose e linho. Bom Retiro e confecções em Goiânia têm bom custo-benefício.',
+  barreira:22,cnae:'4641-9',ncm:'6204.49',ticketMin:'R$ 18/un',pedidoMin:'R$ 300',
+  tags:['Alta margem','Instagram','Sazonalidade'],
+  fornecedores:[
+    {nome:'Polo Bom Retiro — SP',tipo:'polo',link:'https://www.google.com/maps/search/bom+retiro+vestidos+atacado'},
+    {nome:'Confecções Goiânia — GO',tipo:'regional',link:'https://www.google.com/search?q=confeccoes+goiania+atacado+vestidos'},
+    {nome:'Ropas Atacado',tipo:'digital',link:'https://ropas.com.br'}
+  ]},
+{nome:'Tênis casual / sneaker',cat:'moda',margem:'35–55%',
+  desc:'Alta concorrência mas mercado enorme. Atacado em Novo Hamburgo (RS) e Franca (SP). Importados via Alibaba.',
+  barreira:35,cnae:'4642-7',ncm:'6404.19',ticketMin:'R$ 35/par',pedidoMin:'R$ 500',
+  tags:['Alto volume','Polo RS e SP','Importado viável'],
+  fornecedores:[
+    {nome:'Polo Novo Hamburgo — RS',tipo:'polo',link:'https://www.google.com/maps/search/novo+hamburgo+calcados+atacado'},
+    {nome:'Polo Franca — SP',tipo:'polo',link:'https://www.google.com/maps/search/franca+sp+calcados+atacado'},
+    {nome:'Alibaba Brasil (importação)',tipo:'digital',link:'https://www.alibaba.com'}
+  ]},
+{nome:'Chinelo personalizado',cat:'moda',margem:'50–70%',
+  desc:'Sublimação/silk em chinelo Havaianas branco. Baixo custo de entrada, ótimo para presente e eventos.',
+  barreira:20,cnae:'4642-7',ncm:'6402.99',ticketMin:'R$ 8/par',pedidoMin:'48 pares',
+  tags:['Alta margem','Personalização','Baixo investimento'],
+  fornecedores:[
+    {nome:'Havaianas Atacado (linha branca)',tipo:'nacional',link:'https://www.google.com/search?q=havaianas+branca+atacado+sublimacao'},
+    {nome:'Distribuidoras de chinelos',tipo:'local',link:'https://www.google.com/maps/search/calcados+atacado+distribuidora'},
+    {nome:'Alibaba Brasil',tipo:'digital',link:'https://www.alibaba.com'}
+  ]},
+{nome:'Moda fitness / legging',cat:'moda',margem:'45–65%',
+  desc:'Mercado em expansão constante. Tecidos técnicos (supplex, dry-fit) disponíveis em atacadistas de SP e GO.',
+  barreira:28,cnae:'4641-9',ncm:'6211.43',ticketMin:'R$ 22/un',pedidoMin:'R$ 400',
+  tags:['Tendência','E-commerce forte','Recorrente'],
+  fornecedores:[
+    {nome:'Polo Brás/Bom Retiro — SP',tipo:'polo',link:'https://www.google.com/maps/search/fitness+moda+atacado+sao+paulo'},
+    {nome:'Cia Marítima Atacado',tipo:'nacional',link:'https://www.google.com/search?q=moda+fitness+atacado+fornecedor'},
+    {nome:'Confecções Goiânia',tipo:'regional',link:'https://www.google.com/search?q=confeccoes+goiania+fitness+atacado'}
+  ]},
+{nome:'Bijuteria / semijoia',cat:'moda',margem:'55–75%',
+  desc:'Alta margem. Polo de Limeira (SP) é referência nacional. Pedido mínimo acessível. Ótimo para Instagram e Shopee.',
+  barreira:15,cnae:'4783-1',ncm:'7117.19',ticketMin:'R$ 5/un',pedidoMin:'R$ 150',
+  tags:['Alta margem','Limeira SP','Instagram'],
+  fornecedores:[
+    {nome:'Polo Joalheiro Limeira — SP',tipo:'polo',link:'https://www.google.com/maps/search/limeira+sp+semijoias+atacado'},
+    {nome:'25 de Março — SP',tipo:'polo',link:'https://www.google.com/maps/search/25+de+marco+sao+paulo+bijuteria'},
+    {nome:'Atacadista semijoias online',tipo:'digital',link:'https://www.google.com/search?q=semijoias+atacado+online+fornecedor'}
+  ]},
+{nome:'Bolsa feminina',cat:'moda',margem:'45–65%',
+  desc:'Grande variedade de preços. Brás tem opções de R$15–R$80 no atacado. Alta saída em festas e datas comemorativas.',
+  barreira:25,cnae:'4641-9',ncm:'4202.22',ticketMin:'R$ 18/un',pedidoMin:'R$ 300',
+  tags:['Alta rotatividade','Datas sazonais','Brás SP'],
+  fornecedores:[
+    {nome:'Polo do Brás — SP',tipo:'polo',link:'https://www.google.com/maps/search/bras+bolsas+atacado+sao+paulo'},
+    {nome:'25 de Março — SP',tipo:'polo',link:'https://www.google.com/maps/search/25+marco+bolsas+atacado'},
+    {nome:'Brás Online',tipo:'digital',link:'https://brasonline.com.br'}
+  ]},
+{nome:'Pijama / loungewear',cat:'moda',margem:'50–65%',
+  desc:'Crescimento acelerado pós-pandemia. Tecido microsoft e malha são os mais vendidos. Ótimo para atacado online.',
+  barreira:25,cnae:'4641-9',ncm:'6207.91',ticketMin:'R$ 20/un',pedidoMin:'R$ 300',
+  tags:['Tendência','Conforto','E-commerce'],
+  fornecedores:[
+    {nome:'Confecções Brás/Bom Retiro',tipo:'polo',link:'https://www.google.com/maps/search/pijama+atacado+sao+paulo'},
+    {nome:'Ropas Atacado',tipo:'digital',link:'https://ropas.com.br'},
+    {nome:'Alibaba Brasil',tipo:'digital',link:'https://www.alibaba.com'}
+  ]},
+
+/* ──────── TECNOLOGIA ──────── */
+{nome:'Capinha de celular',cat:'tecnologia',margem:'50–70%',
+  desc:'Produto leve, fácil envio, sem perecibilidade. Importação direta do Alibaba com custo de R$2–5/un. Alta escala.',
+  barreira:10,cnae:'4751-2',ncm:'3926.90',ticketMin:'R$ 2/un',pedidoMin:'100 un',
+  tags:['Margem alta','E-commerce','Importado viável'],
+  fornecedores:[
+    {nome:'Santa Ifigênia — SP',tipo:'polo',link:'https://www.google.com/maps/search/santa+ifigenia+sp+acessorios+celular'},
+    {nome:'Alibaba Brasil',tipo:'digital',link:'https://www.alibaba.com'},
+    {nome:'Ali Express Brasil',tipo:'digital',link:'https://www.aliexpress.com'},
+    {nome:'25 de Março — SP',tipo:'polo',link:'https://www.google.com/maps/search/25+marco+sp+acessorios+tecnologia'}
+  ]},
+{nome:'Fone de ouvido / headphone',cat:'tecnologia',margem:'40–60%',
+  desc:'Mercado amplo. Produtos nacionais de entrada custam R$15–40 no atacado. Bluetooth domina as vendas.',
+  barreira:15,cnae:'4751-2',ncm:'8518.30',ticketMin:'R$ 15/un',pedidoMin:'R$ 300',
+  tags:['Alta demanda','Bluetooth preferido','Shopee forte'],
+  fornecedores:[
+    {nome:'Santa Ifigênia — SP',tipo:'polo',link:'https://www.google.com/maps/search/santa+ifigenia+fone+ouvido+atacado'},
+    {nome:'Positivo Atacado',tipo:'nacional',link:'https://www.google.com/search?q=positivo+fone+atacado+revendas'},
+    {nome:'Alibaba Brasil',tipo:'digital',link:'https://www.alibaba.com'}
+  ]},
+{nome:'Carregador / cabo USB',cat:'tecnologia',margem:'45–65%',
+  desc:'Produto consumível, compra recorrente. Diferencial em qualidade (certificado Inmetro) ou design.',
+  barreira:12,cnae:'4751-2',ncm:'8544.42',ticketMin:'R$ 5/un',pedidoMin:'100 un',
+  tags:['Consumível','Recorrente','Certificação diferencia'],
+  fornecedores:[
+    {nome:'Santa Ifigênia — SP',tipo:'polo',link:'https://www.google.com/maps/search/santa+ifigenia+carregador+atacado'},
+    {nome:'Alibaba Brasil',tipo:'digital',link:'https://www.alibaba.com'},
+    {nome:'Distribuidoras eletrônicos',tipo:'local',link:'https://www.google.com/maps/search/distribuidora+eletronicos+atacado'}
+  ]},
+{nome:'Suporte celular / apoio mesa',cat:'tecnologia',margem:'55–70%',
+  desc:'Crescimento com home office. Custo baixo, fácil embalagem. Muito pesquisado no Mercado Livre e Shopee.',
+  barreira:10,cnae:'4789-0',ncm:'3926.90',ticketMin:'R$ 3/un',pedidoMin:'50 un',
+  tags:['Home office','Alta margem','Shopee forte'],
+  fornecedores:[
+    {nome:'25 de Março — SP',tipo:'polo',link:'https://www.google.com/maps/search/25+marco+suporte+celular+atacado'},
+    {nome:'Alibaba Brasil',tipo:'digital',link:'https://www.alibaba.com'},
+    {nome:'Ali Express Brasil',tipo:'digital',link:'https://www.aliexpress.com'}
+  ]},
+
+/* ──────── BELEZA ──────── */
+{nome:'Kit skincare / facial',cat:'beleza',margem:'45–65%',
+  desc:'Mercado em expansão. Kits com hidratante + sérum + protetor vendem bem. Fornecedores nacionais com boa margem.',
+  barreira:20,cnae:'4772-5',ncm:'3304.99',ticketMin:'R$ 25/kit',pedidoMin:'R$ 300',
+  tags:['Tendência','Kit vende mais','ANVISA obrigatório'],
+  fornecedores:[
+    {nome:'Natura Distribuidores',tipo:'nacional',link:'https://www.natura.com.br'},
+    {nome:'Beauty Buy',tipo:'nacional',link:'https://www.google.com/search?q=beauty+buy+atacado+cosmeticos'},
+    {nome:'Polo Duque de Caxias — RJ',tipo:'polo',link:'https://www.google.com/maps/search/duque+caxias+cosmeticos+atacado'},
+    {nome:'TotalBeleza',tipo:'nacional',link:'https://www.google.com/search?q=totalbeleza+atacado'}
+  ]},
+{nome:'Shampoo / condicionador',cat:'beleza',margem:'35–50%',
+  desc:'Alta rotatividade, produto consumível. Linhas profissionais têm melhor margem. Distribuidoras com pedido mínimo baixo.',
+  barreira:25,cnae:'4772-5',ncm:'3305.10',ticketMin:'R$ 18/un',pedidoMin:'R$ 200',
+  tags:['Consumível','Recorrente','Profissional diferencia'],
+  fornecedores:[
+    {nome:'LOreal Professionnel revendas',tipo:'nacional',link:'https://www.google.com/search?q=loreal+professionnel+revendas+atacado'},
+    {nome:'Beauty Buy',tipo:'nacional',link:'https://www.google.com/search?q=beauty+buy+shampoo+atacado'},
+    {nome:'Distribuidoras cosméticos locais',tipo:'local',link:'https://www.google.com/maps/search/distribuidora+cosmeticos+atacado'}
+  ]},
+{nome:'Perfume / colônia',cat:'beleza',margem:'50–70%',
+  desc:'Alta margem especialmente em fragrâncias inspiradas. Importação direta da Turquia e Dubai com excelente custo.',
+  barreira:20,cnae:'4772-5',ncm:'3303.00',ticketMin:'R$ 15/un',pedidoMin:'R$ 400',
+  tags:['Alta margem','Importado viável','Presente frequente'],
+  fornecedores:[
+    {nome:'25 de Março — SP (importados)',tipo:'polo',link:'https://www.google.com/maps/search/25+marco+perfume+atacado'},
+    {nome:'Distribuidoras perfumaria',tipo:'local',link:'https://www.google.com/maps/search/distribuidora+perfumaria+atacado'},
+    {nome:'Alibaba Brasil',tipo:'digital',link:'https://www.alibaba.com'}
+  ]},
+{nome:'Esmalte / base',cat:'beleza',margem:'50–65%',
+  desc:'Produto de baixo custo e alta rotatividade. Kits temáticos e coleções sazonais têm boa saída.',
+  barreira:15,cnae:'4772-5',ncm:'3304.30',ticketMin:'R$ 3/un',pedidoMin:'R$ 150',
+  tags:['Baixo custo','Alta rotatividade','Kits vendem'],
+  fornecedores:[
+    {nome:'Hits Especialita atacado',tipo:'nacional',link:'https://www.google.com/search?q=hits+specialita+esmalte+atacado'},
+    {nome:'Risqué Distribuidores',tipo:'nacional',link:'https://www.google.com/search?q=risque+esmalte+atacado'},
+    {nome:'25 de Março — SP',tipo:'polo',link:'https://www.google.com/maps/search/25+marco+esmalte+atacado'}
+  ]},
+{nome:'Escova de cabelo / pente',cat:'beleza',margem:'45–60%',
+  desc:'Alta demanda constante. Escovas profissionais têm margem superior. Kits com acessórios aumentam ticket.',
+  barreira:18,cnae:'4772-5',ncm:'9605.00',ticketMin:'R$ 8/un',pedidoMin:'R$ 200',
+  tags:['Demanda constante','Profissional diferencia'],
+  fornecedores:[
+    {nome:'25 de Março — SP',tipo:'polo',link:'https://www.google.com/maps/search/25+marco+escova+cabelo+atacado'},
+    {nome:'Distribuidoras beleza',tipo:'local',link:'https://www.google.com/maps/search/distribuidora+beleza+atacado'},
+    {nome:'Alibaba Brasil',tipo:'digital',link:'https://www.alibaba.com'}
+  ]},
+
+/* ──────── CASA E DECO ──────── */
+{nome:'Vela aromática / difusor',cat:'casa',margem:'60–75%',
+  desc:'Tendência consolidada. Baixo custo de produção (parafina + essência), ótima margem. Muito vendido no Instagram.',
+  barreira:15,cnae:'4789-0',ncm:'3406.00',ticketMin:'R$ 8/un',pedidoMin:'Sem mínimo',
+  tags:['Alta margem','Artesanal','Instagram forte'],
+  fornecedores:[
+    {nome:'Kaiak Essências (atacado)',tipo:'nacional',link:'https://www.google.com/search?q=essencias+aromaticas+atacado+fornecedor'},
+    {nome:'Distribuidoras parafina',tipo:'local',link:'https://www.google.com/maps/search/parafina+atacado+fornecedor'},
+    {nome:'25 de Março — SP',tipo:'polo',link:'https://www.google.com/maps/search/25+marco+vela+aromatica+atacado'}
+  ]},
+{nome:'Quadro decorativo / poster',cat:'casa',margem:'55–70%',
+  desc:'Print on demand elimina estoque. Canvases e molduras vendidos em Mercado Livre com entrega nacional.',
+  barreira:10,cnae:'4789-0',ncm:'4911.99',ticketMin:'R$ 15/un',pedidoMin:'Sem mínimo (POD)',
+  tags:['Print on demand','Sem estoque','Escalável'],
+  fornecedores:[
+    {nome:'Printful (POD)',tipo:'digital',link:'https://www.printful.com/br'},
+    {nome:'Gráficas digitais locais',tipo:'local',link:'https://www.google.com/maps/search/grafica+digital+impressao+sob+demanda'},
+    {nome:'Molduras atacado',tipo:'local',link:'https://www.google.com/maps/search/molduras+atacado+fornecedor'}
+  ]},
+{nome:'Necessaire / bolsa organizadora',cat:'casa',margem:'50–65%',
+  desc:'Alta demanda em datas comemorativas. Brás e 25 de Março têm ótimas opções. Personalização via silk screen.',
+  barreira:18,cnae:'4789-0',ncm:'4202.12',ticketMin:'R$ 10/un',pedidoMin:'R$ 200',
+  tags:['Presentes','Brás SP','Personalizável'],
+  fornecedores:[
+    {nome:'Polo do Brás — SP',tipo:'polo',link:'https://www.google.com/maps/search/bras+sp+necessaire+atacado'},
+    {nome:'25 de Março — SP',tipo:'polo',link:'https://www.google.com/maps/search/25+marco+sp+bolsa+organizadora'},
+    {nome:'Alibaba Brasil',tipo:'digital',link:'https://www.alibaba.com'}
+  ]},
+{nome:'Squeeze / garrafa térmica',cat:'casa',margem:'45–60%',
+  desc:'Alta demanda ano-round. Térmica de qualidade diferencia. Personalização com logo agrada empresas (B2B).',
+  barreira:20,cnae:'4789-0',ncm:'3924.10',ticketMin:'R$ 12/un',pedidoMin:'50 un',
+  tags:['B2C e B2B','Personalização','Presente corporativo'],
+  fornecedores:[
+    {nome:'25 de Março — SP',tipo:'polo',link:'https://www.google.com/maps/search/25+marco+squeeze+garrafa+termica+atacado'},
+    {nome:'Atacado Embalagens SP',tipo:'nacional',link:'https://www.google.com/search?q=squeeze+termica+atacado+fornecedor'},
+    {nome:'Alibaba Brasil',tipo:'digital',link:'https://www.alibaba.com'}
+  ]},
+
+/* ──────── PET SHOP ──────── */
+{nome:'Ração premium',cat:'pet',margem:'25–40%',
+  desc:'Mercado de R$30bi/ano. Margem menor mas volume alto e fidelização. Revendedor tem acesso a preço diferenciado.',
+  barreira:35,cnae:'4771-7',ncm:'2309.10',ticketMin:'R$ 80/saco',pedidoMin:'R$ 500',
+  tags:['Mercado gigante','Fidelização','Volume alto'],
+  fornecedores:[
+    {nome:'Premier Pet Distribuidores',tipo:'nacional',link:'https://www.google.com/search?q=premier+pet+distribuidores+atacado'},
+    {nome:'Royal Canin revendas',tipo:'nacional',link:'https://www.google.com/search?q=royal+canin+revendas+atacado'},
+    {nome:'PetLove Atacado B2B',tipo:'digital',link:'https://www.google.com/search?q=petlove+b2b+atacado+pet'}
+  ]},
+{nome:'Roupinha de pet / fantasia',cat:'pet',margem:'55–70%',
+  desc:'Nicho em expansão acelerada. Alta margem, baixo custo. Instagram e TikTok são canais naturais de venda.',
+  barreira:12,cnae:'4789-0',ncm:'6211.49',ticketMin:'R$ 8/un',pedidoMin:'R$ 200',
+  tags:['Nicho crescente','Alta margem','Redes sociais'],
+  fornecedores:[
+    {nome:'Polo do Brás — SP',tipo:'polo',link:'https://www.google.com/maps/search/bras+roupinha+pet+atacado'},
+    {nome:'25 de Março — SP',tipo:'polo',link:'https://www.google.com/maps/search/25+marco+pet+shop+atacado'},
+    {nome:'Alibaba Brasil',tipo:'digital',link:'https://www.alibaba.com'}
+  ]},
+{nome:'Cama / casinha para pet',cat:'pet',margem:'45–60%',
+  desc:'Ticket médio de R$60–200. Fabricação própria com almofadas/espumas é opção de alta margem.',
+  barreira:25,cnae:'4789-0',ncm:'6307.90',ticketMin:'R$ 25/un',pedidoMin:'R$ 300',
+  tags:['Ticket médio alto','Fabricação própria viável'],
+  fornecedores:[
+    {nome:'Distribuidoras artigos pet',tipo:'local',link:'https://www.google.com/maps/search/distribuidora+pet+shop+atacado'},
+    {nome:'MadeiraMadeira (matéria-prima)',tipo:'nacional',link:'https://www.madeiramadeira.com.br'},
+    {nome:'Alibaba Brasil',tipo:'digital',link:'https://www.alibaba.com'}
+  ]},
+
+/* ──────── ESPORTE ──────── */
+{nome:'Suplemento whey protein',cat:'esporte',margem:'30–50%',
+  desc:'Mercado de R$3bi/ano. Revendedores acesso a preços 30–40% abaixo do varejo. E-commerce muito forte.',
+  barreira:25,cnae:'4771-7',ncm:'2106.10',ticketMin:'R$ 65/kg',pedidoMin:'R$ 500',
+  tags:['E-commerce forte','Fidelização','Crescimento 22%/ano'],
+  fornecedores:[
+    {nome:'Integralmedica Distribuidores',tipo:'nacional',link:'https://www.google.com/search?q=integralmedica+distribuidores+atacado'},
+    {nome:'Max Titanium revendas',tipo:'nacional',link:'https://www.google.com/search?q=max+titanium+revendas+atacado'},
+    {nome:'Vimer Distribuidora',tipo:'nacional',link:'https://www.google.com/search?q=vimer+distribuidora+suplementos'}
+  ]},
+{nome:'Caneleira / luva de boxe',cat:'esporte',margem:'45–60%',
+  desc:'Nicho bem definido, público fiel. MMA e boxe em crescimento. Kits completos têm boa saída.',
+  barreira:20,cnae:'4763-6',ncm:'9506.91',ticketMin:'R$ 25/par',pedidoMin:'R$ 400',
+  tags:['Nicho fiel','MMA em alta','Kits vendem'],
+  fornecedores:[
+    {nome:'Everlast Distribuidores',tipo:'nacional',link:'https://www.google.com/search?q=everlast+distribuidores+brasil'},
+    {nome:'Alibaba Brasil (importação)',tipo:'digital',link:'https://www.alibaba.com'},
+    {nome:'Distribuidoras artigos esportivos',tipo:'local',link:'https://www.google.com/maps/search/distribuidora+artigos+esportivos'}
+  ]},
+
+/* ──────── INFANTIL ──────── */
+{nome:'Brinquedo Montessori',cat:'infantil',margem:'50–65%',
+  desc:'Tendência educacional crescente. Madeira natural tem boa aceitação dos pais. Produção própria viável.',
+  barreira:20,cnae:'4763-6',ncm:'9503.00',ticketMin:'R$ 15/un',pedidoMin:'R$ 300',
+  tags:['Tendência','Educacional','Madeira natural'],
+  fornecedores:[
+    {nome:'Distribuidoras brinquedos SP',tipo:'local',link:'https://www.google.com/maps/search/distribuidora+brinquedos+atacado'},
+    {nome:'25 de Março — SP',tipo:'polo',link:'https://www.google.com/maps/search/25+marco+brinquedos+atacado'},
+    {nome:'Alibaba Brasil',tipo:'digital',link:'https://www.alibaba.com'}
+  ]},
+{nome:'Roupa infantil',cat:'infantil',margem:'45–60%',
+  desc:'Alta rotatividade — crianças crescem rápido. Moda bebê tem margem superior. Brás e confecções de GO atendem bem.',
+  barreira:25,cnae:'4641-9',ncm:'6209.20',ticketMin:'R$ 12/un',pedidoMin:'R$ 250',
+  tags:['Alta rotatividade','Presente frequente','Brás SP'],
+  fornecedores:[
+    {nome:'Polo do Brás — SP',tipo:'polo',link:'https://www.google.com/maps/search/bras+roupa+infantil+atacado'},
+    {nome:'Moda Center Caruaru — PE',tipo:'polo',link:'https://www.google.com/maps/search/caruaru+roupa+infantil+atacado'},
+    {nome:'Ropas Atacado',tipo:'digital',link:'https://ropas.com.br'}
+  ]},
+
+/* ──────── PAPELARIA ──────── */
+{nome:'Agenda / caderno personalizado',cat:'papelaria',margem:'50–65%',
+  desc:'Produto sazonal (virada de ano) mas venda contínua corporativa. Personalização agrega muito valor.',
+  barreira:20,cnae:'4789-0',ncm:'4820.10',ticketMin:'R$ 15/un',pedidoMin:'R$ 300',
+  tags:['Corporativo','Personalizável','Sazonalidade'],
+  fornecedores:[
+    {nome:'Tilibra Distribuidores',tipo:'nacional',link:'https://www.google.com/search?q=tilibra+distribuidores+atacado'},
+    {nome:'Gráficas digitais locais',tipo:'local',link:'https://www.google.com/maps/search/grafica+agenda+personalizada'},
+    {nome:'25 de Março — SP',tipo:'polo',link:'https://www.google.com/maps/search/25+marco+papelaria+atacado'}
+  ]},
+{nome:'Caneta / conjunto de escrita',cat:'papelaria',margem:'40–60%',
+  desc:'Produto corporativo e escolar. Conjuntos premium têm boa margem. Personalização com logo abre mercado B2B.',
+  barreira:15,cnae:'4789-0',ncm:'9608.10',ticketMin:'R$ 2/un',pedidoMin:'R$ 200',
+  tags:['B2B forte','Personalização','25 de Março'],
+  fornecedores:[
+    {nome:'25 de Março — SP',tipo:'polo',link:'https://www.google.com/maps/search/25+marco+caneta+papelaria+atacado'},
+    {nome:'BIC Distribuidores',tipo:'nacional',link:'https://www.google.com/search?q=bic+distribuidores+atacado'},
+    {nome:'Alibaba Brasil',tipo:'digital',link:'https://www.alibaba.com'}
+  ]},
+
+/* ──────── AUTOMOTIVO ──────── */
+{nome:'Capa de banco / tapete automotivo',cat:'automotivo',margem:'45–60%',
+  desc:'Alta demanda de proprietários de veículos. Personalização por modelo de carro diferencia. Mercado Livre forte.',
+  barreira:20,cnae:'4530-7',ncm:'8708.99',ticketMin:'R$ 30/jogo',pedidoMin:'R$ 400',
+  tags:['Alta demanda','Personalização por modelo','ML forte'],
+  fornecedores:[
+    {nome:'Distribuidoras acessórios auto',tipo:'local',link:'https://www.google.com/maps/search/distribuidora+acessorios+automotivos'},
+    {nome:'25 de Março — SP',tipo:'polo',link:'https://www.google.com/maps/search/25+marco+automotivo+atacado'},
+    {nome:'Alibaba Brasil',tipo:'digital',link:'https://www.alibaba.com'}
+  ]},
+{nome:'Perfume / aromatizador de carro',cat:'automotivo',margem:'55–70%',
+  desc:'Consumível de alta margem. Custo baixo, venda recorrente. Público masculino com boa disposição a pagar.',
+  barreira:12,cnae:'4530-7',ncm:'3307.49',ticketMin:'R$ 5/un',pedidoMin:'100 un',
+  tags:['Alta margem','Consumível','Recorrente'],
+  fornecedores:[
+    {nome:'25 de Março — SP',tipo:'polo',link:'https://www.google.com/maps/search/25+marco+aromatizador+carro+atacado'},
+    {nome:'Alibaba Brasil',tipo:'digital',link:'https://www.alibaba.com'},
+    {nome:'Distribuidoras acessórios',tipo:'local',link:'https://www.google.com/maps/search/distribuidora+acessorios+carro+atacado'}
+  ]}
+];
+
+
+/* ══ V6: FUNÇÕES ══ */
+var v6CatAtiva = '';
+var v6Iniciado = false;
+
+function initV6(){
+  if(v6Iniciado) return;
+  v6Iniciado = true;
+
+  // Populares
+  var tagsEl = document.getElementById('v6-tags-pop');
+  if(tagsEl){
+    tagsEl.innerHTML = V6_POPULARES.map(function(p){
+      return '<span class="v6-tag" onclick="v6BuscarTag(\''+p+'\')">'+p+'</span>';
+    }).join('');
+  }
+
+  // Categorias
+  var catEl = document.getElementById('v6-cat-grid');
+  if(catEl){
+    catEl.innerHTML = V6_CATS.map(function(cat){
+      return '<button class="v6-cat-btn" id="v6cat-'+cat.id+'" onclick="v6FiltrarCat(\''+cat.id+'\')">'+
+        '<span class="v6-cat-icon">'+cat.icon+'</span>'+
+        '<span class="v6-cat-label">'+cat.label+'</span>'+
+        '<span class="v6-cat-count">'+V6_PRODUTOS.filter(function(p){return p.cat===cat.id}).length+' produtos</span>'+
+        '</button>';
+    }).join('');
+  }
+}
+
+function v6Buscar(val, force){
+  var q = (val||'').trim().toLowerCase();
+  if(q.length < 2 && !force){ v6EsconderResultados(); return; }
+  var resultados = V6_PRODUTOS.filter(function(p){
+    return p.nome.toLowerCase().includes(q) ||
+           p.desc.toLowerCase().includes(q) ||
+           (p.tags||[]).some(function(t){return t.toLowerCase().includes(q)});
+  });
+  v6MostrarResultados(resultados, q ? '"'+val+'"' : 'todos os produtos');
+}
+
+function v6BuscarTag(tag){
+  document.getElementById('v6-search').value = tag;
+  v6Buscar(tag, true);
+}
+
+function v6FiltrarCat(catId){
+  // Toggle categoria
+  if(v6CatAtiva === catId){
+    v6CatAtiva = '';
+    document.querySelectorAll('.v6-cat-btn').forEach(function(b){b.classList.remove('active')});
+    v6EsconderResultados();
+    return;
+  }
+  v6CatAtiva = catId;
+  document.querySelectorAll('.v6-cat-btn').forEach(function(b){b.classList.remove('active')});
+  var btn = document.getElementById('v6cat-'+catId);
+  if(btn) btn.classList.add('active');
+  document.getElementById('v6-search').value = '';
+  var cat = V6_CATS.find(function(c){return c.id===catId});
+  var resultados = V6_PRODUTOS.filter(function(p){return p.cat===catId});
+  v6MostrarResultados(resultados, cat ? cat.icon+' '+cat.label : catId);
+}
+
+function v6EsconderResultados(){
+  document.getElementById('v6-results').style.display = 'none';
+  document.getElementById('v6-empty').style.display = 'none';
+}
+
+function v6MostrarResultados(resultados, label){
+  var resEl = document.getElementById('v6-results');
+  var empEl = document.getElementById('v6-empty');
+  var listEl = document.getElementById('v6-results-list');
+  var titleEl = document.getElementById('v6-results-title');
+
+  if(!resultados.length){
+    resEl.style.display = 'none';
+    empEl.style.display = 'block';
+    return;
+  }
+  empEl.style.display = 'none';
+  resEl.style.display = 'block';
+  titleEl.textContent = resultados.length + ' produto'+(resultados.length!==1?'s':'')+' encontrado'+(resultados.length!==1?'s':'')+' — '+label;
+
+  // Ordenar: destaque primeiro (margem alta)
+  resultados.sort(function(a,b){
+    var ma = parseInt((a.margem||'0').replace(/[^0-9]/g,''));
+    var mb = parseInt((b.margem||'0').replace(/[^0-9]/g,''));
+    return mb - ma;
+  });
+
+  listEl.innerHTML = resultados.map(function(p, i){
+    var isDestaque = i < 2;
+    var barreiraCor = p.barreira > 60 ? '#ff4757' : p.barreira > 30 ? '#f5a623' : '#2ed573';
+    var barreiraLabel = p.barreira > 60 ? 'Alta' : p.barreira > 30 ? 'Média' : 'Baixa';
+    var tipoIcon = {polo:'🏭', nacional:'🇧🇷', digital:'🌐', local:'📍', regional:'🗺️'};
+
+    return '<div class="v6-result-card'+(isDestaque?' destaque':'')+'" onclick="v6Toggle('+i+')">' +
+      '<div class="v6-card-top">' +
+        '<div>' +
+          '<div class="v6-produto-nome">'+(isDestaque?'⭐ ':'')+p.nome+'</div>' +
+          '<div style="display:flex;gap:6px;margin-top:4px;flex-wrap:wrap">' +
+            '<span class="v6-ncm-badge">NCM '+p.ncm+'</span>' +
+            '<span class="v6-ncm-badge">CNAE '+p.cnae+'</span>' +
+          '</div>' +
+        '</div>' +
+        '<div style="text-align:right;flex-shrink:0">' +
+          '<div class="v6-margem">'+p.margem+'</div>' +
+          '<div style="font-size:10px;color:var(--text3)">margem estimada</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="v6-produto-desc">'+p.desc+'</div>' +
+      '<div class="v6-produto-tags">' +
+        (p.tags||[]).map(function(t){return '<span class="bdg bb">'+t+'</span>';}).join('') +
+        '<span class="bdg" style="background:rgba(255,255,255,.05);color:var(--text3)">Barreira: <span style="color:'+barreiraCor+'">'+barreiraLabel+'</span></span>' +
+      '</div>' +
+      '<div class="v6-detail" id="v6d-'+i+'">' +
+        '<div class="v6-detail-grid">' +
+          '<div class="v6-info"><div class="v6-info-l">Ticket mínimo atacado</div><div class="v6-info-v">'+p.ticketMin+'</div></div>' +
+          '<div class="v6-info"><div class="v6-info-l">Pedido mínimo</div><div class="v6-info-v">'+p.pedidoMin+'</div></div>' +
+          '<div class="v6-info"><div class="v6-info-l">Barreira territorial</div><div class="v6-info-v" style="color:'+barreiraCor+'">'+barreiraLabel+' ('+p.barreira+'%)</div></div>' +
+          '<div class="v6-info"><div class="v6-info-l">Área no sistema</div><div class="v6-info-v">'+(V6_CATS.find(function(c){return c.id===p.cat})||{icon:'',label:p.cat}).icon+' '+(V6_CATS.find(function(c){return c.id===p.cat})||{label:p.cat}).label+'</div></div>' +
+        '</div>' +
+        '<div class="v2-section-title" style="margin-top:10px">Fornecedores recomendados</div>' +
+        '<div class="v6-forn-list">' +
+          (p.fornecedores||[]).map(function(f){
+            return '<div class="v6-forn-item">' +
+              '<span>'+(tipoIcon[f.tipo]||'📦')+' <span class="v6-forn-nome">'+f.nome+'</span><span class="v6-forn-tipo">'+f.tipo+'</span></span>' +
+              '<a href="'+f.link+'" target="_blank" rel="noopener" style="font-size:11px;color:var(--blue);white-space:nowrap;margin-left:8px">Ver →</a>' +
+            '</div>';
+          }).join('') +
+        '</div>' +
+        '<div style="margin-top:10px">' +
+          '<button class="btn-ia" onclick="event.stopPropagation();v6IrParaQuiz(\''+p.cat+'\')" style="font-size:12px">Analisar nicho completo →</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function v6Toggle(i){
+  var el = document.getElementById('v6d-'+i);
+  if(!el) return;
+  var isOpen = el.style.display === 'block';
+  // Fechar todos
+  document.querySelectorAll('.v6-detail').forEach(function(d){ d.style.display='none'; });
+  if(!isOpen) el.style.display = 'block';
+}
+
+function v6IrParaQuiz(catId){
+  // Pré-selecionar área no quiz principal
+  S.area = catId;
+  // Marcar o botão correspondente no S3
+  var btns = document.querySelectorAll('#s3 .opt-btn');
+  btns.forEach(function(b){
+    if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+catId+"'")){
+      b.classList.add('selected');
+    } else {
+      b.classList.remove('selected');
+    }
+  });
+  go('s0');
 }
 
 </script>
