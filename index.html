@@ -599,7 +599,7 @@ footer span{color:var(--text2)}
 
 <!-- S0 -->
 <div id="s0" class="screen">
-  <div class="step-bar"><div class="step-dot active"></div><div class="step-dot"></div><div class="step-dot"></div><div class="step-dot"></div><span class="step-label">1/4</span></div>
+  <div class="step-bar"><div class="step-dot active"></div><div class="step-dot"></div><div class="step-dot"></div><div class="step-dot"></div><div class="step-dot"></div><span class="step-label">1/5</span></div>
   <h2>Seu perfil</h2><p class="sub">Define quais nichos e porte de fornecedores são mais adequados.</p>
   <div class="opt-grid">
     <button class="opt-btn" onclick="sel(this,'perfil','iniciante')"><span class="opt-icon">🌱</span><span class="opt-label">Iniciante</span><span class="opt-desc">Primeira experiência</span></button>
@@ -607,13 +607,13 @@ footer span{color:var(--text2)}
     <button class="opt-btn" onclick="sel(this,'perfil','investidor')"><span class="opt-icon">📊</span><span class="opt-label">Investidor</span><span class="opt-desc">Busca ROI</span></button>
     <button class="opt-btn" onclick="sel(this,'perfil','autonomo')"><span class="opt-icon">🛠️</span><span class="opt-label">Autônomo</span><span class="opt-desc">Quer formalizar</span></button>
   </div>
-  <button class="btn-p" onclick="go('s1')">Próximo →</button>
+  <button class="btn-p" onclick="validarEAvancar('s1','perfil')">Próximo →</button>
   <button class="btn-s" onclick="go('s-home')">← Voltar</button>
 </div>
 
 <!-- S1 -->
 <div id="s1" class="screen">
-  <div class="step-bar"><div class="step-dot done"></div><div class="step-dot active"></div><div class="step-dot"></div><div class="step-dot"></div><span class="step-label">2/4</span></div>
+  <div class="step-bar"><div class="step-dot done"></div><div class="step-dot active"></div><div class="step-dot"></div><div class="step-dot"></div><div class="step-dot"></div><span class="step-label">2/5</span></div>
   <h2>Capital disponível</h2><p class="sub">Filtra nichos e porte de fornecedores adequados ao seu investimento.</p>
   <div class="opt-grid">
     <button class="opt-btn" onclick="sel(this,'capital','ate5k')"><span class="opt-icon">💰</span><span class="opt-label">Até R$ 5 mil</span><span class="opt-desc">MEI / microinvestimento</span></button>
@@ -621,7 +621,7 @@ footer span{color:var(--text2)}
     <button class="opt-btn" onclick="sel(this,'capital','20k100k')"><span class="opt-icon">💰</span><span class="opt-label">R$ 20k – 100k</span><span class="opt-desc">Médio porte</span></button>
     <button class="opt-btn" onclick="sel(this,'capital','acima100k')"><span class="opt-icon">💎</span><span class="opt-label">Acima de R$ 100k</span><span class="opt-desc">Grande investimento</span></button>
   </div>
-  <button class="btn-p" onclick="go('s2')">Próximo →</button>
+  <button class="btn-p" onclick="validarEAvancar('s2','capital')">Próximo →</button>
   <button class="btn-s" onclick="go('s0')">← Voltar</button>
 </div>
 
@@ -1074,7 +1074,7 @@ var IBGE_POP={
   'ribeirão preto':720151,'uberlândia':706597,'sorocaba':699258,'contagem':668935,
   'aracaju':674561,'feira de santana':626965,'cuiabá':631814,'joinville':616918,
   'juiz de fora':577349,'londrina':569733,'ananindeua':533893,'niterói':515317,
-  'caucaia':366269,'maracanaú':228613,'caucaia':366269,'imperatriz':258016,
+  'caucaia':366269,'maracanaú':228613,'imperatriz':258016,
   'caxias do sul':503243,'belford roxo':502914,'são gonçalo':1049826,
   'duque de caxias':924624,'nova iguaçu':822570,'mogi das cruzes':457141,
   'betim':444433,'macapá':512902,'porto velho':547033,'palmas':310769,
@@ -1289,7 +1289,6 @@ var NOMES_EXTRA={
 };
 
 /* ══ V3 STATE ══ */
-var S_MODO='local';
 
 function selModo(btn,modo){
   document.querySelectorAll('.modo-btn').forEach(function(b){b.classList.remove('selected')});
@@ -1414,38 +1413,7 @@ function fmtCepDig(inp){
   if(v.replace('-','').length===8) buscarCepDig();
 }
 
-async function buscarCepDig(){
-  // Substituído por selecionarUFDig no modo digital
-  return;
-  var raw='';
-  if(raw.length<8) return;
-  var el=document.getElementById('cep-result-dig');
-  var txt=document.getElementById('cep-txt-dig');
-  var icon=document.getElementById('cep-icon-dig');
-  el.style.display='flex'; el.className='ibox';
-  icon.textContent=''; txt.innerHTML='<span class="spin"></span>&nbsp;Buscando...';
-  try{
-    var r=await fetch('/api/cep?cep='+raw);
-    if(!r.ok) throw new Error('CEP não encontrado');
-    var d=await r.json();
-    if(d.error) throw new Error(d.error);
-    S.cep=raw; S.cidade=d.city||''; S.uf=d.state||'';
-    if(d.location&&d.location.coordinates&&d.location.coordinates.latitude){
-      S.lat=parseFloat(d.location.coordinates.latitude);
-      S.lng=parseFloat(d.location.coordinates.longitude);
-    } else {
-      var ufCoords=UF_COORDS[S.uf];
-      if(ufCoords){S.lat=ufCoords[0];S.lng=ufCoords[1];}
-    }
-    var cidLower=(S.cidade||'').toLowerCase();
-    S.popEstimada=IBGE_POP[cidLower]||estimarPop(S.cidade);
-    el.className='ibox ok'; icon.textContent='📍';
-    txt.textContent=(d.street?d.street+', ':'')+d.city+' – '+d.state;
-  } catch(e){
-    el.className='ibox err'; icon.textContent='⚠️';
-    txt.textContent='CEP não encontrado.';
-  }
-}
+function buscarCepDig(){} /* substituído por selecionarUFDig */
 
 /* ══ V3: RENDER DIGITAL ══ */
 function renderDigital(area){
@@ -1716,13 +1684,28 @@ function limparHistorico(){
   renderHistorico();
 }
 
-document.addEventListener('DOMContentLoaded',carregarUsuario);
+window.addEventListener('popstate',function(e){
+  var id=(e.state&&e.state.screen)||'s-home';
+  var el=document.getElementById(id);
+  if(el){
+    document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});
+    el.classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+    if(id==='s-hist') renderHistorico();
+    if(id==='s-v6') initV6();
+  }
+});
+document.addEventListener('DOMContentLoaded',function(){
+  history.replaceState({screen:'s-home'},'','#s-home');
+  carregarUsuario();
+});
 
 /* ══ NAV ══ */
 function go(id){
   document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});
   document.getElementById(id).classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
+  if(id!=='s-loading') history.pushState({screen:id},'','#'+id);
   if(id==='s-hist') renderHistorico();
   if(id==='s-v6') initV6();
 }
@@ -1730,6 +1713,21 @@ function sel(btn,key,val){
   btn.parentElement.querySelectorAll('.opt-btn').forEach(function(b){b.classList.remove('selected')});
   btn.classList.add('selected');
   S[key]=val;
+}
+function validarEAvancar(destino,campo){
+  if(campo&&!S[campo]){
+    var cur=document.querySelector('.screen.active');
+    if(cur){
+      var grid=cur.querySelector('.opt-grid,.modo-selector');
+      if(grid){
+        grid.style.outline='1.5px solid var(--red)';
+        grid.style.borderRadius='8px';
+        setTimeout(function(){grid.style.outline='';},1400);
+      }
+    }
+    return;
+  }
+  go(destino);
 }
 
 /* ══ CEP ══ */
@@ -1791,12 +1789,12 @@ async function iniciarBusca(){
   var sat=calcSaturacao(area);
   salvarPesquisa(area,mercado,sat);
   document.getElementById('st-forn').textContent=fornecedores.length;
-  document.getElementById('st-raio').textContent=S.raio+'km';
+  document.getElementById('st-raio').textContent=isDigital?'Nacional':S.raio+'km';
   document.getElementById('st-mercado').textContent='R$'+fmtK(mercado.total);
   document.getElementById('res-title').textContent='Análise — '+area.label;
-  document.getElementById('res-sub').textContent=fornecedores.length+' fornecedores mapeados · '+S.cidade+' – '+S.uf+' · Raio '+S.raio+'km · Pop. ~'+fmtNum(S.popEstimada)+' hab.';
-  document.getElementById('raio-map').value=S.raio;
-  document.getElementById('rv-map').textContent=S.raio+'km';
+  document.getElementById('res-sub').textContent=fornecedores.length+' fornecedores mapeados · '+S.cidade+' – '+S.uf+(isDigital?'':' · Raio '+S.raio+'km')+' · Pop. ~'+fmtNum(S.popEstimada)+' hab.';
+  document.getElementById('raio-map').value=isDigital?300:S.raio;
+  document.getElementById('rv-map').textContent=isDigital?'Nacional':S.raio+'km';
   renderNichos(area);
   renderInteligencia(area,mercado);
   renderFornecedores(area);
@@ -1893,8 +1891,9 @@ function calcScores(){
     s+=pp[f.porte]||8;
     // Fator 3: Situação cadastral (0-20pts)
     s+=(f.situacao==='Ativa'?20:0);
-    // Fator 4: Consistência CNAE (simulado 0-15pts)
-    s+=8+Math.floor(Math.random()*8);
+    // Fator 4: Consistência CNAE (determinístico por nome do fornecedor)
+    var cnaeVal=8+(f.nome.split('').reduce(function(a,c){return(a+c.charCodeAt(0))%8},0));
+    s+=cnaeVal;
     // Fator 5: Proximidade (0-10pts)
     if(f.dist<20) s+=10;
     else if(f.dist<50) s+=7;
@@ -1904,7 +1903,7 @@ function calcScores(){
       tempo:{val:f.anosOp>=10?30:f.anosOp>=5?22:f.anosOp>=2?14:6,max:30,label:f.anosOp+' anos'},
       porte:{val:pp[f.porte]||8,max:25,label:f.porte},
       situacao:{val:f.situacao==='Ativa'?20:0,max:20,label:f.situacao},
-      cnae:{val:8+Math.floor(Math.random()*8),max:15,label:'CNAE consistente'},
+      cnae:{val:cnaeVal,max:15,label:'CNAE consistente'},
       prox:{val:f.dist<20?10:f.dist<50?7:4,max:10,label:'~'+f.dist+'km'}
     };
   });
@@ -1928,7 +1927,9 @@ function calcMercado(area){
 function calcSaturacao(area){
   var base=area.concorrentes;
   var factor=S.raio/50;
-  var total=Math.round(base*factor*(0.7+Math.random()*0.6));
+  var seed=(S.cidade||'').split('').reduce(function(a,c){return a+c.charCodeAt(0)},0);
+  var mult=0.7+((seed%60)/100);
+  var total=Math.round(base*factor*mult);
   var indice=Math.min(100,Math.round((total/500)*100));
   return{total:total,indice:indice,nivel:indice>70?'Alto':indice>40?'Médio':'Baixo'};
 }
@@ -2302,7 +2303,6 @@ function copiarAnaliseIA(){
 function initIA(){
   var area = AREAS[S.area]||AREAS_EXTRA[S.area]||AREAS.alimentacao;
   var loc  = S.cidade ? S.cidade+' – '+S.uf : 'Brasil';
-  var loc  = S.cidade ? S.cidade+' – '+S.uf : 'Brasil';
   document.getElementById('ia-area-info').textContent =
     '🎯 Área: '+area.label+' · Localização: '+loc+(S.raio<900?' · Raio '+S.raio+'km':' · Nacional');
   // Pré-selecionar UF do usuário
@@ -2321,7 +2321,30 @@ function initIA(){
   }
 }
 
+var IA_RATE_KEY='fb_ia_rate';
+var IA_RATE_MAX=5;
+var IA_RATE_WIN=3600000;
+function checkIARateLimit(){
+  try{
+    var raw=localStorage.getItem(IA_RATE_KEY);
+    var d=raw?JSON.parse(raw):{count:0,reset:Date.now()+IA_RATE_WIN};
+    if(Date.now()>d.reset){d={count:0,reset:Date.now()+IA_RATE_WIN};}
+    if(d.count>=IA_RATE_MAX) return false;
+    d.count++;
+    localStorage.setItem(IA_RATE_KEY,JSON.stringify(d));
+    return true;
+  }catch(e){return true;}
+}
 async function gerarAnaliseIA(){
+  if(!checkIARateLimit()){
+    document.getElementById('ia-result').style.display='block';
+    document.getElementById('ia-dot').style.animation='none';
+    document.getElementById('ia-dot').style.background='var(--amber)';
+    document.getElementById('ia-title').textContent='Limite de análises atingido';
+    document.getElementById('ia-content').textContent='Você atingiu o limite de '+IA_RATE_MAX+' análises por hora. Tente novamente mais tarde.';
+    document.getElementById('btn-salvar-ia').disabled=true;
+    return;
+  }
   var area   = AREAS[S.area]||AREAS_EXTRA[S.area]||AREAS.alimentacao;
   var escopo = (document.getElementById('ia-escopo')||{}).value||'nacional';
   var ufSel  = (document.getElementById('ia-uf')||{}).value||S.uf||'';
